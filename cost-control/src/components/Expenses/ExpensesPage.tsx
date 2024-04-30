@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ExpenseForm from "../Expenses/ExpenseForm";
+import ExpenseForm from "./ExpenseForm";
 
 interface Expenses {
     category: string;
@@ -12,9 +12,7 @@ const ExpensesPage = () => {
     const [expenses, setExpenses] = useState<Expenses[]>([]);
 
     const handleOpenForm = () => {
-        console.log(isFormOpen);
         setIsFormOpen((prevState: boolean) => !prevState);
-        console.log(isFormOpen);
     };
 
     const handleAddExpense = (expense: Expenses) => {
@@ -34,8 +32,7 @@ const ExpensesPage = () => {
                 {expenses.map((expense, index) => (
                     <li key={index}>
                         Категория: {expense.category} | Сумма: {expense.amount}{" "}
-                        | Дата:{" "}
-                        {expense.date}
+                        | Дата: {expense.date}
                     </li>
                 ))}
             </ul>
