@@ -4,8 +4,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import {
+    LocalizationProvider,
+    StaticDateTimePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -17,39 +19,38 @@ type FormDateProps = {
 const FormDate = (props: FormDateProps) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-    const handleOpenCalendar = () => {
+    const handleClickDate = () => {
         setIsCalendarOpen((prevState) => !prevState);
+    };
+
+    const handleCloseCalendar = () => {
+        setIsCalendarOpen(false);
     };
 
     return (
         <>
-            <ListItem sx={{}}>
-                <ListItemButton
-                    sx={{ padding: 0 }}
-                    onClick={handleOpenCalendar}
-                >
-                    <ListItemText>Дата</ListItemText>
-                    <ListItemText sx={{ textAlign: "right" }}>
-                        {props.date &&
-                            props.date.format("DD MMM YYYY HH:mm:ss")}
-                    </ListItemText>
-                </ListItemButton>
-            </ListItem>
+            <ListItemButton onClick={handleClickDate}>
+                <ListItemText>Дата</ListItemText>
+                <ListItemText sx={{ textAlign: "right" }}>
+                    {props.date?.format("DD MMM YYYY HH:mm")}
+                </ListItemText>
+            </ListItemButton>
             <Collapse in={isCalendarOpen}>
-                <ListItem>
+                <ListItem sx={{ justifyContent: "center" }}>
                     <LocalizationProvider
                         dateAdapter={AdapterDayjs}
                         adapterLocale="ru"
                     >
-                        <DemoContainer components={["DateCalendar"]}>
-                            <DateCalendar
-                                value={props.date}
-                                onChange={(value) => {
-                                    props.setDate(value);
-                                    handleOpenCalendar();
-                                }}
-                            />
-                        </DemoContainer>
+                        <StaticDateTimePicker
+                            value={props.date}
+                            onChange={(value) => {
+                                props.setDate(value);
+                            }}
+                            // orientation="landscape"
+                            onAccept={handleCloseCalendar}
+                            onClose={handleCloseCalendar}
+                            
+                        />
                     </LocalizationProvider>
                 </ListItem>
             </Collapse>

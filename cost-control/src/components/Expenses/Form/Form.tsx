@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import dayjs, { Dayjs } from "dayjs";
 import FormSum from "./Sum";
 import FormCategory, { categories } from "./Category";
 import FormDate from "./Date";
 import FormComment from "./Comment";
+import Button from "@mui/material/Button";
 
 const ExpenseForm = (props: any) => {
     const [selectedCategory, setSelectedCategory] = useState<string>(
@@ -19,8 +18,8 @@ const ExpenseForm = (props: any) => {
     const [comment, setComment] = useState<string>("");
     const theme = useTheme();
 
-    const handleCategorySelect = (event: any) => {
-        setSelectedCategory(event.target.value);
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategory(category);
     };
 
     const handleAmountChange = (event: any) => {
@@ -43,30 +42,40 @@ const ExpenseForm = (props: any) => {
     };
 
     return (
-        <>
-            <List
-                sx={{
-                    backgroundColor: theme.palette.background.default,
-                    color: theme.palette.text.primary,
-                    borderRadius: theme.shape.borderRadius,
-                    maxWidth: 500,
+        <List
+            sx={{
+                backgroundColor: theme.palette.background.default,
+                color: theme.palette.text.primary,
+                borderRadius: theme.shape.borderRadius,
+                maxWidth: 400,
+                padding: 0,
+                "& .MuiListItem-root": {
+                    minHeight: "60px",
                     padding: 0,
-                }}
-            >
-                <FormSum handleAmountChange={handleAmountChange} />
-                <FormCategory
-                    category={selectedCategory}
-                    handleCategorySelect={handleCategorySelect}
-                />
-                <FormDate date={date} setDate={setDate} />
-                <FormComment handleCommentChange={handleCommentChange} />
-                <ListItem>
-                    <ListItemButton sx={{ padding: 0 }} onClick={handleSubmit}>
-                        <ListItemText primary={"Сохранить операцию"} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </>
+                },
+                "& .MuiListItemButton-root": {
+                    minHeight: "60px",
+                    padding: 0,
+                },
+            }}
+        >
+            <FormSum amount={amount} handleAmountChange={handleAmountChange} />
+            <FormCategory
+                category={selectedCategory}
+                handleCategorySelect={handleCategoryChange}
+            />
+            <FormDate date={date} setDate={setDate} />
+            <FormComment handleCommentChange={handleCommentChange} />
+            <ListItem>
+                <Button
+                    onClick={handleSubmit}
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                >
+                    Сохранить операцию
+                </Button>
+            </ListItem>
+        </List>
     );
 };
 
