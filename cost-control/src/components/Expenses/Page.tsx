@@ -2,9 +2,15 @@ import { useState } from "react";
 import ExpenseForm from "./Form/Form";
 import { Expense } from "./type";
 import ExpenseItems from "./Items";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import {
+    Box,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/AddCircleOutline";
 
 const ExpensePage = () => {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
@@ -19,13 +25,19 @@ const ExpensePage = () => {
     };
 
     return (
-        <>
-            <Button variant="contained" onClick={handleOpenForm}>
-                Добавить расход
-            </Button>
+        <Box>
+            <IconButton onClick={handleOpenForm}>
+                <AddIcon />
+            </IconButton>
             <Dialog open={isFormOpen} onClose={handleOpenForm}>
                 <DialogTitle>Расход</DialogTitle>
-                <DialogContent sx={{paddingBottom: "12px"}}>
+                <IconButton
+                    onClick={handleOpenForm}
+                    sx={{ position: "absolute", top: 8, right: 8 }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent sx={{ paddingBottom: "12px" }}>
                     <ExpenseForm
                         handleOpenForm={handleOpenForm}
                         handleAddExpense={handleAddExpense}
@@ -33,7 +45,7 @@ const ExpensePage = () => {
                 </DialogContent>
             </Dialog>
             <ExpenseItems expenses={expenses} />
-        </>
+        </Box>
     );
 };
 

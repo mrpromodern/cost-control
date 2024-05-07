@@ -3,7 +3,6 @@ import Collapse from "@mui/material/Collapse";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import {
     LocalizationProvider,
     StaticDateTimePicker,
@@ -46,15 +45,12 @@ const FormDate = (props: FormDateProps) => {
                             onChange={(value) => {
                                 props.setDate(value);
                             }}
-                            // orientation="landscape"
                             onAccept={handleCloseCalendar}
                             onClose={handleCloseCalendar}
-                            
                         />
                     </LocalizationProvider>
                 </ListItem>
             </Collapse>
-            <Divider component="li" />
         </>
     );
 };

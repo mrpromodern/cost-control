@@ -1,5 +1,3 @@
-import Divider from "@mui/material/Divider";
-import InputAdornment from "@mui/material/InputAdornment";
 import ListItem from "@mui/material/ListItem";
 import TextField from "@mui/material/TextField";
 
@@ -21,7 +19,6 @@ const FormComment = (props: FormCommentProps) => {
                     placeholder="Примечание"
                 />
             </ListItem>
-            <Divider component="li" />
         </>
     );
 };

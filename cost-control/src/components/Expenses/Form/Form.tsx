@@ -8,6 +8,7 @@ import FormCategory, { categories } from "./Category";
 import FormDate from "./Date";
 import FormComment from "./Comment";
 import Button from "@mui/material/Button";
+import { Divider } from "@mui/material";
 
 const ExpenseForm = (props: any) => {
     const [selectedCategory, setSelectedCategory] = useState<string>(
@@ -22,8 +23,9 @@ const ExpenseForm = (props: any) => {
         setSelectedCategory(category);
     };
 
-    const handleAmountChange = (event: any) => {
-        setAmount(event.target.value);
+    const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(event.target.value);
+        setAmount(value);
     };
 
     const handleCommentChange = (event: any) => {
@@ -47,7 +49,7 @@ const ExpenseForm = (props: any) => {
                 backgroundColor: theme.palette.background.default,
                 color: theme.palette.text.primary,
                 borderRadius: theme.shape.borderRadius,
-                maxWidth: 400,
+                minWidth: 400,
                 padding: 0,
                 "& .MuiListItem-root": {
                     minHeight: "60px",
@@ -59,13 +61,27 @@ const ExpenseForm = (props: any) => {
                 },
             }}
         >
+            <Divider component="li" />
+
             <FormSum amount={amount} handleAmountChange={handleAmountChange} />
+
+            <Divider component="li" />
+
             <FormCategory
                 category={selectedCategory}
                 handleCategorySelect={handleCategoryChange}
             />
+
+            <Divider component="li" />
+
             <FormDate date={date} setDate={setDate} />
+
+            <Divider component="li" />
+
             <FormComment handleCommentChange={handleCommentChange} />
+
+            <Divider component="li" />
+
             <ListItem>
                 <Button
                     onClick={handleSubmit}

@@ -1,6 +1,5 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -59,7 +58,7 @@ const FormCategory = (props: FormCategoryProps) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent>
-                    <List sx={{ minWidth: 300 }}>
+                    <List sx={{ minWidth: 400 }}>
                         {categories.map((category) => (
                             <ListItemButton
                                 key={category}
@@ -74,7 +73,6 @@ const FormCategory = (props: FormCategoryProps) => {
                     </List>
                 </DialogContent>
             </Dialog>
-            <Divider component="li" />
         </>
     );
 };
