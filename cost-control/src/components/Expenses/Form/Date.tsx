@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Collapse from "@mui/material/Collapse";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -18,13 +18,13 @@ type FormDateProps = {
 const FormDate = (props: FormDateProps) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-    const handleClickDate = () => {
+    const handleClickDate = useCallback(() => {
         setIsCalendarOpen((prevState) => !prevState);
-    };
+    }, []);
 
-    const handleCloseCalendar = () => {
+    const handleCloseCalendar = useCallback(() => {
         setIsCalendarOpen(false);
-    };
+    }, []);
 
     return (
         <>

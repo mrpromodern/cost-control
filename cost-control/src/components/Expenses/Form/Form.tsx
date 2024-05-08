@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,7 +10,14 @@ import FormComment from "./Comment";
 import Button from "@mui/material/Button";
 import { Divider } from "@mui/material";
 
-const ExpenseForm = (props: any) => {
+type ExpenseFormProps = {
+    handleOpenForm: Function;
+    handleAddExpense: Function;
+};
+
+const ExpenseForm = (props: ExpenseFormProps) => {
+    const { handleOpenForm, handleAddExpense } = props;
+
     const [selectedCategory, setSelectedCategory] = useState<string>(
         categories[0]
     );
@@ -19,29 +26,45 @@ const ExpenseForm = (props: any) => {
     const [comment, setComment] = useState<string>("");
     const theme = useTheme();
 
-    const handleCategoryChange = (category: string) => {
+    const handleCategoryChange = useCallback((category: string) => {
         setSelectedCategory(category);
-    };
+    }, []);
 
-    const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(event.target.value);
-        setAmount(value);
-    };
+    const handleAmountChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = parseFloat(event.target.value);
+            setAmount(value);
+        },
+        []
+    );
 
-    const handleCommentChange = (event: any) => {
-        setComment(event.target.value);
-    };
+    const handleCommentChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setComment(event.target.value);
+        },
+        []
+    );
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-        props.handleOpenForm();
-        props.handleAddExpense({
-            category: selectedCategory,
-            amount: amount,
-            comment: comment,
-            date: date,
-        });
-    };
+    const handleSubmit = useCallback(
+        (event: React.MouseEvent) => {
+            event.preventDefault();
+            handleOpenForm();
+            handleAddExpense({
+                category: selectedCategory,
+                amount: amount,
+                comment: comment,
+                date: date,
+            });
+        },
+        [
+            handleOpenForm,
+            handleAddExpense,
+            selectedCategory,
+            amount,
+            comment,
+            date,
+        ]
+    );
 
     return (
         <List

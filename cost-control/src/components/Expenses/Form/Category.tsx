@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const categories = [
     "Без категории",
@@ -32,9 +32,9 @@ type FormCategoryProps = {
 const FormCategory = (props: FormCategoryProps) => {
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+    }, [])
 
     return (
         <>

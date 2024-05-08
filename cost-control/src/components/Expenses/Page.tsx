@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ExpenseForm from "./Form/Form";
 import { Expense } from "./type";
 import ExpenseItems from "./Items";
@@ -16,13 +16,13 @@ const ExpensePage = () => {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [expenses, setExpenses] = useState<Expense[]>([]);
 
-    const handleOpenForm = () => {
+    const handleOpenForm = useCallback(() => {
         setIsFormOpen((prevState: boolean) => !prevState);
-    };
+    }, []);
 
-    const handleAddExpense = (expense: Expense) => {
-        setExpenses((prevState: any) => [...prevState, expense]);
-    };
+    const handleAddExpense = useCallback((expense: Expense) => {
+        setExpenses((prevState: Expense[]) => [...prevState, expense]);
+    }, []);
 
     return (
         <Box>
