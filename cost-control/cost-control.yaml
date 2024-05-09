@@ -1,0 +1,142 @@
+openapi: 3.0.0
+info:
+  title: Контроль расходов
+  version: 0.0.1
+servers:
+  - url: http://localhost:3000/cost-control-pages/api/v1/
+    description: Dev server
+paths:
+  /expenses:
+    get: 
+      summary: Метод получения расходов
+      tags:
+        - Expenses
+      operationId: getAllExpenses
+      responses: 
+        '200':
+          description: Успешный ответ со списком расходов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expenses"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод создания расхода
+      tags:
+        - Expenses
+      operationId: createExpense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Expense"
+      responses: 
+        '200':
+          description: Успешный ответ с созданным расходом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /expenses/{expense_id}:
+    get: 
+      summary: Метод получения расхода по идентификатору
+      tags:
+        - Expenses
+      operationId: getExpenseById
+      parameters:
+        - name: expense_id
+          in: path
+          required: true
+          description: Идентификатор расхода
+          schema:
+            type: string
+          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+      responses: 
+        '200':
+          description: Успешный ответ с расходом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления расхода по идентификатору
+      tags:
+        - Expenses
+      operationId: deleteExpenseToById
+      parameters:
+        - name: expense_id
+          in: path
+          required: true
+          description: Идентификатор расхода
+          schema:
+            type: string
+          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+      responses: 
+        '200':
+          description: Успешное удаление расхода
+          content:
+            application/json: {}
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Expense:
+      type: object
+      required:
+        - category
+        - amount
+        - date
+        - comment
+      properties:
+        expense_id:
+          type: string
+          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+        category:
+          type: string
+          example: Развлечения
+        amount:
+          type: number
+          example: 258
+        date:
+          type: string
+          format: 2018-04-13 19:18
+        comment:
+          type: string
+          example: За такси утром
+    Expenses:
+      type: array
+      items:
+        $ref: "#/components/schemas/Expense"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
