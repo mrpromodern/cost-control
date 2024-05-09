@@ -2,29 +2,33 @@ import React, { useCallback, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import FormSum from "./Sum";
-import FormCategory, { categories } from "./Category";
+import FormCategory from "./Category";
 import FormDate from "./Date";
 import FormComment from "./Comment";
 import Button from "@mui/material/Button";
-import { Divider } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import { Expense } from "../type";
 
 type ExpenseFormProps = {
+    expense: Expense;
     handleOpenForm: Function;
     handleAddExpense: Function;
+    handleUpdateExpense: Function;
 };
 
 const ExpenseForm = (props: ExpenseFormProps) => {
-    const { handleOpenForm, handleAddExpense } = props;
-
-    const [selectedCategory, setSelectedCategory] = useState<string>(
-        categories[0]
-    );
-    const [amount, setAmount] = useState<number>(0);
-    const [date, setDate] = useState<Dayjs | null>(() => dayjs());
-    const [comment, setComment] = useState<string>("");
     const theme = useTheme();
+    const { expense, handleOpenForm, handleAddExpense, handleUpdateExpense } =
+        props;
+
+    const [amount, setAmount] = useState<number>(expense.amount);
+    const [date, setDate] = useState<Dayjs>(expense.date);
+    const [comment, setComment] = useState<string>(expense.comment);
+    const [selectedCategory, setSelectedCategory] = useState<string>(
+        expense.category
+    );
 
     const handleCategoryChange = useCallback((category: string) => {
         setSelectedCategory(category);
@@ -48,17 +52,29 @@ const ExpenseForm = (props: ExpenseFormProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            handleOpenForm();
-            handleAddExpense({
+            const id = expense.id;
+            const newExpense: Expense = {
+                id: id,
                 category: selectedCategory,
                 amount: amount,
                 comment: comment,
                 date: date,
-            });
+            };
+
+            if (id === "") {
+                newExpense.id = new Date().toString();
+                handleAddExpense(newExpense);
+            } else {
+                handleUpdateExpense(id, newExpense);
+            }
+
+            handleOpenForm();
         },
         [
-            handleOpenForm,
             handleAddExpense,
+            handleUpdateExpense,
+            handleOpenForm,
+            expense.id,
             selectedCategory,
             amount,
             comment,

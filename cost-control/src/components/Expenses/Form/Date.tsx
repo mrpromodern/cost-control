@@ -11,11 +11,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 
 type FormDateProps = {
-    date: Dayjs | null;
-    setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
+    date: Dayjs;
+    setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs>>;
 };
 
 const FormDate = (props: FormDateProps) => {
+    const { date, setDate } = props;
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
     const handleClickDate = useCallback(() => {
@@ -31,7 +32,7 @@ const FormDate = (props: FormDateProps) => {
             <ListItemButton onClick={handleClickDate}>
                 <ListItemText>Дата</ListItemText>
                 <ListItemText sx={{ textAlign: "right" }}>
-                    {props.date?.format("DD MMM YYYY HH:mm")}
+                    {date?.format("DD MMM YYYY HH:mm")}
                 </ListItemText>
             </ListItemButton>
             <Collapse in={isCalendarOpen}>
@@ -41,9 +42,9 @@ const FormDate = (props: FormDateProps) => {
                         adapterLocale="ru"
                     >
                         <StaticDateTimePicker
-                            value={props.date}
+                            value={date}
                             onChange={(value) => {
-                                props.setDate(value);
+                                value && setDate(value);
                             }}
                             onAccept={handleCloseCalendar}
                             onClose={handleCloseCalendar}

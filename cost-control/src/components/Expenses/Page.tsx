@@ -11,17 +11,47 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/AddCircleOutline";
+import { categories } from "./Form/Category";
+import dayjs from "dayjs";
+
+const emptyExpense: Expense = {
+    id: "",
+    category: categories[0],
+    amount: 0,
+    date: dayjs(),
+    comment: "",
+};
 
 const ExpensePage = () => {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [expenses, setExpenses] = useState<Expense[]>([]);
+    const [expense, setExpense] = useState<Expense>(emptyExpense);
 
     const handleOpenForm = useCallback(() => {
         setIsFormOpen((prevState: boolean) => !prevState);
     }, []);
 
-    const handleAddExpense = useCallback((expense: Expense) => {
+    const handleAddExpenses = useCallback((expense: Expense) => {
         setExpenses((prevState: Expense[]) => [...prevState, expense]);
+    }, []);
+
+    const handleUpdateExpenses = useCallback(
+        (expenseId: string, newExpense: Expense) => {
+            const newExpenses: Expense[] = [...expenses];
+            const expenseIndex: number = newExpenses.findIndex(
+                (value) => expenseId === value.id
+            );
+
+            newExpenses[expenseIndex] = newExpense;
+
+            setExpenses(newExpenses);
+            setExpense(emptyExpense);
+        },
+        [expenses]
+    );
+
+    const handleSetExpense = useCallback((expense: Expense) => {
+        setExpense(expense);
     }, []);
 
     return (
@@ -39,12 +69,18 @@ const ExpensePage = () => {
                 </IconButton>
                 <DialogContent sx={{ paddingBottom: "12px" }}>
                     <ExpenseForm
+                        expense={expense}
                         handleOpenForm={handleOpenForm}
-                        handleAddExpense={handleAddExpense}
+                        handleAddExpense={handleAddExpenses}
+                        handleUpdateExpense={handleUpdateExpenses}
                     />
                 </DialogContent>
             </Dialog>
-            <ExpenseItems expenses={expenses} />
+            <ExpenseItems
+                expenses={expenses}
+                handleOpenForm={handleOpenForm}
+                handleSetExpense={handleSetExpense}
+            />
         </Box>
     );
 };

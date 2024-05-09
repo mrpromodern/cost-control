@@ -5,9 +5,25 @@ import { Expense } from "./type";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
+import { useCallback } from "react";
 
-const ExpenseItems = (props: { expenses: Expense[] }) => {
+type ExpenseItemsProps = {
+    expenses: Expense[];
+    handleOpenForm: Function;
+    handleSetExpense: (expense: Expense) => void;
+};
+
+const ExpenseItems = (props: ExpenseItemsProps) => {
     const theme = useTheme();
+    const { expenses, handleOpenForm, handleSetExpense } = props;
+
+    const handleClick = useCallback(
+        (expense: Expense) => {
+            handleSetExpense(expense);
+            handleOpenForm();
+        },
+        [handleOpenForm, handleSetExpense]
+    );
 
     return (
         <List
@@ -17,11 +33,18 @@ const ExpenseItems = (props: { expenses: Expense[] }) => {
                 borderRadius: theme.shape.borderRadius,
             }}
         >
-            {props.expenses.map((expense, index) => (
+            {expenses.map((expense, index) => (
                 <Box sx={{ padding: 1 }} key={index}>
-                    <ListItemText primary={`${expense.date}`} />
+                    <ListItemText
+                        primary={`${expense.date.format(
+                            "dddd, D MMM YYYY"
+                        )} г.`}
+                    />
                     <Divider component="li" />
-                    <ListItemButton sx={{ padding: 0, minHeight: 50 }}>
+                    <ListItemButton
+                        sx={{ padding: 0, minHeight: 50 }}
+                        onClick={() => handleClick(expense)}
+                    >
                         <ListItemText primary={`${expense.category}`} />
                         <ListItemText
                             sx={{ textAlign: "right" }}
