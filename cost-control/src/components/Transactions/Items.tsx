@@ -1,28 +1,28 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { Expense } from "./type";
+import { Transaction } from "./type";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 import { useCallback } from "react";
 
-type ExpenseItemsProps = {
-    expenses: Expense[];
+type TransactionItemsProps = {
+    Transactions: Transaction[];
     handleOpenForm: Function;
-    handleSetExpense: (expense: Expense) => void;
+    handleSetTransaction: (Transaction: Transaction) => void;
 };
 
-const ExpenseItems = (props: ExpenseItemsProps) => {
+const TransactionItems = (props: TransactionItemsProps) => {
     const theme = useTheme();
-    const { expenses, handleOpenForm, handleSetExpense } = props;
+    const { Transactions, handleOpenForm, handleSetTransaction } = props;
 
     const handleClick = useCallback(
-        (expense: Expense) => {
-            handleSetExpense(expense);
+        (Transaction: Transaction) => {
+            handleSetTransaction(Transaction);
             handleOpenForm();
         },
-        [handleOpenForm, handleSetExpense]
+        [handleOpenForm, handleSetTransaction]
     );
 
     return (
@@ -33,24 +33,24 @@ const ExpenseItems = (props: ExpenseItemsProps) => {
                 borderRadius: theme.shape.borderRadius,
             }}
         >
-            {expenses.map((expense, index) => (
+            {Transactions.map((Transaction, index) => (
                 <Box sx={{ padding: 1 }} key={index}>
                     <ListItemText
-                        primary={`${expense.date.format(
+                        primary={`${Transaction.date.format(
                             "dddd, D MMM YYYY"
                         )} г.`}
                     />
                     <Divider component="li" />
                     <ListItemButton
                         sx={{ padding: 0, minHeight: 50 }}
-                        onClick={() => handleClick(expense)}
+                        onClick={() => handleClick(Transaction)}
                     >
-                        <ListItemText primary={`${expense.category}`} />
+                        <ListItemText primary={`${Transaction.category}`} />
                         <ListItemText
                             sx={{ textAlign: "right" }}
                             primary={
                                 <Box fontWeight="fontWeightMedium">
-                                    - {expense.amount} ₽
+                                    - {Transaction.amount} ₽
                                 </Box>
                             }
                         />
@@ -62,4 +62,4 @@ const ExpenseItems = (props: ExpenseItemsProps) => {
     );
 };
 
-export default ExpenseItems;
+export default TransactionItems;

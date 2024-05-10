@@ -9,25 +9,25 @@ import FormDate from "./Date";
 import FormComment from "./Comment";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { Expense } from "../type";
+import { Transaction, TransactionType } from "../type";
 
-type ExpenseFormProps = {
-    expense: Expense;
+type TransactionFormProps = {
+    Transaction: Transaction;
     handleOpenForm: Function;
-    handleAddExpense: Function;
-    handleUpdateExpense: Function;
+    handleAddTransaction: Function;
+    handleUpdateTransaction: Function;
 };
 
-const ExpenseForm = (props: ExpenseFormProps) => {
+const TransactionForm = (props: TransactionFormProps) => {
     const theme = useTheme();
-    const { expense, handleOpenForm, handleAddExpense, handleUpdateExpense } =
+    const { Transaction, handleOpenForm, handleAddTransaction, handleUpdateTransaction } =
         props;
 
-    const [amount, setAmount] = useState<number>(expense.amount);
-    const [date, setDate] = useState<Dayjs>(expense.date);
-    const [comment, setComment] = useState<string>(expense.comment);
+    const [amount, setAmount] = useState<number>(Transaction.amount);
+    const [date, setDate] = useState<Dayjs>(Transaction.date);
+    const [comment, setComment] = useState<string>(Transaction.comment);
     const [selectedCategory, setSelectedCategory] = useState<string>(
-        expense.category
+        Transaction.category
     );
 
     const handleCategoryChange = useCallback((category: string) => {
@@ -52,29 +52,30 @@ const ExpenseForm = (props: ExpenseFormProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            const id = expense.id;
-            const newExpense: Expense = {
+            const id = Transaction.id;
+            const newTransaction: Transaction = {
                 id: id,
                 category: selectedCategory,
                 amount: amount,
                 comment: comment,
                 date: date,
+                type: TransactionType.Expense,
             };
 
             if (id === "") {
-                newExpense.id = new Date().toString();
-                handleAddExpense(newExpense);
+                newTransaction.id = new Date().toString();
+                handleAddTransaction(newTransaction);
             } else {
-                handleUpdateExpense(id, newExpense);
+                handleUpdateTransaction(id, newTransaction);
             }
 
             handleOpenForm();
         },
         [
-            handleAddExpense,
-            handleUpdateExpense,
+            handleAddTransaction,
+            handleUpdateTransaction,
             handleOpenForm,
-            expense.id,
+            Transaction.id,
             selectedCategory,
             amount,
             comment,
@@ -134,4 +135,4 @@ const ExpenseForm = (props: ExpenseFormProps) => {
     );
 };
 
-export default ExpenseForm;
+export default TransactionForm;

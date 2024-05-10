@@ -6,70 +6,103 @@ servers:
   - url: http://localhost:3000/cost-control-pages/api/v1/
     description: Dev server
 paths:
-  /expenses:
+  /transactions:
     get: 
-      summary: Метод получения расходов
+      summary: Получение операций
       tags:
-        - Expenses
-      operationId: getAllExpenses
+        - Transactions
+      operationId: getTransactions
       responses: 
         '200':
-          description: Успешный ответ со списком расходов
+          description: Успешный ответ со списком операций
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Expenses"
+                $ref: "#/components/schemas/Transactions"
         'default':
           description: Нестандартный ответ
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
     post:
-      summary: Метод создания расхода
+      summary: Создание операции
       tags:
-        - Expenses
-      operationId: createExpense
+        - Transactions
+      operationId: createTransaction
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Expense"
+              $ref: "#/components/schemas/Transaction"
       responses: 
         '200':
-          description: Успешный ответ с созданным расходом
+          description: Успешный ответ с созданной операцией
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Expense"
+                $ref: "#/components/schemas/Transaction"
         'default':
           description: Нестандартный ответ
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /expenses/{expense_id}:
+  /transactions/{transaction_id}:
     get: 
-      summary: Метод получения расхода по идентификатору
+      summary: Получение операции по идентификатору
       tags:
-        - Expenses
-      operationId: getExpenseById
+        - Transactions
+      operationId: getTransactionById
       parameters:
-        - name: expense_id
+        - name: transaction_id
           in: path
           required: true
-          description: Идентификатор расхода
+          description: Идентификатор операции
           schema:
             type: string
-          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+          example: 'bf8e0573-1e02-4798-a48e-3d760b89f47c'
       responses: 
         '200':
-          description: Успешный ответ с расходом
+          description: Успешный ответ с операцией
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Expense"
+                $ref: "#/components/schemas/Transaction"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Обновление операции по идентификатору
+      tags: 
+        - Transactions
+      operationId: updateTransactionById
+      parameters:
+        - name: transaction_id
+          in: path
+          required: true
+          description: Идентификатор операции
+          schema:
+            type: string
+          example: 'bf8e0573-1e02-4798-a48e-3d760b89f47c'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        '200':
+          description: Успешный ответ с обновленной операцией
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
         'default':
           description: Нестандартный ответ
           content:
@@ -77,21 +110,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     delete:
-      summary: Метод удаления расхода по идентификатору
+      summary: Удаление операции по идентификатору
       tags:
-        - Expenses
-      operationId: deleteExpenseToById
+        - Transactions
+      operationId: deleteTransactionToById
       parameters:
-        - name: expense_id
+        - name: transaction_id
           in: path
           required: true
-          description: Идентификатор расхода
+          description: Идентификатор операции
           schema:
             type: string
-          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+          example: 'bf8e0573-1e02-4798-a48e-3d760b89f47c'
       responses: 
         '200':
-          description: Успешное удаление расхода
+          description: Успешное удаление операции
           content:
             application/json: {}
         'default':
@@ -101,19 +134,313 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /bill:
+    get: 
+      summary: Получение счетов
+      tags:
+        - Bill
+      operationId: getBill
+      responses: 
+        '200':
+          description: Успешный ответ со счетами пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bills"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Создание счета
+      tags:
+        - Bill
+      operationId: createBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bill"
+      responses: 
+        '200':
+          description: Успешный ответ с созданным счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bill/{bill_id}:
+    get: 
+      summary: Получение счета по идентификатору
+      tags:
+        - Bill
+      operationId: getBillById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешный ответ со счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"   
+    put:
+      summary: Обновление счета по идентификатору
+      tags: 
+        - Bill
+      operationId: updateBillById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bill"
+      responses:
+        '200':
+          description: Успешный ответ с обновленным счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление счета по идентификатору
+      tags:
+        - Bill
+      operationId: deleteBillToById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешное удаление счета
+          content:
+            application/json: {}
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user:
+    post:
+      summary: Создание пользователя
+      tags: 
+        - User
+      operationId: createUser
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses: 
+        '200':
+          description: Успешный ответ с созданным пользователем
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/login:
+    post:
+      summary: Вход пользователя
+      tags: 
+        - User
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        '200':
+          description: Успешный ответ входа пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/logout:
+    post:
+      summary: Выход пользователя
+      tags: 
+        - User
+      operationId: logoutUser
+      responses:
+        '200':
+          description: Успешный ответ выхода пользователя
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{username}:
+    get:
+      summary: Получение пользователя по логину
+      tags:
+        - User
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Логин пользователя
+          schema:
+            type: string
+          example: 'test'
+      responses:
+        '200':
+          description: Успешное получение данных пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Обновление пользователя по логину
+      tags: 
+        - User
+      operationId: updateUserByName
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Логин пользователя
+          schema:
+            type: string
+          example: 'test'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: Успешный ответ с обновленным пользователем
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление пользователя по логину
+      tags:
+        - User
+      operationId: deleteUserToByName
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Логин пользователя
+          schema:
+            type: string
+          example: 'test'
+      responses: 
+        '200':
+          description: Успешное удаление пользователя
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
 components:
   schemas:
-    Expense:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
+        username:
+          type: string
+          example: 'test'
+        email:
+          type: string
+          example: 'test@test.com'
+        password:
+          type: string
+          example: 'P@ssw0rd'
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Transaction:
       type: object
       required:
         - category
         - amount
         - date
-        - comment
+        - user_id
       properties:
-        expense_id:
+        id:
           type: string
-          example: bf8e0573-1e02-4798-a48e-3d760b89f47c
+          example: 'bf8e0573-1e02-4798-a48e-3d760b89f47c'
         category:
           type: string
           example: Развлечения
@@ -122,14 +449,46 @@ components:
           example: 258
         date:
           type: string
-          format: 2018-04-13 19:18
+          format: '2018-04-13 19:18'
         comment:
           type: string
-          example: За такси утром
-    Expenses:
+          example: 'За такси утром'
+        type:
+          type: string
+          example: 'Expense'
+          enum:
+            - Expense
+            - Income
+        user_id:
+          type: string
+          example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
+    Transactions:
       type: array
       items:
-        $ref: "#/components/schemas/Expense"
+        $ref: "#/components/schemas/Transaction"
+    Bill:
+      type: object
+      required:
+        - user_id
+        - name
+        - balance
+      properties:
+        id:
+          type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+        user_id:
+          type: string
+          example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
+        name:
+          type: string
+          example: 'МелБанк'
+        balance:
+          type: number
+          example: 10050
+    Bills:
+      type: array
+      items:
+        $ref: "#/components/schemas/Bill"
     Error:
       type: object
       required:
