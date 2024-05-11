@@ -3,7 +3,7 @@ info:
   title: Контроль расходов
   version: 0.0.1
 servers:
-  - url: http://localhost:3000/cost-control-pages/api/v1/
+  - url: http://localhost:3000/api/v1/
     description: Dev server
 paths:
   /transactions:

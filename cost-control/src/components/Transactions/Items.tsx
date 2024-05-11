@@ -5,7 +5,8 @@ import { Transaction } from "./type";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getTransactions } from "../../API/API";
 
 type TransactionItemsProps = {
     Transactions: Transaction[];
@@ -16,6 +17,7 @@ type TransactionItemsProps = {
 const TransactionItems = (props: TransactionItemsProps) => {
     const theme = useTheme();
     const { Transactions, handleOpenForm, handleSetTransaction } = props;
+    const [trans, setTrans] = useState<Transaction[]>([]);
 
     const handleClick = useCallback(
         (Transaction: Transaction) => {
@@ -25,6 +27,14 @@ const TransactionItems = (props: TransactionItemsProps) => {
         [handleOpenForm, handleSetTransaction]
     );
 
+    useEffect(() => {
+        getTransactions().then((response) => {
+            if (response) {
+                setTrans(response.data);
+            }
+        });
+    }, []);
+
     return (
         <List
             sx={{
@@ -33,24 +43,44 @@ const TransactionItems = (props: TransactionItemsProps) => {
                 borderRadius: theme.shape.borderRadius,
             }}
         >
-            {Transactions.map((Transaction, index) => (
+            {trans.map((transaction, index) => (
+                <Box sx={{ padding: 1 }} key={index}>
+                    <Divider component="li" />
+                    <ListItemButton
+                        sx={{ padding: 0, minHeight: 50 }}
+                        onClick={() => handleClick(transaction)}
+                    >
+                        <ListItemText primary={`${transaction.category}`} />
+                        <ListItemText
+                            sx={{ textAlign: "right" }}
+                            primary={
+                                <Box fontWeight="fontWeightMedium">
+                                    - {transaction.amount} ₽
+                                </Box>
+                            }
+                        />
+                    </ListItemButton>
+                    <Divider component="li" />
+                </Box>
+            ))}
+            {Transactions.map((transaction, index) => (
                 <Box sx={{ padding: 1 }} key={index}>
                     <ListItemText
-                        primary={`${Transaction.date.format(
+                        primary={`${transaction.date.format(
                             "dddd, D MMM YYYY"
                         )} г.`}
                     />
                     <Divider component="li" />
                     <ListItemButton
                         sx={{ padding: 0, minHeight: 50 }}
-                        onClick={() => handleClick(Transaction)}
+                        onClick={() => handleClick(transaction)}
                     >
-                        <ListItemText primary={`${Transaction.category}`} />
+                        <ListItemText primary={`${transaction.category}`} />
                         <ListItemText
                             sx={{ textAlign: "right" }}
                             primary={
                                 <Box fontWeight="fontWeightMedium">
-                                    - {Transaction.amount} ₽
+                                    - {transaction.amount} ₽
                                 </Box>
                             }
                         />
