@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    tty: true
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-db
+    environment:
+      SECRET_KEY: "secret"
+      DEBUG: "False"
+      DB_NAME: "postgres"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_HOST: "postgres-db"
+      DB_PORT: 5432
+
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+
+      
