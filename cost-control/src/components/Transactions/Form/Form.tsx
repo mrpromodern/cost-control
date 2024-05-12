@@ -12,7 +12,7 @@ import Divider from "@mui/material/Divider";
 import { Transaction, TransactionType } from "../type";
 
 type TransactionFormProps = {
-    Transaction: Transaction;
+    transaction: Transaction;
     handleOpenForm: Function;
     handleAddTransaction: Function;
     handleUpdateTransaction: Function;
@@ -20,14 +20,14 @@ type TransactionFormProps = {
 
 const TransactionForm = (props: TransactionFormProps) => {
     const theme = useTheme();
-    const { Transaction, handleOpenForm, handleAddTransaction, handleUpdateTransaction } =
+    const { transaction, handleOpenForm, handleAddTransaction, handleUpdateTransaction } =
         props;
 
-    const [amount, setAmount] = useState<number>(Transaction.amount);
-    const [date, setDate] = useState<Dayjs>(Transaction.date);
-    const [comment, setComment] = useState<string>(Transaction.comment);
+    const [amount, setAmount] = useState<number>(transaction.amount);
+    const [date, setDate] = useState<Dayjs>(transaction.date);
+    const [comment, setComment] = useState<string>(transaction.comment);
     const [selectedCategory, setSelectedCategory] = useState<string>(
-        Transaction.category
+        transaction.category
     );
 
     const handleCategoryChange = useCallback((category: string) => {
@@ -52,7 +52,7 @@ const TransactionForm = (props: TransactionFormProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            const id = Transaction.id;
+            const id = transaction.id;
             const newTransaction: Transaction = {
                 id: id,
                 category: selectedCategory,
@@ -60,6 +60,7 @@ const TransactionForm = (props: TransactionFormProps) => {
                 comment: comment,
                 date: date,
                 type: TransactionType.Expense,
+                billId: "d2d7427e-c143-4854-8d59-c9a60b60e099"
             };
 
             if (id === "") {
@@ -75,7 +76,7 @@ const TransactionForm = (props: TransactionFormProps) => {
             handleAddTransaction,
             handleUpdateTransaction,
             handleOpenForm,
-            Transaction.id,
+            transaction.id,
             selectedCategory,
             amount,
             comment,

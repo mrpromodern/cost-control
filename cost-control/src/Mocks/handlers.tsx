@@ -1,17 +1,19 @@
-import { http, HttpResponse } from 'msw'
- 
+import { http, HttpResponse } from "msw";
+import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from "../API/API";
+import { createTransactions, transactions } from "./helper";
+import { Transaction } from "../Components/Transactions/type";
+
 export const handlers = [
-  http.get('http://127.0.0.1:3000/api/v1/transactions', (req) => {
-    return HttpResponse.json([
-      {
-        id: "bf8e0573-1e02-4798-a48e-3d760b89f47c",
-        category: "Развлечения",
-        amount: 258,
-        date: "string",
-        comment: "За такси утром",
-        type: "Expense",
-        user_id: "d2d7427e-c143-4854-8d59-c9a60b60e099"
-      }
-    ])
-  }),
-]
+    http.get(OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.TRANSACTIONS, () => {
+        return HttpResponse.json(transactions);
+    }),
+
+    http.post(
+        OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.TRANSACTIONS,
+        async ({ request }) => {
+            const data = (await request.json()) as Transaction;
+            createTransactions(data);
+            return HttpResponse.json({ success: true }, { status: 200 });
+        }
+    ),
+];

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TransactionForm from "./Form/Form";
 import { Transaction, TransactionType } from "./type";
 import TransactionItems from "./Items";
@@ -13,7 +13,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/AddCircleOutline";
 import { categories } from "./Form/Category";
 import dayjs from "dayjs";
-
+import {
+    createTransactions,
+    getTransactions,
+    updateTransactions,
+} from "../../API/API";
 
 const emptyTransaction: Transaction = {
     id: "",
@@ -22,39 +26,58 @@ const emptyTransaction: Transaction = {
     date: dayjs(),
     comment: "",
     type: TransactionType.Expense,
+    billId: "d2d7427e-c143-4854-8d59-c9a60b60e099",
 };
 
 const TransactionPage = () => {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-    const [Transactions, setTransactions] = useState<Transaction[]>([]);
-    const [Transaction, setTransaction] = useState<Transaction>(emptyTransaction);
+    const [transaction, setTransaction] =
+        useState<Transaction>(emptyTransaction);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    const handleGetTransaction = useCallback(() => {
+        getTransactions().then((response) => {
+            const data = response.data;
+            const transactions = data.map((data: Transaction) => ({
+                id: data.id,
+                category: data.category,
+                amount: data.amount,
+                date: dayjs(data.date),
+                comment: data.comment,
+                type: data.type,
+                billId: data.billId,
+            })); // map для конвертации только даты
+            setTransactions(transactions);
+        });
+    }, []);
 
     const handleOpenForm = useCallback(() => {
         setIsFormOpen((prevState: boolean) => !prevState);
     }, []);
 
-    const handleAddTransactions = useCallback((Transaction: Transaction) => {
-        setTransactions((prevState: Transaction[]) => [...prevState, Transaction]);
-    }, []);
-
-    const handleUpdateTransactions = useCallback(
-        (TransactionId: string, newTransaction: Transaction) => {
-            const newTransactions: Transaction[] = [...Transactions];
-            const TransactionIndex: number = newTransactions.findIndex(
-                (value) => TransactionId === value.id
-            );
-
-            newTransactions[TransactionIndex] = newTransaction;
-
-            setTransactions(newTransactions);
-            setTransaction(emptyTransaction);
+    const handleAddTransactions = useCallback(
+        (transaction: Transaction) => {
+            createTransactions(transaction).then(handleGetTransaction);
         },
-        [Transactions]
+        [handleGetTransaction]
     );
 
-    const handleSetTransaction = useCallback((Transaction: Transaction) => {
-        setTransaction(Transaction);
+    const handleUpdateTransactions = useCallback(
+        (transactionId: string, transaction: Transaction) => {
+            updateTransactions(transactionId, transaction).then(
+                handleGetTransaction
+            );
+        },
+        [handleGetTransaction]
+    );
+
+    const handleSetTransaction = useCallback((transaction: Transaction) => {
+        setTransaction(transaction);
     }, []);
+
+    useEffect(() => {
+        handleGetTransaction();
+    }, [handleGetTransaction]);
 
     return (
         <Box>
@@ -71,7 +94,7 @@ const TransactionPage = () => {
                 </IconButton>
                 <DialogContent sx={{ paddingBottom: "12px" }}>
                     <TransactionForm
-                        Transaction={Transaction}
+                        transaction={transaction}
                         handleOpenForm={handleOpenForm}
                         handleAddTransaction={handleAddTransactions}
                         handleUpdateTransaction={handleUpdateTransactions}
@@ -79,7 +102,7 @@ const TransactionPage = () => {
                 </DialogContent>
             </Dialog>
             <TransactionItems
-                Transactions={Transactions}
+                transactions={transactions}
                 handleOpenForm={handleOpenForm}
                 handleSetTransaction={handleSetTransaction}
             />

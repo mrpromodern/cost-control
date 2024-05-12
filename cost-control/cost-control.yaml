@@ -436,7 +436,7 @@ components:
         - category
         - amount
         - date
-        - user_id
+        - bill_id
       properties:
         id:
           type: string
@@ -459,7 +459,7 @@ components:
           enum:
             - Expense
             - Income
-        user_id:
+        bill_id:
           type: string
           example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
     Transactions:

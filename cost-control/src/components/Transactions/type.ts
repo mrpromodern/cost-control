@@ -11,5 +11,6 @@ export interface Transaction {
     amount: number;
     date: Dayjs;
     comment: string;
-    type: TransactionType
+    type: TransactionType;
+    billId: string;
 }

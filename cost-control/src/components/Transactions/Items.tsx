@@ -7,33 +7,25 @@ import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { getTransactions } from "../../API/API";
+import dayjs from "dayjs";
 
 type TransactionItemsProps = {
-    Transactions: Transaction[];
+    transactions: Transaction[];
     handleOpenForm: Function;
-    handleSetTransaction: (Transaction: Transaction) => void;
+    handleSetTransaction: (transaction: Transaction) => void;
 };
 
 const TransactionItems = (props: TransactionItemsProps) => {
     const theme = useTheme();
-    const { Transactions, handleOpenForm, handleSetTransaction } = props;
-    const [trans, setTrans] = useState<Transaction[]>([]);
+    const { transactions, handleOpenForm, handleSetTransaction } = props;
 
     const handleClick = useCallback(
-        (Transaction: Transaction) => {
-            handleSetTransaction(Transaction);
+        (transaction: Transaction) => {
+            handleSetTransaction(transaction);
             handleOpenForm();
         },
         [handleOpenForm, handleSetTransaction]
     );
-
-    useEffect(() => {
-        getTransactions().then((response) => {
-            if (response) {
-                setTrans(response.data);
-            }
-        });
-    }, []);
 
     return (
         <List
@@ -42,28 +34,8 @@ const TransactionItems = (props: TransactionItemsProps) => {
                 color: theme.palette.text.primary,
                 borderRadius: theme.shape.borderRadius,
             }}
-        >
-            {trans.map((transaction, index) => (
-                <Box sx={{ padding: 1 }} key={index}>
-                    <Divider component="li" />
-                    <ListItemButton
-                        sx={{ padding: 0, minHeight: 50 }}
-                        onClick={() => handleClick(transaction)}
-                    >
-                        <ListItemText primary={`${transaction.category}`} />
-                        <ListItemText
-                            sx={{ textAlign: "right" }}
-                            primary={
-                                <Box fontWeight="fontWeightMedium">
-                                    - {transaction.amount} ₽
-                                </Box>
-                            }
-                        />
-                    </ListItemButton>
-                    <Divider component="li" />
-                </Box>
-            ))}
-            {Transactions.map((transaction, index) => (
+        >   
+            {transactions.map((transaction, index) => (
                 <Box sx={{ padding: 1 }} key={index}>
                     <ListItemText
                         primary={`${transaction.date.format(
