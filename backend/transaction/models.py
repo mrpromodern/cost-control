@@ -17,16 +17,16 @@ class Bill(models.Model):
         ordering = ['name']
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=20, db_index=True, verbose_name='Название')
+# class Category(models.Model):
+#     name = models.CharField(max_length=20, db_index=True, verbose_name='Название')
 
-    def __str__(self) -> str:
-        return self.name
+#     def __str__(self) -> str:
+#         return self.name
 
-    class Meta:
-        verbose_name_plural = 'Категории'
-        verbose_name = 'Категория'
-        ordering = ['name']
+#     class Meta:
+#         verbose_name_plural = 'Категории'
+#         verbose_name = 'Категория'
+#         ordering = ['name']
 
 
 class Transaction(models.Model):
@@ -36,7 +36,7 @@ class Transaction(models.Model):
 
     id = models.CharField(max_length=30, primary_key=True, verbose_name='ID')
     type = models.CharField(max_length=7, choices=Types.choices, default=Types.EXPENSE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория')
+    category = models.CharField(max_length=20, verbose_name='Название')
     amount = models.FloatField(verbose_name='Сумма')
     date = models.DateTimeField(db_index=True, verbose_name='Дата')
     comment = models.TextField(verbose_name='Описание')
