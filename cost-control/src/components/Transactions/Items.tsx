@@ -5,9 +5,7 @@ import { Transaction } from "./type";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
-import { getTransactions } from "../../API/API";
-import dayjs from "dayjs";
+import { useCallback } from "react";
 
 type TransactionItemsProps = {
     transactions: Transaction[];

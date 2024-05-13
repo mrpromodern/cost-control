@@ -11,3 +11,7 @@ export function postJson(url: string, data: any) {
 export function putJson(url: string, data: any) {
     return axios.put(url, data);
 }
+
+export function deleteJson(url: string) {
+    return axios.delete(url);
+}

@@ -1,6 +1,6 @@
 import { Transaction } from "../Components/Transactions/type";
 
-export const transactions = [
+export let transactions = [
     {
         id: "g7h8i9j0-k1l2-3m4n-5o6p-7q8r9s0t1u2v3",
         category: "Транспорт",
@@ -48,7 +48,7 @@ export const transactions = [
     }
 ]
 
-export function createTransactions(transaction: Transaction) {
+export function createTransaction(transaction: Transaction) {
     const newTransaction = {
         id: generateUUID(),
         category: transaction.category,
@@ -59,6 +59,25 @@ export function createTransactions(transaction: Transaction) {
         billId: transaction.billId,
     }
     transactions.push(newTransaction);
+}
+
+export function updateTransaction(transactionId: string, transaction: Transaction) {
+    const indexOldTran = transactions.findIndex((transaction) => transaction.id === transactionId);
+    const newTransaction = {
+        id: transactionId,
+        category: transaction.category,
+        amount: transaction.amount,
+        date: transaction.date.toString(),
+        comment: transaction.comment,
+        type: transaction.type,
+        billId: transaction.billId,
+    }
+
+    transactions[indexOldTran] = newTransaction;
+}
+
+export function deleteTransaction(transactionId: string) {
+    transactions = transactions.filter((transaction) => transaction.id !== transactionId);;
 }
 
 export function generateUUID(): string {

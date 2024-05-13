@@ -14,9 +14,10 @@ import AddIcon from "@mui/icons-material/AddCircleOutline";
 import { categories } from "./Form/Category";
 import dayjs from "dayjs";
 import {
-    createTransactions,
+    createTransaction,
+    deleteTransaction,
     getTransactions,
-    updateTransactions,
+    updateTransaction,
 } from "../../API/API";
 
 const emptyTransaction: Transaction = {
@@ -35,7 +36,7 @@ const TransactionPage = () => {
         useState<Transaction>(emptyTransaction);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    const handleGetTransaction = useCallback(() => {
+    const handleGetTransactions = useCallback(() => {
         getTransactions().then((response) => {
             const data = response.data;
             const transactions = data.map((data: Transaction) => ({
@@ -55,20 +56,27 @@ const TransactionPage = () => {
         setIsFormOpen((prevState: boolean) => !prevState);
     }, []);
 
-    const handleAddTransactions = useCallback(
+    const handleAddTransaction = useCallback(
         (transaction: Transaction) => {
-            createTransactions(transaction).then(handleGetTransaction);
+            createTransaction(transaction).then(handleGetTransactions);
         },
-        [handleGetTransaction]
+        [handleGetTransactions]
     );
 
-    const handleUpdateTransactions = useCallback(
+    const handleUpdateTransaction = useCallback(
         (transactionId: string, transaction: Transaction) => {
-            updateTransactions(transactionId, transaction).then(
-                handleGetTransaction
+            updateTransaction(transactionId, transaction).then(
+                handleGetTransactions
             );
         },
-        [handleGetTransaction]
+        [handleGetTransactions]
+    );
+
+    const handleDeleteTransaction = useCallback(
+        (transactionId: string) => {
+            deleteTransaction(transactionId).then(handleGetTransactions);
+        },
+        [handleGetTransactions]
     );
 
     const handleSetTransaction = useCallback((transaction: Transaction) => {
@@ -76,8 +84,8 @@ const TransactionPage = () => {
     }, []);
 
     useEffect(() => {
-        handleGetTransaction();
-    }, [handleGetTransaction]);
+        handleGetTransactions();
+    }, [handleGetTransactions]);
 
     return (
         <Box>
@@ -96,8 +104,9 @@ const TransactionPage = () => {
                     <TransactionForm
                         transaction={transaction}
                         handleOpenForm={handleOpenForm}
-                        handleAddTransaction={handleAddTransactions}
-                        handleUpdateTransaction={handleUpdateTransactions}
+                        handleAddTransaction={handleAddTransaction}
+                        handleUpdateTransaction={handleUpdateTransaction}
+                        handleDeleteTransaction={handleDeleteTransaction}
                     />
                 </DialogContent>
             </Dialog>

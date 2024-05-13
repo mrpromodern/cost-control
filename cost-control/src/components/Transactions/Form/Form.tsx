@@ -16,12 +16,18 @@ type TransactionFormProps = {
     handleOpenForm: Function;
     handleAddTransaction: Function;
     handleUpdateTransaction: Function;
+    handleDeleteTransaction: Function;
 };
 
 const TransactionForm = (props: TransactionFormProps) => {
     const theme = useTheme();
-    const { transaction, handleOpenForm, handleAddTransaction, handleUpdateTransaction } =
-        props;
+    const {
+        transaction,
+        handleOpenForm,
+        handleAddTransaction,
+        handleUpdateTransaction,
+        handleDeleteTransaction,
+    } = props;
 
     const [amount, setAmount] = useState<number>(transaction.amount);
     const [date, setDate] = useState<Dayjs>(transaction.date);
@@ -49,6 +55,16 @@ const TransactionForm = (props: TransactionFormProps) => {
         []
     );
 
+    const handleDelete = useCallback(
+        (event: React.MouseEvent) => {
+            event.preventDefault();
+            const id = transaction.id;
+            handleDeleteTransaction(id);
+            handleOpenForm();
+        },
+        [transaction, handleDeleteTransaction, handleOpenForm]
+    );
+
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
@@ -60,11 +76,10 @@ const TransactionForm = (props: TransactionFormProps) => {
                 comment: comment,
                 date: date,
                 type: TransactionType.Expense,
-                billId: "d2d7427e-c143-4854-8d59-c9a60b60e099"
+                billId: "d2d7427e-c143-4854-8d59-c9a60b60e099",
             };
 
             if (id === "") {
-                newTransaction.id = new Date().toString();
                 handleAddTransaction(newTransaction);
             } else {
                 handleUpdateTransaction(id, newTransaction);
@@ -130,6 +145,17 @@ const TransactionForm = (props: TransactionFormProps) => {
                     variant="contained"
                 >
                     Сохранить операцию
+                </Button>
+            </ListItem>
+
+            <ListItem>
+                <Button
+                    onClick={handleDelete}
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                    color="error"
+                >
+                    Удалить операцию
                 </Button>
             </ListItem>
         </List>
