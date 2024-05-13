@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import TransactionForm from "./Form/Form";
 import { Transaction, TransactionType } from "./type";
-import TransactionItems from "./Items";
+import TransactionItems from "./Transactions";
 import {
     Box,
     Dialog,
