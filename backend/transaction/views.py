@@ -1,13 +1,16 @@
-from rest_framework.decorators import api_view
+from rest_framework import generics
 from rest_framework.response import Response
 from .models import Transaction
 from .serializers import TransactionSerializer
 
 
-@api_view(['GET'])
-def api_category(request):
-    transactions = Transaction.objects.all()
-    serializer = TransactionSerializer(transactions, many=True)
-    return Response(serializer.data)
+class APITransaction(generics.ListCreateAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
+
+
+class APITransactionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
 
 # Create your views here.
