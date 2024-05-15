@@ -6,6 +6,259 @@ servers:
   - url: http://localhost:3000/api/v1/
     description: Dev server
 paths:
+  
+  /group-bills:
+    get: 
+      summary: Получение группы счетов
+      tags:
+        - Group Bills
+      operationId: getGroupBills
+      responses: 
+        '200':
+          description: Успешный ответ группы счетов пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupBills"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Создание группы счетов
+      tags:
+        - Group Bills
+      operationId: createGroupBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupBill"
+      responses: 
+        '200':
+          description: Успешный ответ с созданной группы счетов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupBill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /group-bills/{group_bill_id}:
+    get: 
+      summary: Получение группы счетов по идентификатору
+      tags:
+        - Group Bills
+      operationId: getGroupBillById
+      parameters:
+        - name: group_bill_id
+          in: path
+          required: true
+          description: Идентификатор группы счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешный ответ с группой счетов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupBill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"   
+    put:
+      summary: Обновление группы счетов по идентификатору
+      tags: 
+        - Group Bills
+      operationId: updateGroupBillById
+      parameters:
+        - name: group_bill_id
+          in: path
+          required: true
+          description: Идентификатор группы счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupBill"
+      responses:
+        '200':
+          description: Успешный ответ с обновленной группой счетов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupBill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление группы счетов по идентификатору
+      tags:
+        - Group Bills
+      operationId: deleteGroupBillToById
+      parameters:
+        - name: group_bill_id
+          in: path
+          required: true
+          description: Идентификатор группы счетов
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешное удаление группы счетов
+          content:
+            application/json: {}
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bills:
+    get: 
+      summary: Получение счетов
+      tags:
+        - Bills
+      operationId: getBills
+      responses: 
+        '200':
+          description: Успешный ответ со счетами пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bills"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Создание счета
+      tags:
+        - Bills
+      operationId: createBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bill"
+      responses: 
+        '200':
+          description: Успешный ответ с созданным счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bills/{bill_id}:
+    get: 
+      summary: Получение счета по идентификатору
+      tags:
+        - Bills
+      operationId: getBillById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешный ответ со счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"   
+    put:
+      summary: Обновление счета по идентификатору
+      tags: 
+        - Bills
+      operationId: updateBillById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bill"
+      responses:
+        '200':
+          description: Успешный ответ с обновленным счетом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление счета по идентификатору
+      tags:
+        - Bills
+      operationId: deleteBillToById
+      parameters:
+        - name: bill_id
+          in: path
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: string
+          example: '00924f0b-c772-491f-831a-80329a07d0fa'
+      responses: 
+        '200':
+          description: Успешное удаление счета
+          content:
+            application/json: {}
+        'default':
+          description: Нестандартный ответ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /transactions:
     get: 
       summary: Получение операций
@@ -133,133 +386,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
 
-  /bill:
-    get: 
-      summary: Получение счетов
-      tags:
-        - Bill
-      operationId: getBill
-      responses: 
-        '200':
-          description: Успешный ответ со счетами пользователя
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Bills"
-        'default':
-          description: Нестандартный ответ
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      summary: Создание счета
-      tags:
-        - Bill
-      operationId: createBill
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Bill"
-      responses: 
-        '200':
-          description: Успешный ответ с созданным счетом
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Bill"
-        'default':
-          description: Нестандартный ответ
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /bill/{bill_id}:
-    get: 
-      summary: Получение счета по идентификатору
-      tags:
-        - Bill
-      operationId: getBillById
-      parameters:
-        - name: bill_id
-          in: path
-          required: true
-          description: Идентификатор счета
-          schema:
-            type: string
-          example: '00924f0b-c772-491f-831a-80329a07d0fa'
-      responses: 
-        '200':
-          description: Успешный ответ со счетом
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Bill"
-        'default':
-          description: Нестандартный ответ
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"   
-    put:
-      summary: Обновление счета по идентификатору
-      tags: 
-        - Bill
-      operationId: updateBillById
-      parameters:
-        - name: bill_id
-          in: path
-          required: true
-          description: Идентификатор счета
-          schema:
-            type: string
-          example: '00924f0b-c772-491f-831a-80329a07d0fa'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Bill"
-      responses:
-        '200':
-          description: Успешный ответ с обновленным счетом
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Bill"
-        'default':
-          description: Нестандартный ответ
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    delete:
-      summary: Удаление счета по идентификатору
-      tags:
-        - Bill
-      operationId: deleteBillToById
-      parameters:
-        - name: bill_id
-          in: path
-          required: true
-          description: Идентификатор счета
-          schema:
-            type: string
-          example: '00924f0b-c772-491f-831a-80329a07d0fa'
-      responses: 
-        '200':
-          description: Успешное удаление счета
-          content:
-            application/json: {}
-        'default':
-          description: Нестандартный ответ
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
   /user:
     post:
       summary: Создание пользователя
@@ -466,17 +594,36 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Transaction"
-    Bill:
+    GroupBill:
       type: object
       required:
         - user_id
+        - name
+      properties:
+        id:
+          type: string
+          example: '25679368-ddeb-4763-aad0-75c4c2f1d53f'
+        user_id:
+          type: string
+          example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
+        name:
+          type: string
+          example: 'Мои счета'
+    GroupBills:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupBill"
+    Bill:
+      type: object
+      required:
+        - group_bill_id
         - name
         - balance
       properties:
         id:
           type: string
           example: '00924f0b-c772-491f-831a-80329a07d0fa'
-        user_id:
+        group_bill_id:
           type: string
           example: 'd2d7427e-c143-4854-8d59-c9a60b60e099'
         name:
