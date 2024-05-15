@@ -14,3 +14,16 @@ export interface Transaction {
     type: TransactionType;
     billId: string;
 }
+
+export interface GroupBill {
+    id: string;
+    userId: string;
+    name: string;
+}
+
+export interface Bill {
+    id: string;
+    groupBillId: string;
+    name: string;
+    balance: number;
+}

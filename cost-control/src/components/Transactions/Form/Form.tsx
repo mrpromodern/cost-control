@@ -9,7 +9,8 @@ import FormDate from "./Date";
 import FormComment from "./Comment";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { Transaction, TransactionType } from "../type";
+import { Transaction, TransactionType } from "../../../type";
+import FormButton from "./Button";
 
 type TransactionFormProps = {
     transaction: Transaction;
@@ -69,6 +70,7 @@ const TransactionForm = (props: TransactionFormProps) => {
         (event: React.MouseEvent) => {
             event.preventDefault();
             const id = transaction.id;
+
             const newTransaction: Transaction = {
                 id: id,
                 category: selectedCategory,
@@ -138,26 +140,13 @@ const TransactionForm = (props: TransactionFormProps) => {
 
             <Divider component="li" />
 
-            <ListItem>
-                <Button
-                    onClick={handleSubmit}
-                    sx={{ width: "100%" }}
-                    variant="contained"
-                >
-                    Сохранить операцию
-                </Button>
-            </ListItem>
+            <FormButton onClick={handleSubmit} color="primary">
+                Сохранить операцию
+            </FormButton>
 
-            <ListItem>
-                <Button
-                    onClick={handleDelete}
-                    sx={{ width: "100%" }}
-                    variant="contained"
-                    color="error"
-                >
-                    Удалить операцию
-                </Button>
-            </ListItem>
+            <FormButton onClick={handleDelete} color="error">
+                Удалить операцию
+            </FormButton>
         </List>
     );
 };

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import TransactionForm from "./Form/Form";
-import { Transaction, TransactionType } from "./type";
+import { Transaction, TransactionType } from "../../type";
 import TransactionItems from "./Transactions";
 import {
     Box,
@@ -36,8 +36,8 @@ const TransactionPage = () => {
         useState<Transaction>(emptyTransaction);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    const handleGetTransactions = useCallback(() => {
-        getTransactions().then((response) => {
+    const handleGetTransactions = useCallback(async () => {
+        await getTransactions().then((response) => {
             const data = response.data;
             const transactions = data.map((data: Transaction) => ({
                 id: data.id,
@@ -57,24 +57,27 @@ const TransactionPage = () => {
     }, []);
 
     const handleAddTransaction = useCallback(
-        (transaction: Transaction) => {
-            createTransaction(transaction).then(handleGetTransactions);
+        async (transaction: Transaction) => {
+            await createTransaction(transaction).then(handleGetTransactions);
+            setTransaction(emptyTransaction);
         },
         [handleGetTransactions]
     );
 
     const handleUpdateTransaction = useCallback(
-        (transactionId: string, transaction: Transaction) => {
-            updateTransaction(transactionId, transaction).then(
+        async (transactionId: string, transaction: Transaction) => {
+            await updateTransaction(transactionId, transaction).then(
                 handleGetTransactions
             );
+            setTransaction(emptyTransaction);
         },
         [handleGetTransactions]
     );
 
     const handleDeleteTransaction = useCallback(
-        (transactionId: string) => {
-            deleteTransaction(transactionId).then(handleGetTransactions);
+        async (transactionId: string) => {
+            await deleteTransaction(transactionId).then(handleGetTransactions);
+            setTransaction(emptyTransaction);
         },
         [handleGetTransactions]
     );
