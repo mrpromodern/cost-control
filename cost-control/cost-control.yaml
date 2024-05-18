@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Контроль расходов
-  version: 0.0.1
+  version: 0.1.1
 servers:
   - url: http://localhost:3000/api/v1/
     description: Dev server
@@ -609,6 +609,10 @@ components:
         name:
           type: string
           example: 'Мои счета'
+        bills:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Bills"
     GroupBills:
       type: array
       items:
