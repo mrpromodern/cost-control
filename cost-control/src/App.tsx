@@ -2,7 +2,6 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import TransactionPage from "./components/Transactions/Page";
 import { useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./styles/Theme";
@@ -10,6 +9,7 @@ import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { Route, Routes } from "react-router-dom";
+import MainPage from "./Pages/Main";
 
 dayjs.locale("ru");
 
@@ -26,7 +26,7 @@ function App() {
                 Смена темы
             </Button>
             <Routes>
-                <Route path="/" element={<TransactionPage />} />
+                <Route path="/" element={<MainPage />} />
             </Routes>
         </ThemeProvider>
     );

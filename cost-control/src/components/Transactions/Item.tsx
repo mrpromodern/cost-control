@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { Transaction } from "../../type";
+import { ITransaction } from "../../type";
 
 type TransactionItemProps = {
-    transaction: Transaction;
+    transaction: ITransaction;
     handleClickTransaction: Function;
 };
 

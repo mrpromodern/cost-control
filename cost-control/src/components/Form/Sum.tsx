@@ -3,15 +3,18 @@ import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import { InputAdornment } from "@mui/material";
 
-type FormSumProps = {
+interface FormSumProps {
+    title: string;
     amount: number;
-    handleAmountChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const FormSum = (props: FormSumProps) => {
+const SumForm = (props: FormSumProps) => {
+    const { title, amount, handleChange } = props;
+
     return (
         <ListItem>
-            <ListItemText>Сумма</ListItemText>
+            <ListItemText>{title}</ListItemText>
             <TextField
                 sx={{
                     input: {
@@ -20,7 +23,7 @@ const FormSum = (props: FormSumProps) => {
                 }}
                 type="number"
                 variant="standard"
-                value={`${(props.amount)}`}
+                value={amount}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment
@@ -32,10 +35,10 @@ const FormSum = (props: FormSumProps) => {
                     ),
                     disableUnderline: true,
                 }}
-                onChange={props.handleAmountChange}
+                onChange={handleChange}
             />
         </ListItem>
     );
 };
 
-export default FormSum;
+export default SumForm;

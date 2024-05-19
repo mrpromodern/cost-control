@@ -10,12 +10,12 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 
-type FormDateProps = {
+type IDateFormProps = {
     date: Dayjs;
     setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs>>;
 };
 
-const FormDate = (props: FormDateProps) => {
+const DateForm = (props: IDateFormProps) => {
     const { date, setDate } = props;
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
@@ -55,4 +55,4 @@ const FormDate = (props: FormDateProps) => {
         </>
     );
 };
-export default FormDate;
+export default DateForm;

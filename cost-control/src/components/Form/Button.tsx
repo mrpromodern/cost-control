@@ -7,7 +7,7 @@ type FormButtonProps = {
     color?: "primary" | "error";
 };
 
-const FormButton = (props: FormButtonProps) => {
+const ButtonForm = (props: FormButtonProps) => {
     const { onClick, children, color } = props;
     return (
         <ListItem>
@@ -23,4 +23,4 @@ const FormButton = (props: FormButtonProps) => {
     );
 };
 
-export default FormButton;
+export default ButtonForm;

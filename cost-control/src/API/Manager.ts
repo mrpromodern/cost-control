@@ -1,4 +1,4 @@
-import { Bill, GroupBill, Transaction } from "../type";
+import { IBill, IGroupBill, ITransaction } from "../type";
 import { deleteJson, getJson, postJson, putJson } from "./helper";
 
 export const OUR_API_ADDRESS = 'http://127.0.0.1:3000/api/v1';
@@ -26,11 +26,11 @@ export function getTransaction(transactionId: string) {
     return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, transactionId));
 }
 
-export function createTransaction(transaction: Transaction) {
+export function createTransaction(transaction: ITransaction) {
     return postJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS), transaction);
 }
 
-export function updateTransaction(transactionId: string, transaction: Transaction) {
+export function updateTransaction(transactionId: string, transaction: ITransaction) {
     return putJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, transactionId), transaction);
 }
 
@@ -48,11 +48,11 @@ export function getGroupBill(groupBillId: string) {
     return getJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS, groupBillId));
 }
 
-export function createGroupBill(groupBill: GroupBill) {
+export function createGroupBill(groupBill: IGroupBill) {
     return postJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS), groupBill);
 }
 
-export function updateGroupBill(groupBillId: string, groupBill: GroupBill) {
+export function updateGroupBill(groupBillId: string, groupBill: IGroupBill) {
     return putJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS, groupBillId), groupBill);
 }
 
@@ -70,11 +70,11 @@ export function getBill(billId: string) {
     return getJson(buildUrl(OUR_API_ENDPOINTS.BILLS, billId));
 }
 
-export function createBill(bill: Bill) {
+export function createBill(bill: IBill) {
     return postJson(buildUrl(OUR_API_ENDPOINTS.BILLS), bill);
 }
 
-export function updateBill(billId: string, bill: Bill) {
+export function updateBill(billId: string, bill: IBill) {
     return putJson(buildUrl(OUR_API_ENDPOINTS.BILLS, billId), bill);
 }
 

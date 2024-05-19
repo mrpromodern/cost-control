@@ -5,7 +5,7 @@ export enum TransactionType {
     Income = 'Income'
 }
 
-export interface Transaction {
+export interface ITransaction {
     id: string;
     category: string;
     amount: number;
@@ -15,13 +15,14 @@ export interface Transaction {
     billId: string;
 }
 
-export interface GroupBill {
+export interface IGroupBill {
     id: string;
     userId: string;
     name: string;
+    bills: IBill[]
 }
 
-export interface Bill {
+export interface IBill {
     id: string;
     groupBillId: string;
     name: string;

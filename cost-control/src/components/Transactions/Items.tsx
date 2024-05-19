@@ -1,17 +1,17 @@
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import { Transaction } from "../../type";
+import { ITransaction } from "../../type";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 import { useCallback } from "react";
-import TransactionItem from "./Transaction";
+import TransactionItem from "./Item";
 import { Dayjs } from "dayjs";
 
 type TransactionItemsProps = {
-    transactions: Transaction[];
+    transactions: ITransaction[];
     handleOpenForm: Function;
-    handleSetTransaction: (transaction: Transaction) => void;
+    handleSetTransaction: (transaction: ITransaction) => void;
 };
 
 const isSameDay = (date1: Dayjs, date2: Dayjs) => {
@@ -23,7 +23,7 @@ const TransactionItems = (props: TransactionItemsProps) => {
     const { transactions, handleOpenForm, handleSetTransaction } = props;
 
     const handleClickTransaction = useCallback(
-        (transaction: Transaction) => {
+        (transaction: ITransaction) => {
             handleSetTransaction(transaction);
             handleOpenForm();
         },

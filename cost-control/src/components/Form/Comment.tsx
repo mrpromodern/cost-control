@@ -1,11 +1,14 @@
 import ListItem from "@mui/material/ListItem";
 import TextField from "@mui/material/TextField";
 
-type FormCommentProps = {
-    handleCommentChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+interface FormCommentProps {
+    title: string;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const FormComment = (props: FormCommentProps) => {
+const CommentForm = (props: FormCommentProps) => {
+    const { title, handleChange } = props;
+
     return (
         <>
             <ListItem>
@@ -15,11 +18,11 @@ const FormComment = (props: FormCommentProps) => {
                         disableUnderline: true,
                     }}
                     sx={{ width: "100%" }}
-                    onChange={props.handleCommentChange}
-                    placeholder="Примечание"
+                    onChange={handleChange}
+                    placeholder={title}
                 />
             </ListItem>
         </>
     );
 };
-export default FormComment;
+export default CommentForm;

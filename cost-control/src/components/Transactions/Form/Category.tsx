@@ -24,17 +24,17 @@ export const categories = [
     "Подарки",
 ];
 
-type FormCategoryProps = {
+interface ICategoryFormProps {
     category: string;
     handleCategorySelect: (category: string) => void;
-};
+}
 
-const FormCategory = (props: FormCategoryProps) => {
+const CategoryForm = (props: ICategoryFormProps) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const handleClose = useCallback(() => {
         setOpen(false);
-    }, [])
+    }, []);
 
     return (
         <>
@@ -77,4 +77,4 @@ const FormCategory = (props: FormCategoryProps) => {
     );
 };
 
-export default FormCategory;
+export default CategoryForm;

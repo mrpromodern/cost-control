@@ -1,27 +1,22 @@
 import React, { useCallback, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { Dayjs } from "dayjs";
-import FormSum from "./Sum";
-import FormCategory from "./Category";
-import FormDate from "./Date";
-import FormComment from "./Comment";
-import Button from "@mui/material/Button";
+import SumForm from "../../Form/Sum";
+import CategoryForm from "./Category";
+import DateForm from "./Date";
+import CommentForm from "../../Form/Comment";
 import Divider from "@mui/material/Divider";
-import { Transaction, TransactionType } from "../../../type";
-import FormButton from "./Button";
+import { ITransaction, TransactionType } from "../../../type";
+import ButtonForm from "../../Form/Button";
 
-type TransactionFormProps = {
-    transaction: Transaction;
+interface ITransactionFormProps {
+    transaction: ITransaction;
     handleOpenForm: Function;
     handleAddTransaction: Function;
     handleUpdateTransaction: Function;
     handleDeleteTransaction: Function;
-};
+}
 
-const TransactionForm = (props: TransactionFormProps) => {
-    const theme = useTheme();
+const TransactionForm = (props: ITransactionFormProps) => {
     const {
         transaction,
         handleOpenForm,
@@ -71,7 +66,7 @@ const TransactionForm = (props: TransactionFormProps) => {
             event.preventDefault();
             const id = transaction.id;
 
-            const newTransaction: Transaction = {
+            const newTransaction: ITransaction = {
                 id: id,
                 category: selectedCategory,
                 amount: amount,
@@ -102,52 +97,43 @@ const TransactionForm = (props: TransactionFormProps) => {
     );
 
     return (
-        <List
-            sx={{
-                backgroundColor: theme.palette.background.default,
-                color: theme.palette.text.primary,
-                borderRadius: theme.shape.borderRadius,
-                minWidth: 400,
-                padding: 0,
-                "& .MuiListItem-root": {
-                    minHeight: "60px",
-                    padding: 0,
-                },
-                "& .MuiListItemButton-root": {
-                    minHeight: "60px",
-                    padding: 0,
-                },
-            }}
-        >
+        <>
             <Divider component="li" />
 
-            <FormSum amount={amount} handleAmountChange={handleAmountChange} />
+            <SumForm
+                title="Сумма"
+                amount={amount}
+                handleChange={handleAmountChange}
+            />
 
             <Divider component="li" />
 
-            <FormCategory
+            <CategoryForm
                 category={selectedCategory}
                 handleCategorySelect={handleCategoryChange}
             />
 
             <Divider component="li" />
 
-            <FormDate date={date} setDate={setDate} />
+            <DateForm date={date} setDate={setDate} />
 
             <Divider component="li" />
 
-            <FormComment handleCommentChange={handleCommentChange} />
+            <CommentForm
+                title="Примечание"
+                handleChange={handleCommentChange}
+            />
 
             <Divider component="li" />
 
-            <FormButton onClick={handleSubmit} color="primary">
+            <ButtonForm onClick={handleSubmit} color="primary">
                 Сохранить операцию
-            </FormButton>
+            </ButtonForm>
 
-            <FormButton onClick={handleDelete} color="error">
+            <ButtonForm onClick={handleDelete} color="error">
                 Удалить операцию
-            </FormButton>
-        </List>
+            </ButtonForm>
+        </>
     );
 };
 
