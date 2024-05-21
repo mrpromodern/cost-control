@@ -9,7 +9,7 @@ export let transactions = [
         date: "2020-06-20T15:30:00+01:00",
         comment: "Проезд на автобусе",
         type: "Expense",
-        billId: "411ce821-5ba7-4829-a3c9-d31f2763d26e"
+        billId: "00924f0b-c772-491f-831a-80329a07d0fa"
     },
     {
         id: "q1r2s3t4-u5v6-7w8x-9y0z-a1b2c3d4e5f6",
@@ -18,7 +18,7 @@ export let transactions = [
         date: "2020-06-15T10:00:00+01:00",
         comment: "Посещение стоматолога",
         type: "Expense",
-        billId: "411ce821-5ba7-4829-a3c9-d31f2763d26e"
+        billId: "00924f0b-c772-491f-831a-80329a07d0fa"
     },
     {
         id: "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p",
@@ -27,7 +27,7 @@ export let transactions = [
         date: "2020-06-10T17:45:00+01:00",
         comment: "Продукты в супермаркете",
         type: "Expense",
-        billId: "411ce821-5ba7-4829-a3c9-d31f2763d26e"
+        billId: "00924f0b-c772-491f-831a-80329a07d0fa"
     },
     {
         id: "f2a35c7d-b3f6-4d6f-b2d9-c7d3a6e0a8f1",
@@ -36,7 +36,7 @@ export let transactions = [
         date: "2020-06-10T13:30:00+01:00",
         comment: "Обед в ресторане",
         type: "Expense",
-        billId: "411ce821-5ba7-4829-a3c9-d31f2763d26e"
+        billId: "00924f0b-c772-491f-831a-80329a07d0fa"
     },
     {
         id: "bf8e0573-1e02-4798-a48e-3d760b89f47c",
@@ -45,12 +45,17 @@ export let transactions = [
         date: "2020-06-10T11:00:00+01:00",
         comment: "За такси утром",
         type: "Expense",
-        billId: "411ce821-5ba7-4829-a3c9-d31f2763d26e"
+        billId: "00924f0b-c772-491f-831a-80329a07d0fa"
     }
 ]
 
 export function getTransaction(transactionId: string) {
     return transactions.find((transaction) => transaction.id === transactionId);
+}
+
+// get transactions by bill_id
+export function getTxByBillId(billId: string) {
+    return transactions.filter((transaction) => transaction.billId === billId);
 }
 
 export function createTransaction(transaction: ITransaction) {

@@ -6,13 +6,15 @@ import dayjs from "dayjs";
 import {
     createTransaction,
     deleteTransaction,
-    getTransactions,
+    getTxByBillId,
     updateTransaction,
 } from "../API/Manager";
 import TransactionItems from "../components/Transactions/Items";
 import { categories } from "../components/Transactions/Form/Category";
 import DialogForm from "../components/Form/Dialog";
 import ButtonAdd from "../components/ButtonAdd";
+import MenuAppBar from "../components/AppBar";
+import { billStore } from "../store/bill";
 
 const emptyTransaction: ITransaction = {
     id: "",
@@ -21,38 +23,46 @@ const emptyTransaction: ITransaction = {
     date: dayjs(),
     comment: "",
     type: TransactionType.Expense,
-    billId: "d2d7427e-c143-4854-8d59-c9a60b60e099",
+    billId: "",
 };
 
 const TransactionPage = () => {
+    const billId = billStore.bill.id;
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [transaction, setTransaction] =
         useState<ITransaction>(emptyTransaction);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
     const handleGetTransactions = useCallback(async () => {
-        await getTransactions().then((response) => {
+        getTxByBillId(billId).then((response) => {
             const data = response.data;
-            const transactions = data.map((data: ITransaction) => ({
-                id: data.id,
-                category: data.category,
-                amount: data.amount,
-                date: dayjs(data.date),
-                comment: data.comment,
-                type: data.type,
-                billId: data.billId,
-            })); // map для конвертации только даты
-            setTransactions(transactions);
+            if (data) {
+                const transactions = data.map((data: ITransaction) => ({
+                    id: data.id,
+                    category: data.category,
+                    amount: data.amount,
+                    date: dayjs(data.date),
+                    comment: data.comment,
+                    type: data.type,
+                    billId: data.billId,
+                })); // map для конвертации только даты
+                setTransactions(transactions);
+            }
         });
-    }, []);
+    }, [billId]);
 
     const handleOpenForm = useCallback(() => {
-        setIsFormOpen((prevState: boolean) => !prevState);
+        setIsFormOpen((prevState: boolean) => {
+            if (prevState) {
+                setTransaction(emptyTransaction);
+            }
+            return !prevState;
+        });
     }, []);
 
     const handleAddTransaction = useCallback(
         async (transaction: ITransaction) => {
-            await createTransaction(transaction).then(handleGetTransactions);
+            createTransaction(transaction).then(handleGetTransactions);
             setTransaction(emptyTransaction);
         },
         [handleGetTransactions]
@@ -60,7 +70,7 @@ const TransactionPage = () => {
 
     const handleUpdateTransaction = useCallback(
         async (transactionId: string, transaction: ITransaction) => {
-            await updateTransaction(transactionId, transaction).then(
+            updateTransaction(transactionId, transaction).then(
                 handleGetTransactions
             );
             setTransaction(emptyTransaction);
@@ -85,8 +95,10 @@ const TransactionPage = () => {
     }, [handleGetTransactions]);
 
     return (
-        <Box>
-            <ButtonAdd handleClick={handleOpenForm} />
+        <Box sx={{ width: "100%", height: "100%" }}>
+            <MenuAppBar>
+                <ButtonAdd handleClick={handleOpenForm} />
+            </MenuAppBar>
             <DialogForm
                 title="Расход"
                 isFormOpen={isFormOpen}

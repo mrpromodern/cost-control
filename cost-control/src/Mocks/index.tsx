@@ -2,11 +2,13 @@ import { setupWorker, SetupWorker } from "msw/browser";
 import { groupBillHandlers } from "./Handlers/GroupBill";
 import { billHandlers } from "./Handlers/Bill";
 import { transactionHandlers } from "./Handlers/Transaction";
+import { transactionsHandlers } from "./Handlers/Transactions";
 
 const worker: SetupWorker = setupWorker(
     ...groupBillHandlers,
     ...billHandlers,
-    ...transactionHandlers
+    ...transactionHandlers,
+    ...transactionsHandlers,
 );
 
 export function startWorker(): Promise<void> {

@@ -1,10 +1,11 @@
 import { IBill, IGroupBill, ITransaction } from "../type";
 import { deleteJson, getJson, postJson, putJson } from "./helper";
 
-export const OUR_API_ADDRESS = 'http://127.0.0.1:3000/api/v1';
+export const OUR_API_ADDRESS = `${process.env.PUBLIC_URL}/api/v1`;
 
 export enum OUR_API_ENDPOINTS {
     TRANSACTIONS = 'transactions',
+    TRANSACTION = 'transaction',
     TRANSACTIONID = 'transactionId',
     GROUPBILLS = 'group-bill',
     GROUPBILLID = 'groupBillId',
@@ -16,26 +17,34 @@ const buildUrl = (endpoint: string, id?: string) => {
     return `${OUR_API_ADDRESS}/${endpoint}${id ? `/${id}` : ''}`;
 }
 
-// ------------- Transaction -------------
+// ------------- Transactions -------------
 
 export function getTransactions() {
     return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS));
 }
 
+// get transactions by bill_id
+export function getTxByBillId(billId: string) {
+    return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, billId));
+}
+
+// ------------- Transaction -------------
+
+
 export function getTransaction(transactionId: string) {
-    return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, transactionId));
+    return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTION, transactionId));
 }
 
 export function createTransaction(transaction: ITransaction) {
-    return postJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS), transaction);
+    return postJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTION), transaction);
 }
 
 export function updateTransaction(transactionId: string, transaction: ITransaction) {
-    return putJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, transactionId), transaction);
+    return putJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTION, transactionId), transaction);
 }
 
 export function deleteTransaction(transactionId: string) {
-    return deleteJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, transactionId));
+    return deleteJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTION, transactionId));
 }
 
 // ------------- Group Bill -------------

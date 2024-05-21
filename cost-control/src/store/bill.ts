@@ -20,4 +20,4 @@ class Bill {
     }
 }
 
-export const user: Bill = new Bill();
+export const billStore: Bill = new Bill();

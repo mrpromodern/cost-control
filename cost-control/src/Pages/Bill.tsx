@@ -8,6 +8,7 @@ import DialogForm from "../components/Form/Dialog";
 import GroupBillForm from "../components/Bills/GroupForm";
 import ButtonAdd from "../components/ButtonAdd";
 import BillForm from "../components/Bills/BillForm";
+import MenuAppBar from "../components/AppBar";
 
 const BillPage = () => {
     const [groupBills, setGroupBills] = useState<IGroupBill[]>([]);
@@ -23,14 +24,14 @@ const BillPage = () => {
         setOpenGroupForm((prevState: boolean) => !prevState);
     }, []);
 
-    const handleGetGroups = useCallback(() => {
+    const handleGetGroups = useCallback(async () => {
         getGroupBills().then((response) => {
             setGroupBills(response.data);
         });
     }, []);
 
     const handleAddGroup = useCallback(
-        (groupBill: IGroupBill) => {
+        async (groupBill: IGroupBill) => {
             createGroupBill(groupBill).then(handleGetGroups);
         },
         [handleGetGroups]
@@ -44,7 +45,7 @@ const BillPage = () => {
     }, []);
 
     const handleAddBill = useCallback(
-        (bill: IBill) => {
+        async (bill: IBill) => {
             createBill(bill).then(handleGetGroups);
         },
         [handleGetGroups]
@@ -68,8 +69,10 @@ const BillPage = () => {
     }, [handleGetGroups]);
 
     return (
-        <Box>
-            <ButtonAdd handleClick={handleClickMenu} />
+        <Box sx={{ width: "33%", height: "100%" }}>
+            <MenuAppBar>
+                <ButtonAdd handleClick={handleClickMenu} />
+            </MenuAppBar>
             <Menu anchorEl={anchorE1} open={open} onClose={handleCloseMenu}>
                 <MenuItem onClick={handleOpenGroupForm}>
                     Создать группу счетов
@@ -78,7 +81,12 @@ const BillPage = () => {
             </Menu>
             <List component="nav">
                 {groupBills.map((groupBill) => {
-                    return <GroupBillItem groupBill={groupBill} />;
+                    return (
+                        <GroupBillItem
+                            key={groupBill.id}
+                            groupBill={groupBill}
+                        />
+                    );
                 })}
             </List>
             <DialogForm

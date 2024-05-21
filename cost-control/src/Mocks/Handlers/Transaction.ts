@@ -13,15 +13,11 @@ type TransactionParams = {
     transactionId: string;
 };
 
-const transactionUrl = OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.TRANSACTIONS;
+const transactionUrl = OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.TRANSACTION;
 const transactionIdUrl =
     transactionUrl + "/:" + OUR_API_ENDPOINTS.TRANSACTIONID;
 
 export const transactionHandlers = [
-    http.get(transactionUrl, () => {
-        return HttpResponse.json(transactions);
-    }),
-
     http.get<TransactionParams>(transactionIdUrl, async ({ params }) => {
         const { transactionId } = params;
         const transaction = getTransaction(transactionId);

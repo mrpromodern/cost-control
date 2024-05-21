@@ -7,6 +7,7 @@ import CommentForm from "../../Form/Comment";
 import Divider from "@mui/material/Divider";
 import { ITransaction, TransactionType } from "../../../type";
 import ButtonForm from "../../Form/Button";
+import { billStore } from "../../../store/bill";
 
 interface ITransactionFormProps {
     transaction: ITransaction;
@@ -73,7 +74,7 @@ const TransactionForm = (props: ITransactionFormProps) => {
                 comment: comment,
                 date: date,
                 type: TransactionType.Expense,
-                billId: "d2d7427e-c143-4854-8d59-c9a60b60e099",
+                billId: billStore.bill.id,
             };
 
             if (id === "") {

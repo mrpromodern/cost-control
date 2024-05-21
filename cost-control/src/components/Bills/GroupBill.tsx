@@ -26,7 +26,7 @@ const GroupBillItem = (props: IProps) => {
             <Collapse in={open}>
                 <List component="div" disablePadding>
                     {groupBill.bills.map((bill) => (
-                        <Bill bill={bill} />
+                        <Bill key={bill.id} bill={bill} />
                     ))}
                 </List>
             </Collapse>
