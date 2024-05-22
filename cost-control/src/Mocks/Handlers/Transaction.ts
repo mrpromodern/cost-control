@@ -1,7 +1,6 @@
-import { http, HttpResponse } from "msw";
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw";
 import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from "../../API/Manager";
 import {
-    transactions,
     createTransaction,
     updateTransaction,
     deleteTransaction,
@@ -9,8 +8,11 @@ import {
 } from "../Models/Transaction";
 import { ITransaction } from "../../type";
 
-type TransactionParams = {
-    transactionId: string;
+interface ITransactionHandler {
+    params: {
+        transactionId: string;
+    };
+    request?: StrictRequest<DefaultBodyType> | undefined;
 };
 
 const transactionUrl = OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.TRANSACTION;
@@ -18,7 +20,8 @@ const transactionIdUrl =
     transactionUrl + "/:" + OUR_API_ENDPOINTS.TRANSACTIONID;
 
 export const transactionHandlers = [
-    http.get<TransactionParams>(transactionIdUrl, async ({ params }) => {
+
+    http.get(transactionIdUrl, async ({ params }: ITransactionHandler) => {
         const { transactionId } = params;
         const transaction = getTransaction(transactionId);
         return HttpResponse.json(transaction);
@@ -30,23 +33,22 @@ export const transactionHandlers = [
         return HttpResponse.json({ success: true }, { status: 200 });
     }),
 
-    http.put<TransactionParams>(
+    http.put(
         transactionIdUrl,
-        async ({ params, request }) => {
-            const { transactionId } = params;
-            const transaction = (await request.json()) as ITransaction;
-            updateTransaction(transactionId, transaction);
-            return HttpResponse.json({ success: true }, { status: 200 });
+        async ({ params, request }: ITransactionHandler) => {
+            if (request) {
+                const { transactionId } = params;
+                const transaction = (await request.json()) as ITransaction;
+                updateTransaction(transactionId, transaction);
+                return HttpResponse.json({ success: true }, { status: 200 });
+            }
+            return HttpResponse.error();
         }
     ),
 
-    http.delete<TransactionParams>(transactionIdUrl, async ({ params }) => {
+    http.delete(transactionIdUrl, async ({ params }: ITransactionHandler) => {
         const { transactionId } = params;
         deleteTransaction(transactionId);
         return HttpResponse.json({ success: true }, { status: 200 });
-    }),
-
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.BILLS}`, () => {
-        return HttpResponse.json(transactions);
     }),
 ];

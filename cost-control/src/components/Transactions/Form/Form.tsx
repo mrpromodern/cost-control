@@ -121,6 +121,7 @@ const TransactionForm = (props: ITransactionFormProps) => {
             <Divider component="li" />
 
             <CommentForm
+                value={comment}
                 title="Примечание"
                 handleChange={handleCommentChange}
             />

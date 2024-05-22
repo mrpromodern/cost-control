@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { ITransaction } from "../../type";
+import { ITransaction, TransactionType } from "../../type";
 
 type TransactionItemProps = {
     transaction: ITransaction;
@@ -20,9 +20,16 @@ const TransactionItem = (props: TransactionItemProps) => {
             <ListItemText
                 sx={{ textAlign: "right" }}
                 primary={
-                    <Box fontWeight="fontWeightMedium">
-                        - {transaction.amount} ₽
-                    </Box>
+                    // проверка типа, отрицательное значение или нет
+                    transaction.type === TransactionType.Expense ? (
+                        <Box fontWeight="fontWeightMedium">
+                            - {transaction.amount} ₽
+                        </Box>
+                    ) : (
+                        <Box color="green" fontWeight="fontWeightMedium">
+                            + {transaction.amount} ₽
+                        </Box>
+                    )
                 }
             />
         </ListItemButton>

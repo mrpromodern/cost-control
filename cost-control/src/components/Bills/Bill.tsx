@@ -10,6 +10,8 @@ interface IProps {
 }
 
 const Bill = (props: IProps) => {
+    const activeBillId = billStore.bill.id;
+
     const { bill } = props;
 
     const handleClick = useCallback(() => {
@@ -17,9 +19,17 @@ const Bill = (props: IProps) => {
     }, [bill]);
 
     return (
-        <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
+        <ListItemButton
+            selected={activeBillId === bill.id}
+            sx={{ pl: 4 }}
+            onClick={handleClick}
+        >
             <RemoveIcon fontSize="small" />
             <ListItemText primary={bill.name} />
+            <ListItemText
+                sx={{ textAlign: "right" }}
+                primary={`${bill.balance} ₽`}
+            />
         </ListItemButton>
     );
 };

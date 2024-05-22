@@ -13,17 +13,27 @@ import {
 } from "@mui/material";
 
 interface IProps {
+    bill: IBill;
     groupBills: IGroupBill[];
     handleAddBill: Function;
+    handleUpdateBill: Function;
     handleOpenForm: Function;
 }
 
 const BillForm = (props: IProps) => {
-    const { groupBills, handleAddBill, handleOpenForm } = props;
+    const {
+        bill,
+        groupBills,
+        handleAddBill,
+        handleUpdateBill,
+        handleOpenForm,
+    } = props;
 
-    const [groupBillId, setGroupBillId] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [balance, setBalance] = useState<number>(0);
+    const id = bill.id;
+
+    const [groupBillId, setGroupBillId] = useState<string>(bill.groupBillId);
+    const [name, setName] = useState<string>(bill.name);
+    const [balance, setBalance] = useState<number>(bill.balance);
 
     const handleNameChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +52,8 @@ const BillForm = (props: IProps) => {
 
     const handleSelectGroup = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            setGroupBillId(event.target.value);
+            const value = event.target.value;
+            setGroupBillId(value);
         },
         []
     );
@@ -50,26 +61,41 @@ const BillForm = (props: IProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-
             const newBill: IBill = {
-                id: "",
+                id: id,
                 groupBillId: groupBillId,
                 name: name,
                 balance: balance,
             };
 
-            handleAddBill(newBill);
+            if (id === "") {
+                handleAddBill(newBill);
+            } else {
+                handleUpdateBill(id, newBill);
+            }
 
             handleOpenForm();
         },
-        [balance, handleAddBill, handleOpenForm, name, groupBillId]
+        [
+            id,
+            balance,
+            handleAddBill,
+            handleUpdateBill,
+            handleOpenForm,
+            name,
+            groupBillId,
+        ]
     );
 
     return (
         <>
             <Divider component="li" />
 
-            <CommentForm title="Название" handleChange={handleNameChange} />
+            <CommentForm
+                title="Название"
+                value={name}
+                handleChange={handleNameChange}
+            />
 
             <Divider component="li" />
 
@@ -86,6 +112,7 @@ const BillForm = (props: IProps) => {
                 <RadioGroup value={groupBillId} onChange={handleSelectGroup}>
                     {groupBills.map((groupBill) => (
                         <FormControlLabel
+                            key={groupBill.id}
                             label={groupBill.name}
                             value={groupBill.id}
                             control={<Radio />}

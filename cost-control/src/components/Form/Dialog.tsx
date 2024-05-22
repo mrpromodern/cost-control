@@ -7,7 +7,7 @@ import List from "@mui/material/List";
 import { useTheme } from "@mui/material/styles";
 
 interface IProps {
-    title: string;
+    title: string | React.ReactNode;
     isFormOpen: boolean;
     handleOpenForm: (event: React.MouseEvent) => void;
     children: React.ReactNode;
@@ -19,7 +19,9 @@ const DialogForm = (props: IProps) => {
 
     return (
         <Dialog open={isFormOpen} onClose={handleOpenForm}>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle sx={{textAlign: "center"}}>
+                {title}
+            </DialogTitle>
             <IconButton
                 onClick={handleOpenForm}
                 sx={{ position: "absolute", top: 8, right: 8 }}

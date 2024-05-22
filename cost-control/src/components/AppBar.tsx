@@ -7,7 +7,11 @@ interface IProps {
 const MenuAppBar = (props: IProps) => {
     const { children } = props;
 
-    return <Box sx={{ height: "50px" }}>{children}</Box>;
+    return (
+        <Box sx={{ height: "50px" }} >
+            {children}
+        </Box>
+    );
 };
 
 export default MenuAppBar;

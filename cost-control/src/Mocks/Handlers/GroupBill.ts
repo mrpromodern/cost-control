@@ -1,17 +1,21 @@
-import { http, HttpResponse } from "msw";
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw";
 import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from "../../API/Manager";
 import {
-    groupBills,
     getGroupBill,
     createGroupBill,
     updateGroupBill,
     deleteGroupBill,
+    getGroupBills,
 } from "../Models/GroupBill";
 import { IGroupBill } from "../../type";
 
-type GroupBillParams = {
-    groupBillId: string;
+interface IGroupBillHandler {
+    params: {
+        groupBillId: string;
+    };
+    request?: StrictRequest<DefaultBodyType> | undefined;
 };
+
 
 const groupBillUrl = OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.GROUPBILLS;
 const groupBillIdUrl = groupBillUrl + "/:" + OUR_API_ENDPOINTS.GROUPBILLID;
@@ -19,10 +23,11 @@ const groupBillIdUrl = groupBillUrl + "/:" + OUR_API_ENDPOINTS.GROUPBILLID;
 export const groupBillHandlers = [
 
     http.get(groupBillUrl, () => {
+        const groupBills = getGroupBills();
         return HttpResponse.json(groupBills);
     }),
 
-    http.get<GroupBillParams>(groupBillIdUrl, async ({ params }) => {
+    http.get(groupBillIdUrl, async ({ params }: IGroupBillHandler) => {
         const { groupBillId } = params;
         const groupBill = getGroupBill(groupBillId);
         return HttpResponse.json(groupBill);
@@ -34,14 +39,17 @@ export const groupBillHandlers = [
         return HttpResponse.json({ success: true }, { status: 200 });
     }),
 
-    http.put<GroupBillParams>(groupBillIdUrl, async ({ params, request }) => {
-        const { groupBillId } = params;
-        const groupBill = (await request.json()) as IGroupBill;
-        updateGroupBill(groupBillId, groupBill);
-        return HttpResponse.json({ success: true }, { status: 200 });
+    http.put(groupBillIdUrl, async ({ params, request }: IGroupBillHandler) => {
+        if (request) {
+            const { groupBillId } = params;
+            const groupBill = (await request.json()) as IGroupBill;
+            updateGroupBill(groupBillId, groupBill);
+            return HttpResponse.json({ success: true }, { status: 200 });
+        }
+        return HttpResponse.error();
     }),
 
-    http.delete<GroupBillParams>(groupBillIdUrl, async ({ params }) => {
+    http.delete(groupBillIdUrl, async ({ params }: IGroupBillHandler) => {
         const { groupBillId } = params;
         deleteGroupBill(groupBillId);
         return HttpResponse.json({ success: true }, { status: 200 });

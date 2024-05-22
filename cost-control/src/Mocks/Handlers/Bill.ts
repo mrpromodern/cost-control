@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw";
 import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from "../../API/Manager";
 import {
     updateBill,
@@ -9,20 +9,23 @@ import {
 } from "../Models/Bill";
 import { IBill } from "../../type";
 
-type BillParams = {
-    billId: string;
+interface IBillHandler {
+    params: {
+        billId: string;
+    };
+    request?: StrictRequest<DefaultBodyType> | undefined;
 };
 
 const billUrl = OUR_API_ADDRESS + "/" + OUR_API_ENDPOINTS.BILLS;
 const billIdUrl = billUrl + "/:" + OUR_API_ENDPOINTS.BILLID;
 
 export const billHandlers = [
-    
+
     http.get(billUrl, () => {
         return HttpResponse.json(bills);
     }),
 
-    http.get<BillParams>(billIdUrl, async ({ params }) => {
+    http.get(billIdUrl, async ({ params }: IBillHandler) => {
         const { billId } = params;
         const bill = getBill(billId);
         return HttpResponse.json(bill);
@@ -34,14 +37,17 @@ export const billHandlers = [
         return HttpResponse.json({ success: true }, { status: 200 });
     }),
 
-    http.put<BillParams>(billIdUrl, async ({ params, request }) => {
-        const { billId } = params;
-        const bill = (await request.json()) as IBill;
-        updateBill(billId, bill);
-        return HttpResponse.json({ success: true }, { status: 200 });
+    http.put(billIdUrl, async ({ params, request }: IBillHandler) => {
+        if (request) {
+            const { billId } = params;
+            const bill = (await request.json()) as IBill;
+            updateBill(billId, bill);
+            return HttpResponse.json({ success: true }, { status: 200 });
+        }
+        return HttpResponse.error();
     }),
 
-    http.delete<BillParams>(billIdUrl, async ({ params }) => {
+    http.delete(billIdUrl, async ({ params }: IBillHandler) => {
         const { billId } = params;
         deleteBill(billId);
         return HttpResponse.json({ success: true }, { status: 200 });

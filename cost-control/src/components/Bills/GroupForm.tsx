@@ -43,7 +43,11 @@ const GroupBillForm = (props: IProps) => {
         <>
             <Divider component="li" />
 
-            <CommentForm title="Название" handleChange={handleNameChange} />
+            <CommentForm
+                title="Название"
+                value={name}
+                handleChange={handleNameChange}
+            />
 
             <Divider component="li" />
 
