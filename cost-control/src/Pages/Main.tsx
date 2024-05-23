@@ -10,8 +10,8 @@ const MainPage = observer(() => {
     return (
         <>
             <BillPage />
-                <Divider orientation="vertical" sx={{ height: "100vh" }} />
-            <Collapse sx={{width: "100%"}} in={open}>
+            <Divider orientation="vertical" sx={{ height: "100vh" }} />
+            <Collapse sx={{ width: "100%" }} in={open}>
                 <TransactionPage />
             </Collapse>
         </>

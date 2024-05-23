@@ -5,7 +5,7 @@ import { InputAdornment } from "@mui/material";
 
 interface FormSumProps {
     title: string;
-    amount: number;
+    amount: number | string;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -21,7 +21,6 @@ const SumForm = (props: FormSumProps) => {
                         textAlign: "right",
                     },
                 }}
-                type="number"
                 variant="standard"
                 value={amount}
                 InputProps={{

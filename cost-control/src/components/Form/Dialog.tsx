@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DialogContent from "@mui/material/DialogContent";
 import List from "@mui/material/List";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface IProps {
     title: string | React.ReactNode;
@@ -17,9 +18,18 @@ const DialogForm = (props: IProps) => {
     const theme = useTheme();
     const { title, isFormOpen, handleOpenForm, children } = props;
 
+    // Проверка разрешения экрана
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
     return (
         <Dialog open={isFormOpen} onClose={handleOpenForm}>
-            <DialogTitle sx={{textAlign: "center"}}>
+            <DialogTitle
+                sx={{
+                    backgroundColor: "#dedede",
+                    textAlign: "center",
+                    p: 1,
+                }}
+            >
                 {title}
             </DialogTitle>
             <IconButton
@@ -28,13 +38,13 @@ const DialogForm = (props: IProps) => {
             >
                 <CloseIcon />
             </IconButton>
-            <DialogContent sx={{ paddingBottom: "12px" }}>
+            <DialogContent sx={{ p: 2 }}>
                 <List
                     sx={{
                         backgroundColor: theme.palette.background.default,
                         color: theme.palette.text.primary,
                         borderRadius: theme.shape.borderRadius,
-                        minWidth: 400,
+                        minWidth: isMobile ? "100%" : 400,
                         padding: 0,
                         "& .MuiListItem-root": {
                             minHeight: "60px",
