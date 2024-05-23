@@ -10,45 +10,38 @@ import {
     updateTransaction,
 } from "../API/Manager";
 import TransactionItems from "../components/Transactions/Items";
-import { categories } from "../components/Transactions/Form/Category";
 import DialogForm from "../components/Form/Dialog";
 import ButtonAdd from "../components/ButtonAdd";
 import MenuAppBar from "../components/AppBar";
 import { billStore } from "../store/bill";
 import PanelGeneral from "../components/Transactions/General/Panel";
-
-const emptyTransaction: ITransaction = {
-    id: "",
-    category: categories[0],
-    amount: 0,
-    date: dayjs(),
-    comment: "",
-    type: TransactionType.Expense,
-    billId: "",
-};
+import { tranStore } from "../store/transaction";
+import { observer } from "mobx-react-lite";
 
 const TransactionPage = () => {
-    const billId = billStore.bill.id;
-    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-    const [transaction, setTransaction] =
-        useState<ITransaction>(emptyTransaction);
-    const [transactions, setTransactions] = useState<ITransaction[]>([]);
-    const [transactionType, setTransactionType] = useState<TransactionType>(
-        TransactionType.Expense
-    );
+    const {
+        transaction,
+        setType: setTranType,
+        setTransaction,
+        resetTransaction,
+    } = tranStore;
 
-    const handleClickTransType = useCallback(
+    const tranType = transaction.type;
+    const billId: string = billStore.bill.id;
+    
+    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+    const [transactions, setTransactions] = useState<ITransaction[]>([]);
+
+    const handleClickTranType = useCallback(
         (
             event: React.MouseEvent<HTMLElement>,
-            transType: TransactionType.Expense
+            tranType: TransactionType
         ) => {
-            setTransactionType(transType);
-            setTransaction((prevState) => {
-                prevState.type = transType;
-                return prevState;
-            });
+            setTranType(tranType);
+            console.log(transaction);
+             
         },
-        []
+        [setTranType, transaction]
     );
 
     const handleGetTransactions = useCallback(async () => {
@@ -72,18 +65,18 @@ const TransactionPage = () => {
     const handleOpenForm = useCallback(() => {
         setIsFormOpen((prevState: boolean) => {
             if (prevState) {
-                setTransaction(emptyTransaction);
+                resetTransaction();
             }
             return !prevState;
         });
-    }, []);
+    }, [resetTransaction]);
 
     const handleAddTransaction = useCallback(
         async (transaction: ITransaction) => {
             createTransaction(transaction).then(handleGetTransactions);
-            setTransaction(emptyTransaction);
+            resetTransaction();
         },
-        [handleGetTransactions]
+        [handleGetTransactions, resetTransaction]
     );
 
     const handleUpdateTransaction = useCallback(
@@ -91,22 +84,25 @@ const TransactionPage = () => {
             updateTransaction(transactionId, transaction).then(
                 handleGetTransactions
             );
-            setTransaction(emptyTransaction);
+            resetTransaction();
         },
-        [handleGetTransactions]
+        [handleGetTransactions, resetTransaction]
     );
 
     const handleDeleteTransaction = useCallback(
         async (transactionId: string) => {
             await deleteTransaction(transactionId).then(handleGetTransactions);
-            setTransaction(emptyTransaction);
+            resetTransaction();
         },
-        [handleGetTransactions]
+        [handleGetTransactions, resetTransaction]
     );
 
-    const handleSetTransaction = useCallback((transaction: ITransaction) => {
-        setTransaction(transaction);
-    }, []);
+    const handleSetTransaction = useCallback(
+        (transaction: ITransaction) => {
+            setTransaction(transaction);
+        },
+        [setTransaction]
+    );
 
     useEffect(() => {
         handleGetTransactions();
@@ -116,8 +112,8 @@ const TransactionPage = () => {
         return (
             <ToggleButtonGroup
                 exclusive
-                value={transactionType}
-                onChange={handleClickTransType}
+                value={tranType}
+                onChange={handleClickTranType}
             >
                 <ToggleButton value={TransactionType.Income}>
                     Доход
@@ -146,7 +142,6 @@ const TransactionPage = () => {
                 handleOpenForm={handleOpenForm}
             >
                 <TransactionForm
-                    transaction={transaction}
                     handleOpenForm={handleOpenForm}
                     handleAddTransaction={handleAddTransaction}
                     handleUpdateTransaction={handleUpdateTransaction}
@@ -157,4 +152,4 @@ const TransactionPage = () => {
     );
 };
 
-export default TransactionPage;
+export default observer(TransactionPage);

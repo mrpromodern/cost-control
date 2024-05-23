@@ -5,12 +5,12 @@ import CategoryForm from "./Category";
 import DateForm from "./Date";
 import CommentForm from "../../Form/Comment";
 import Divider from "@mui/material/Divider";
-import { ITransaction, TransactionType } from "../../../type";
+import { ITransaction } from "../../../type";
 import ButtonForm from "../../Form/Button";
 import { billStore } from "../../../store/bill";
+import { tranStore } from "../../../store/transaction";
 
 interface ITransactionFormProps {
-    transaction: ITransaction;
     handleOpenForm: Function;
     handleAddTransaction: Function;
     handleUpdateTransaction: Function;
@@ -18,13 +18,16 @@ interface ITransactionFormProps {
 }
 
 const TransactionForm = (props: ITransactionFormProps) => {
+    const { transaction } = tranStore;
+
     const {
-        transaction,
         handleOpenForm,
         handleAddTransaction,
         handleUpdateTransaction,
         handleDeleteTransaction,
     } = props;
+
+    const id = transaction.id;
 
     const [amount, setAmount] = useState<number>(transaction.amount);
     const [date, setDate] = useState<Dayjs>(transaction.date);
@@ -55,17 +58,15 @@ const TransactionForm = (props: ITransactionFormProps) => {
     const handleDelete = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            const id = transaction.id;
             handleDeleteTransaction(id);
             handleOpenForm();
         },
-        [transaction, handleDeleteTransaction, handleOpenForm]
+        [handleDeleteTransaction, id, handleOpenForm]
     );
 
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            const id = transaction.id;
 
             const newTransaction: ITransaction = {
                 id: id,
@@ -73,7 +74,7 @@ const TransactionForm = (props: ITransactionFormProps) => {
                 amount: amount,
                 comment: comment,
                 date: date,
-                type: TransactionType.Expense,
+                type: transaction.type,
                 billId: billStore.bill.id,
             };
 
@@ -86,10 +87,11 @@ const TransactionForm = (props: ITransactionFormProps) => {
             handleOpenForm();
         },
         [
+            id,
+            transaction,
             handleAddTransaction,
             handleUpdateTransaction,
             handleOpenForm,
-            transaction.id,
             selectedCategory,
             amount,
             comment,
@@ -132,9 +134,11 @@ const TransactionForm = (props: ITransactionFormProps) => {
                 Сохранить операцию
             </ButtonForm>
 
-            <ButtonForm onClick={handleDelete} color="error">
-                Удалить операцию
-            </ButtonForm>
+            {id !== "" && (
+                <ButtonForm onClick={handleDelete} color="error">
+                    Удалить операцию
+                </ButtonForm>
+            )}
         </>
     );
 };
