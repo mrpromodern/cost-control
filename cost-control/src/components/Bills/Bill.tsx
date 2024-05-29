@@ -4,6 +4,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { IBill } from "../../type";
 import { useCallback } from "react";
 import { billStore } from "../../store/bill";
+import { groupBillStore } from "../../store/groupBill";
 
 interface IProps {
     bill: IBill;
@@ -16,6 +17,7 @@ const Bill = (props: IProps) => {
 
     const handleClick = useCallback(() => {
         billStore.setBill(bill);
+        groupBillStore.resetGroupBill();
     }, [bill]);
 
     return (

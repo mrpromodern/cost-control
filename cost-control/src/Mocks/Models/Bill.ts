@@ -1,6 +1,8 @@
+import dayjs from "dayjs";
 import { IBill } from "../../type";
 import { generateUUID } from "../helper";
 import { getGroupBill } from "./GroupBill";
+import { getTxByBillId } from "./Transaction";
 
 export let bills = [
     {
@@ -13,7 +15,7 @@ export let bills = [
         id: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5",
         groupBillId: "411ce821-5ba7-4829-a3c9-d31f2763d26e",
         name: "СберБанк",
-        balance: 25000
+        balance: -25000
     },
     {
         id: "x9y8z7w6-v5u4-t3s2-r1q-p0o9n8m7l6",
@@ -71,4 +73,29 @@ export function updateBill(billId: string, bill: IBill) {
 
 export function deleteBill(billId: string) {
     bills = bills.filter((bill) => bill.id !== billId);;
+}
+
+export function getIncomeByBillId(billId: string, startDate: string, endDate: string) {
+    const trans = getTxByBillId(billId).filter((transaction) => transaction.type === "Income" && dayjs(transaction.date) >= dayjs(startDate) && dayjs(transaction.date) <= dayjs(endDate));
+    const sum = trans.reduce((total, transaction) => total + transaction.amount, 0);
+    return sum;
+}
+
+export function getExpensesByBillId(billId: string, startDate: string, endDate: string) {
+    const trans = getTxByBillId(billId).filter((transaction) => transaction.type === "Expense" && dayjs(transaction.date) >= dayjs(startDate) && dayjs(transaction.date) <= dayjs(endDate));
+    const sum = trans.reduce((total, transaction) => total + transaction.amount, 0);
+    return sum;
+}
+
+export function getBalanceByBillId(billId: string, startDate: string, endDate: string) {
+    const income = getIncomeByBillId(billId, startDate, endDate);
+    const expenses = getExpensesByBillId(billId, startDate, endDate);
+    return income - expenses;
+}
+
+export function getCurrentBalanceByBillId(billId: string) {
+    const bill = getBill(billId);
+    if (bill?.balance) {
+        return bill.balance;
+    }
 }

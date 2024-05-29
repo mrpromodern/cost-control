@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { evaluate } from "mathjs";
 
@@ -27,7 +27,7 @@ interface IProps {
     setAmount: Function;
 }
 
-const CustomKeypad = (props: IProps) => {
+const KeypadForm = (props: IProps) => {
     const { amount, setAmount } = props;
 
     const [lastEvaluatedValue, setLastEvaluatedValue] = useState<string>("");
@@ -85,4 +85,4 @@ const CustomKeypad = (props: IProps) => {
     );
 };
 
-export default CustomKeypad;
+export default KeypadForm;

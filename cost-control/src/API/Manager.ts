@@ -7,10 +7,14 @@ export enum OUR_API_ENDPOINTS {
     TRANSACTIONS = 'transactions',
     TRANSACTION = 'transaction',
     TRANSACTIONID = 'transactionId',
-    GROUPBILLS = 'group-bill',
+    GROUPBILL = 'group-bill',
     GROUPBILLID = 'groupBillId',
     BILLS = 'bills',
     BILLID = 'billId',
+    INCOME = 'income',
+    EXPENSES = 'expenses',
+    BALANCE = 'balance',
+    CURRENT = 'current',
 }
 
 const buildUrl = (endpoint: string, id?: string) => {
@@ -28,8 +32,13 @@ export function getTxByBillId(billId: string) {
     return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTIONS, billId));
 }
 
-// ------------- Transaction -------------
+// get transactions by group_bill_id
+export function getTxByGroupBillId(groupBillId: string) {
+    const url = OUR_API_ENDPOINTS.TRANSACTIONS + '/' + OUR_API_ENDPOINTS.GROUPBILL;
+    return getJson(buildUrl(url, groupBillId));
+}
 
+// ------------- Transaction -------------
 
 export function getTransaction(transactionId: string) {
     return getJson(buildUrl(OUR_API_ENDPOINTS.TRANSACTION, transactionId));
@@ -50,23 +59,43 @@ export function deleteTransaction(transactionId: string) {
 // ------------- Group Bill -------------
 
 export function getGroupBills() {
-    return getJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS));
+    return getJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILL));
 }
 
 export function getGroupBill(groupBillId: string) {
-    return getJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS, groupBillId));
+    return getJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILL, groupBillId));
 }
 
 export function createGroupBill(groupBill: IGroupBill) {
-    return postJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS), groupBill);
+    return postJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILL), groupBill);
 }
 
 export function updateGroupBill(groupBillId: string, groupBill: IGroupBill) {
-    return putJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS, groupBillId), groupBill);
+    return putJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILL, groupBillId), groupBill);
 }
 
 export function deleteGroupBill(groupBillId: string) {
-    return deleteJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILLS, groupBillId));
+    return deleteJson(buildUrl(OUR_API_ENDPOINTS.GROUPBILL, groupBillId));
+}
+
+export function getIncomeByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.GROUPBILL + '/' + OUR_API_ENDPOINTS.INCOME;
+    return getJson(buildUrl(url, groupBillId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getExpensesByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.GROUPBILL + '/' + OUR_API_ENDPOINTS.EXPENSES;
+    return getJson(buildUrl(url, groupBillId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getBalanceByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.GROUPBILL + '/' + OUR_API_ENDPOINTS.BALANCE;
+    return getJson(buildUrl(url, groupBillId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getCurrentBalanceByGroupBillId(groupBillId: string) {
+    const url = OUR_API_ENDPOINTS.GROUPBILL + '/' + OUR_API_ENDPOINTS.CURRENT;
+    return getJson(buildUrl(url, groupBillId));
 }
 
 // ------------- Bill -------------
@@ -89,4 +118,24 @@ export function updateBill(billId: string, bill: IBill) {
 
 export function deleteBill(billId: string) {
     return deleteJson(buildUrl(OUR_API_ENDPOINTS.BILLS, billId));
+}
+
+export function getIncomeByBillId(billId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.BILLS + '/' + OUR_API_ENDPOINTS.INCOME;
+    return getJson(buildUrl(url, billId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getExpensesByBillId(billId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.BILLS + '/' + OUR_API_ENDPOINTS.EXPENSES;
+    return getJson(buildUrl(url, billId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getBalanceByBillId(billId: string, startDate: string, endDate: string) {
+    const url = OUR_API_ENDPOINTS.BILLS + '/' + OUR_API_ENDPOINTS.BALANCE;
+    return getJson(buildUrl(url, billId) + `?startDate=${startDate}&endDate=${endDate}`);
+}
+
+export function getCurrentBalanceByBillId(billId: string) {
+    const url = OUR_API_ENDPOINTS.BILLS + '/' + OUR_API_ENDPOINTS.CURRENT;
+    return getJson(buildUrl(url, billId));
 }

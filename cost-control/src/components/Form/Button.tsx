@@ -13,7 +13,7 @@ const ButtonForm = (props: FormButtonProps) => {
         <ListItem>
             <Button
                 onClick={onClick}
-                sx={{ width: "100%" }}
+                fullWidth
                 variant="contained"
                 color={color}
             >

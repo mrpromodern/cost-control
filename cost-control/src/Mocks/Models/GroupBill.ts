@@ -1,6 +1,6 @@
 import { IGroupBill } from "../../type";
 import { generateUUID } from "../helper";
-import { getBills } from "./Bill";
+import { getBills, getExpensesByBillId, getIncomeByBillId } from "./Bill";
 
 export let groupBills: IGroupBill[] = [
     {
@@ -58,4 +58,37 @@ export function updateGroupBill(groupBillId: string, groupBill: IGroupBill) {
 
 export function deleteGroupBill(groupBillId: string) {
     groupBills = groupBills.filter((groupBill) => groupBill.id !== groupBillId);;
+}
+
+export function getIncomeByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const bills = getBills(groupBillId);
+    let sum = 0;
+    bills.forEach(bill => {
+        sum += getIncomeByBillId(bill.id, startDate, endDate)
+    });
+    return sum;
+}
+
+export function getExpensesByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const bills = getBills(groupBillId);
+    let sum = 0;
+    bills.forEach(bill => {
+        sum += getExpensesByBillId(bill.id, startDate, endDate)
+    });
+    return sum;
+}
+
+export function getBalanceByGroupBillId(groupBillId: string, startDate: string, endDate: string) {
+    const income = getIncomeByGroupBillId(groupBillId, startDate, endDate);
+    const expenses = getExpensesByGroupBillId(groupBillId, startDate, endDate);
+    return income - expenses;
+}
+
+export function getCurrentBalanceByGroupBillId(groupBillId: string) {
+    const bills = getBills(groupBillId);
+    let sum = 0;
+    bills.forEach(bill => {
+        sum += bill.balance;
+    });
+    return sum;
 }

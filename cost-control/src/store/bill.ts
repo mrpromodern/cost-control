@@ -18,6 +18,10 @@ class Bill {
     setBill(bill: IBill) {
         this.bill = bill;
     }
+
+    resetBill() {
+        this.bill = emptyBill;
+    }
 }
 
 export const billStore: Bill = new Bill();

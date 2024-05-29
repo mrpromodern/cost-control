@@ -1,5 +1,6 @@
 import { ITransaction } from "../../type";
 import { generateUUID } from "../helper";
+import { getBill, getBills, updateBill } from "./Bill";
 
 export let transactions = [
     {
@@ -42,10 +43,19 @@ export let transactions = [
         id: "bf8e0573-1e02-4798-a48e-3d760b89f47c",
         category: "Развлечения",
         amount: 258,
-        date: "2020-06-10T11:00:00+01:00",
+        date: "2024-05-12T11:00:00+01:00",
         comment: "За такси утром",
-        type: "Expense",
+        type: "Income",
         billId: "00924f0b-c772-491f-831a-80329a07d0fa"
+    },
+    {
+        id: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m2n4o5",
+        category: "Развлечения",
+        amount: 100,
+        date: "2022-01-01T00:00:00+01:00",
+        comment: "New Transaction",
+        type: "Expense",
+        billId: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5"
     }
 ]
 
@@ -58,34 +68,81 @@ export function getTxByBillId(billId: string) {
     return transactions.filter((transaction) => transaction.billId === billId);
 }
 
+// get transactions by group_bill_id
+export function getTxByGroupBillId(groupBillId: string) {
+    const bills = getBills(groupBillId);
+    const billIds = bills.filter((bill) => bill.groupBillId === groupBillId).map((bill) => bill.id);
+    return transactions.filter((transaction) => billIds.includes(transaction.billId));
+}
+
+
 export function createTransaction(transaction: ITransaction) {
+    const type = transaction.type;
+    const bill = getBill(transaction.billId);
+
     const newTransaction = {
         id: generateUUID(),
         category: transaction.category,
         amount: transaction.amount,
         date: transaction.date.toString(),
         comment: transaction.comment,
-        type: transaction.type,
+        type: type,
         billId: transaction.billId,
     }
     transactions.push(newTransaction);
+
+    if (bill) {
+        if (type === "Income") {
+            bill.balance += transaction.amount;
+            updateBill(bill.id, bill);
+        } else {
+            bill.balance -= transaction.amount;
+            updateBill(bill.id, bill);
+        }
+    }
 }
 
 export function updateTransaction(transactionId: string, transaction: ITransaction) {
     const indexOldTran = transactions.findIndex((transaction) => transaction.id === transactionId);
+    const bill = getBill(transaction.billId);
+    const type = transaction.type;
+
     const newTransaction = {
         id: transactionId,
         category: transaction.category,
         amount: transaction.amount,
         date: transaction.date.toString(),
         comment: transaction.comment,
-        type: transaction.type,
+        type: type,
         billId: transaction.billId,
     }
 
     transactions[indexOldTran] = newTransaction;
+
+    if (bill) {
+        if (type === "Income") {
+            bill.balance += transaction.amount;
+            updateBill(bill.id, bill);
+        } else {
+            bill.balance -= transaction.amount;
+            updateBill(bill.id, bill);
+        }
+    }
 }
 
 export function deleteTransaction(transactionId: string) {
     transactions = transactions.filter((transaction) => transaction.id !== transactionId);;
+
+    const bill = getBill(transactionId);
+    if (bill) {
+        const transaction = getTransaction(transactionId);
+        if (transaction) {
+            if (transaction.type === "Income") {
+                bill.balance -= transaction.amount;
+            } else {
+                bill.balance += transaction.amount;
+            }
+            updateBill(bill.id, bill);
+        }
+    }
 }

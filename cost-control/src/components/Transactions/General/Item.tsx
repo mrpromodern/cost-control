@@ -22,6 +22,8 @@ const ItemGeneral = (props: IProps) => {
                     {title}
                 </Typography>
                 <Typography variant="h5" color={colorData}>
+                    {colorData === "error.main" ? "-" : "+"}
+                    {" "}
                     {data}
                 </Typography>
             </Paper>

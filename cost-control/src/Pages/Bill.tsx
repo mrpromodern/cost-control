@@ -114,12 +114,6 @@ const BillPage = () => {
                     </IconButton>
                 </Box>
             </MenuAppBar>
-            <Menu anchorEl={anchorE1} open={open} onClose={handleCloseMenu}>
-                <MenuItem onClick={handleOpenGroupForm}>
-                    Создать группу счетов
-                </MenuItem>
-                <MenuItem onClick={handleOpenBillForm}>Создать счет</MenuItem>
-            </Menu>
             <List component="nav">
                 {groupBills.map((groupBill) => {
                     return (
@@ -130,6 +124,12 @@ const BillPage = () => {
                     );
                 })}
             </List>
+            <Menu anchorEl={anchorE1} open={open} onClose={handleCloseMenu}>
+                <MenuItem onClick={handleOpenGroupForm}>
+                    Создать группу счетов
+                </MenuItem>
+                <MenuItem onClick={handleOpenBillForm}>Создать счет</MenuItem>
+            </Menu>
             <DialogForm
                 title="Группа счетов"
                 isFormOpen={openGroupForm}
@@ -140,7 +140,7 @@ const BillPage = () => {
                     handleOpenForm={handleOpenGroupForm}
                 />
             </DialogForm>
-            <DialogForm
+            <DialogForm 
                 title="Счет"
                 isFormOpen={openBillForm}
                 handleOpenForm={handleOpenBillForm}

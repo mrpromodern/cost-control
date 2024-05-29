@@ -2,10 +2,12 @@ import { Collapse, Divider } from "@mui/material";
 import BillPage from "./Bill";
 import TransactionPage from "./Transaction";
 import { billStore } from "../store/bill";
+import { groupBillStore } from "../store/groupBill";
 import { observer } from "mobx-react-lite";
 
 const MainPage = observer(() => {
-    const open = billStore.bill.id === "" ? false : true;
+    const open =
+        billStore.bill.id === "" && groupBillStore.groupBill.id === "" ? false : true;
 
     return (
         <>

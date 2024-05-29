@@ -9,18 +9,31 @@ import TransactionItem from "./Item";
 import { Dayjs } from "dayjs";
 
 type TransactionItemsProps = {
+    startDate: Dayjs;
+    endDate: Dayjs;
     transactions: ITransaction[];
     handleOpenForm: Function;
     handleSetTransaction: (transaction: ITransaction) => void;
 };
 
 const isSameDay = (date1: Dayjs, date2: Dayjs) => {
-    return date1.format("D") === date2.format("D");
+    if (date1.format("D") === date2.format("D")) {
+        if (date1.format("M") !== date2.format("M")) {
+            return false;
+        }
+        return true;
+    }
 };
 
 const TransactionItems = (props: TransactionItemsProps) => {
     const theme = useTheme();
-    const { transactions, handleOpenForm, handleSetTransaction } = props;
+    const {
+        startDate,
+        endDate,
+        transactions,
+        handleOpenForm,
+        handleSetTransaction,
+    } = props;
 
     const handleClickTransaction = useCallback(
         (transaction: ITransaction) => {
@@ -39,6 +52,14 @@ const TransactionItems = (props: TransactionItemsProps) => {
             }}
         >
             {transactions.map((transaction, index) => {
+                let show = false;
+                if (
+                    transaction.date.isAfter(startDate) &&
+                    transaction.date.isBefore(endDate)
+                ) {
+                    show = true;
+                }
+
                 const prevTransaction = transactions[index - 1];
                 let showDate = true;
 
@@ -50,27 +71,29 @@ const TransactionItems = (props: TransactionItemsProps) => {
                 }
 
                 return (
-                    <Box
-                        sx={{ padding: "0px 8px 0px 8px" }}
-                        key={transaction.id}
-                    >
-                        {showDate && (
-                            <>
-                                <ListItemText
-                                    sx={{ padding: "16px 0px 8px 0px" }}
-                                    primary={`${transaction.date.format(
-                                        "dddd, D MMM YYYY"
-                                    )} г.`}
-                                />
-                                <Divider component="li" />
-                            </>
-                        )}
-                        <TransactionItem
-                            transaction={transaction}
-                            handleClickTransaction={handleClickTransaction}
-                        />
-                        <Divider component="li" />
-                    </Box>
+                    show && (
+                        <Box
+                            sx={{ padding: "0px 8px 0px 8px" }}
+                            key={transaction.id}
+                        >
+                            {showDate && (
+                                <>
+                                    <ListItemText
+                                        sx={{ padding: "16px 0px 8px 0px" }}
+                                        primary={`${transaction.date.format(
+                                            "dddd, D MMM YYYY"
+                                        )} г.`}
+                                    />
+                                    <Divider component="li" />
+                                </>
+                            )}
+                            <TransactionItem
+                                transaction={transaction}
+                                handleClickTransaction={handleClickTransaction}
+                            />
+                            <Divider component="li" />
+                        </Box>
+                    )
                 );
             })}
         </List>
