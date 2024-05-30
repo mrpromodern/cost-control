@@ -9,7 +9,7 @@ const emptyBill: IBill = {
 };
 
 class Bill {
-    bill = emptyBill;
+    bill: IBill = emptyBill;
 
     constructor() {
         makeAutoObservable(this)
@@ -21,6 +21,10 @@ class Bill {
 
     resetBill() {
         this.bill = emptyBill;
+    }
+
+    setBalance = (balance: number) => {
+        this.bill.balance = balance;
     }
 }
 

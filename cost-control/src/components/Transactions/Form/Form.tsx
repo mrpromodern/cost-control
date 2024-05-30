@@ -13,20 +13,17 @@ import CustomKeypad from "./Keypad";
 
 interface ITransactionFormProps {
     handleOpenForm: Function;
-    handleAddTransaction: Function;
-    handleUpdateTransaction: Function;
-    handleDeleteTransaction: Function;
 }
 
 const TransactionForm = (props: ITransactionFormProps) => {
-    const { transaction } = tranStore;
-
     const {
-        handleOpenForm,
-        handleAddTransaction,
-        handleUpdateTransaction,
-        handleDeleteTransaction,
-    } = props;
+        transaction,
+        addTransaction,
+        updateTransaction,
+        deleteTransaction,
+    } = tranStore;
+
+    const { handleOpenForm } = props;
 
     const id = transaction.id;
     const validCharacters = /^[0-9+\-*/,.]*$/;
@@ -59,10 +56,10 @@ const TransactionForm = (props: ITransactionFormProps) => {
     const handleDelete = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            handleDeleteTransaction(id);
+            deleteTransaction(id);
             handleOpenForm();
         },
-        [handleDeleteTransaction, id, handleOpenForm]
+        [deleteTransaction, id, handleOpenForm]
     );
 
     const handleSubmit = useCallback(
@@ -80,23 +77,23 @@ const TransactionForm = (props: ITransactionFormProps) => {
             };
 
             if (id === "") {
-                handleAddTransaction(newTransaction);
+                addTransaction(newTransaction);
             } else {
-                handleUpdateTransaction(id, newTransaction);
+                updateTransaction(id, newTransaction);
             }
 
             handleOpenForm();
         },
         [
             id,
-            transaction,
-            handleAddTransaction,
-            handleUpdateTransaction,
-            handleOpenForm,
             selectedCategory,
             amount,
             comment,
             date,
+            transaction.type,
+            handleOpenForm,
+            addTransaction,
+            updateTransaction,
         ]
     );
 

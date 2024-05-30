@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IGroupBill } from "../type";
+import { getGroupBills } from "../API/Manager";
 
 
 const emptyGroupBill: IGroupBill = {
@@ -11,6 +12,7 @@ const emptyGroupBill: IGroupBill = {
 
 class GroupBill {
     groupBill = emptyGroupBill;
+    groupBills: IGroupBill[] = [];
 
     constructor() {
         makeAutoObservable(this)
@@ -20,8 +22,20 @@ class GroupBill {
         this.groupBill = groupBill;
     }
 
+    setGroupBills(groupBills: IGroupBill[]) {
+        this.groupBills = groupBills;
+    }
+
     resetGroupBill() {
         this.groupBill = emptyGroupBill;
+    }
+
+    fetchGroupBills = async () => {
+        try {
+            getGroupBills().then((response) => this.setGroupBills(response.data));
+        } catch (error) {
+            console.error("Failed to fetch group bills", error);
+        }
     }
 }
 

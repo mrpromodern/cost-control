@@ -3,12 +3,14 @@ import { groupBillHandlers } from "./Handlers/GroupBill";
 import { billHandlers } from "./Handlers/Bill";
 import { transactionHandlers } from "./Handlers/Transaction";
 import { transactionsHandlers } from "./Handlers/Transactions";
+import { dataHandlers } from "./Handlers/Data";
 
 const worker: SetupWorker = setupWorker(
     ...groupBillHandlers,
     ...billHandlers,
     ...transactionHandlers,
     ...transactionsHandlers,
+    ...dataHandlers
 );
 
 export function startWorker(): Promise<void> {

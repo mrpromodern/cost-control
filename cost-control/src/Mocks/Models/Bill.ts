@@ -45,6 +45,10 @@ export function getBills(groupBillId: string): IBill[] {
     return bills.filter((bill) => bill.groupBillId === groupBillId);
 }
 
+export function getBillsForExport() {
+    return bills;
+}
+
 export function createBill(bill: IBill) {
     const groupBill = getGroupBill(bill.groupBillId);
     const newBill = {
@@ -57,6 +61,17 @@ export function createBill(bill: IBill) {
     if (groupBill) {
         groupBill.bills.push(newBill);
     }
+}
+
+export function addBill(bill: IBill) {
+    if (bills.some((b) => b.id === bill.id)) {
+        return;
+    }
+    bills.push(bill);
+}
+
+export function addBills(bills: IBill[]) {
+    bills.forEach((bill) => addBill(bill));
 }
 
 export function updateBill(billId: string, bill: IBill) {

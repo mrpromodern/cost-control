@@ -5,9 +5,11 @@ import { billStore } from "../store/bill";
 import { groupBillStore } from "../store/groupBill";
 import { observer } from "mobx-react-lite";
 
-const MainPage = observer(() => {
+const MainPage = () => {
     const open =
-        billStore.bill.id === "" && groupBillStore.groupBill.id === "" ? false : true;
+        billStore.bill.id === "" && groupBillStore.groupBill.id === ""
+            ? false
+            : true;
 
     return (
         <>
@@ -18,6 +20,6 @@ const MainPage = observer(() => {
             </Collapse>
         </>
     );
-});
+};
 
-export default MainPage;
+export default observer(MainPage);

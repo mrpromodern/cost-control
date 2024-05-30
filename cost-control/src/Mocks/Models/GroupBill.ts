@@ -28,9 +28,16 @@ export function getGroupBill(groupBillId: string) {
 }
 
 export function getGroupBills() {
-    groupBills.forEach(groupBill => {
-        groupBill.bills = getBills(groupBill.id);
+    const updatedGroupBills = groupBills.map(groupBill => {
+        return {
+            ...groupBill,
+            bills: getBills(groupBill.id)
+        };
     });
+    return updatedGroupBills;
+}
+
+export function getGroupBillsForExport() {
     return groupBills;
 }
 
@@ -42,6 +49,17 @@ export function createGroupBill(groupBill: IGroupBill) {
         bills: groupBill.bills
     }
     groupBills.push(newGroupBill);
+}
+
+export function addGroupBill(groupBill: IGroupBill) {
+    if (groupBills.some((gB) => gB.id === groupBill.id)) {
+        return;
+    }
+    groupBills.push(groupBill);
+}
+
+export function addGroupBills(groupBills: IGroupBill[]) {
+    groupBills.forEach((groupBill) => addGroupBill(groupBill));
 }
 
 export function updateGroupBill(groupBillId: string, groupBill: IGroupBill) {

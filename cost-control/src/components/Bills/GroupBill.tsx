@@ -1,5 +1,4 @@
 import {
-    Box,
     Collapse,
     IconButton,
     List,
@@ -13,7 +12,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import Bill from "./Bill";
 import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
-
+import { tranStore } from "../../store/transaction";
 interface IProps {
     groupBill: IGroupBill;
 }
@@ -22,13 +21,16 @@ const GroupBillItem = (props: IProps) => {
     const { groupBill } = props;
 
     const activeGroupBillId = groupBillStore.groupBill.id;
+    const { getTransactions, updateGeneral } = tranStore;
 
     const [open, setOpen] = useState<boolean>(false);
 
     const handleClick = useCallback(() => {
         groupBillStore.setGroupBill(groupBill);
         billStore.resetBill();
-    }, [groupBill]);
+        getTransactions();
+        updateGeneral();
+    }, [getTransactions, groupBill, updateGeneral]);
 
     const handleCollapse = useCallback(() => {
         setOpen((prevState) => !prevState);

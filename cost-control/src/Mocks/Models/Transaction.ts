@@ -59,22 +59,32 @@ export let transactions = [
     }
 ]
 
+export function sortTransactions() {
+    return transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
+
 export function getTransaction(transactionId: string) {
+    const transactions = sortTransactions();
     return transactions.find((transaction) => transaction.id === transactionId);
+}
+
+export function getTransactions() {
+    return transactions;
 }
 
 // get transactions by bill_id
 export function getTxByBillId(billId: string) {
+    const transactions = sortTransactions();
     return transactions.filter((transaction) => transaction.billId === billId);
 }
 
 // get transactions by group_bill_id
 export function getTxByGroupBillId(groupBillId: string) {
+    const transactions = sortTransactions();
     const bills = getBills(groupBillId);
     const billIds = bills.filter((bill) => bill.groupBillId === groupBillId).map((bill) => bill.id);
     return transactions.filter((transaction) => billIds.includes(transaction.billId));
 }
-
 
 export function createTransaction(transaction: ITransaction) {
     const type = transaction.type;
@@ -100,6 +110,28 @@ export function createTransaction(transaction: ITransaction) {
             updateBill(bill.id, bill);
         }
     }
+}
+
+export function addTransaction(transaction: ITransaction) {
+    if (transactions.some((t) => t.id === transaction.id)) {
+        return;
+    }
+
+    const newTransaction = {
+        id: transaction.id,
+        category: transaction.category,
+        amount: transaction.amount,
+        date: transaction.date.toString(),
+        comment: transaction.comment,
+        type: transaction.type,
+        billId: transaction.billId,
+    }
+
+    transactions.push(newTransaction);
+}
+
+export function addTransactions(newTrans: ITransaction[]) {
+    newTrans.forEach((transaction) => addTransaction(transaction));
 }
 
 export function updateTransaction(transactionId: string, transaction: ITransaction) {

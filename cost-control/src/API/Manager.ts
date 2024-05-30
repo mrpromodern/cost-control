@@ -15,10 +15,21 @@ export enum OUR_API_ENDPOINTS {
     EXPENSES = 'expenses',
     BALANCE = 'balance',
     CURRENT = 'current',
+    DATA = 'data',
 }
 
 const buildUrl = (endpoint: string, id?: string) => {
     return `${OUR_API_ADDRESS}/${endpoint}${id ? `/${id}` : ''}`;
+}
+
+// ------------- General -------------
+
+export function exportData() {
+    return getJson(buildUrl(OUR_API_ENDPOINTS.DATA));
+}
+
+export function importData(data: any) {
+    return postJson(buildUrl(OUR_API_ENDPOINTS.DATA), data);
 }
 
 // ------------- Transactions -------------

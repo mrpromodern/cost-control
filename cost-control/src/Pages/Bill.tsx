@@ -1,12 +1,7 @@
 import List from "@mui/material/List";
 import { useCallback, useEffect, useState } from "react";
 import { IBill, IGroupBill } from "../type";
-import {
-    createBill,
-    createGroupBill,
-    getGroupBills,
-    updateBill,
-} from "../API/Manager";
+import { createBill, createGroupBill, updateBill } from "../API/Manager";
 import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import GroupBillItem from "../components/Bills/GroupBill";
 import DialogForm from "../components/Form/Dialog";
@@ -16,6 +11,8 @@ import BillForm from "../components/Bills/BillForm";
 import MenuAppBar from "../components/AppBar";
 import DensityIcon from "@mui/icons-material/DensityMediumRounded";
 import { billStore } from "../store/bill";
+import { groupBillStore } from "../store/groupBill";
+import { observer } from "mobx-react-lite";
 
 const emptyBill: IBill = {
     id: "",
@@ -25,8 +22,9 @@ const emptyBill: IBill = {
 };
 
 const BillPage = () => {
+    const { groupBills, fetchGroupBills } = groupBillStore;
+
     const [bill, setBill] = useState<IBill>(emptyBill);
-    const [groupBills, setGroupBills] = useState<IGroupBill[]>([]);
     const [openBillForm, setOpenBillForm] = useState<boolean>(false);
     const [openGroupForm, setOpenGroupForm] = useState<boolean>(false);
     const [anchorE1, setAnchorE1] = useState<null | HTMLElement>(null);
@@ -39,19 +37,12 @@ const BillPage = () => {
         setOpenGroupForm((prevState: boolean) => !prevState);
     }, []);
 
-    const handleGetGroups = useCallback(async () => {
-        getGroupBills().then((response) => {
-            const data = response.data;
-            setGroupBills(data);
-        });
-    }, []);
-
     const handleAddGroup = useCallback(
         async (groupBill: IGroupBill) => {
-            await createGroupBill(groupBill)
-            handleGetGroups();
+            await createGroupBill(groupBill);
+            fetchGroupBills();
         },
-        [handleGetGroups]
+        [fetchGroupBills]
     );
 
     // ------------- Bill -------------
@@ -63,17 +54,17 @@ const BillPage = () => {
 
     const handleAddBill = useCallback(
         async (bill: IBill) => {
-            createBill(bill).then(handleGetGroups);
+            createBill(bill).then(fetchGroupBills);
         },
-        [handleGetGroups]
+        [fetchGroupBills]
     );
 
     const handleUpdateBill = useCallback(
         async (id: string, bill: IBill) => {
-            await updateBill(id, bill)
-            handleGetGroups();
+            await updateBill(id, bill);
+            fetchGroupBills();
         },
-        [handleGetGroups]
+        [fetchGroupBills]
     );
 
     // ------------- ---- -------------
@@ -96,8 +87,8 @@ const BillPage = () => {
     }, []);
 
     useEffect(() => {
-        handleGetGroups();
-    }, [handleGetGroups]);
+        fetchGroupBills();
+    }, [fetchGroupBills]);
 
     return (
         <Box sx={{ width: "33%", height: "100%" }}>
@@ -109,7 +100,10 @@ const BillPage = () => {
                 >
                     <ButtonAdd handleClick={handleClickAdd} />
                     <Typography>Счет</Typography>
-                    <IconButton disabled={billStore.bill.id === ""} onClick={handleClickEdit}>
+                    <IconButton
+                        disabled={billStore.bill.id === ""}
+                        onClick={handleClickEdit}
+                    >
                         <DensityIcon />
                     </IconButton>
                 </Box>
@@ -140,7 +134,7 @@ const BillPage = () => {
                     handleOpenForm={handleOpenGroupForm}
                 />
             </DialogForm>
-            <DialogForm 
+            <DialogForm
                 title="Счет"
                 isFormOpen={openBillForm}
                 handleOpenForm={handleOpenBillForm}
@@ -157,4 +151,4 @@ const BillPage = () => {
     );
 };
 
-export default BillPage;
+export default observer(BillPage);

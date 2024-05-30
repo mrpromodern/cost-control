@@ -5,24 +5,26 @@ import { IBill } from "../../type";
 import { useCallback } from "react";
 import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
-
+import { observer } from "mobx-react-lite";
+import { tranStore } from "../../store/transaction";
 interface IProps {
     bill: IBill;
 }
 
 const Bill = (props: IProps) => {
-    const activeBillId = billStore.bill.id;
-
     const { bill } = props;
+    const { getTransactions, updateGeneral } = tranStore;
 
     const handleClick = useCallback(() => {
         billStore.setBill(bill);
         groupBillStore.resetGroupBill();
-    }, [bill]);
+        getTransactions();
+        updateGeneral();
+    }, [bill, getTransactions, updateGeneral]);
 
     return (
         <ListItemButton
-            selected={activeBillId === bill.id}
+            selected={billStore.bill.id === bill.id}
             sx={{ pl: 4 }}
             onClick={handleClick}
         >
@@ -36,4 +38,4 @@ const Bill = (props: IProps) => {
     );
 };
 
-export default Bill;
+export default observer(Bill);

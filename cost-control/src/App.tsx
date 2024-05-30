@@ -24,7 +24,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <Navbar toggleTheme={toggleTheme}>
                 <Routes>
-                    <Route path="/cost-control-pages" element={<MainPage />} />
+                    <Route path="/cost-control-pages/transactions" element={<MainPage />} />
                 </Routes>
             </Navbar>
         </ThemeProvider>
