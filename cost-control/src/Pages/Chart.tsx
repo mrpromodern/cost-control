@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useTheme } from "@mui/material/styles";
 import { tranStore } from "../store/transaction";
 import { PieChart } from "@mui/x-charts/PieChart";
 import {
@@ -8,12 +9,17 @@ import {
     MenuItem,
     Select,
     SelectChangeEvent,
+    List,
+    ListItemButton,
+    ListItemText,
+    Divider,
 } from "@mui/material";
 import { TransactionType } from "../type";
 import MenuAppBar from "../components/AppBar/Menu";
 import PeriodAppBar from "../components/AppBar/Period";
 
 const Chart = observer(() => {
+    const theme = useTheme();
     const { type, setType, dataChart } = tranStore;
     const chartContainerRef = useRef<HTMLDivElement | null>(null);
     const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
@@ -29,7 +35,7 @@ const Chart = observer(() => {
         const updateDimensions = () => {
             if (chartContainerRef.current) {
                 const width = chartContainerRef.current.offsetWidth;
-                const height = width * 0.5; // Высота 50% от ширины
+                const height = width * 0.5;
                 setDimensions({ width, height });
             }
         };
@@ -68,7 +74,7 @@ const Chart = observer(() => {
                 justifyContent="center"
                 alignItems="center"
                 flexGrow={1}
-                sx={{ width: "100%", maxWidth: "100%", height: "40vh" }} // 50% высоты экрана
+                sx={{ width: "100%", maxWidth: "100%", height: "40vh" }}
             >
                 <PieChart
                     series={[
@@ -85,6 +91,48 @@ const Chart = observer(() => {
                     legend={{ hidden: true }}
                 />
             </Box>
+            <List
+                sx={{
+                    backgroundColor: theme.palette.background.default,
+                    color: theme.palette.text.primary,
+                    borderRadius: theme.shape.borderRadius,
+                }}
+            >
+                {dataChart.map((data) => {
+                    if (data.value === 0) {
+                        return null;
+                    }
+
+                    return (
+                        <Box
+                            sx={{ padding: "0px 8px 0px 8px" }}
+                            key={data.label}
+                        >
+                            <ListItemButton sx={{ padding: 0, minHeight: 50 }}>
+                                <ListItemText primary={data.label} />
+                                <ListItemText
+                                    sx={{ textAlign: "right" }}
+                                    primary={
+                                        type === TransactionType.Expense ? (
+                                            <Box fontWeight="fontWeightMedium">
+                                                - {data.value} ₽
+                                            </Box>
+                                        ) : (
+                                            <Box
+                                                color="green"
+                                                fontWeight="fontWeightMedium"
+                                            >
+                                                + {data.value} ₽
+                                            </Box>
+                                        )
+                                    }
+                                />
+                            </ListItemButton>
+                            <Divider component="li" />
+                        </Box>
+                    );
+                })}
+            </List>
         </Box>
     );
 });

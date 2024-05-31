@@ -78,11 +78,16 @@ class Transaction {
                 }
             }
         });
+        this.sortDataChart();
     };
 
     resetDataChart = () => {
         this.dataChart = this.categories.map(category => ({ label: category, value: 0 }));
     };
+
+    sortDataChart = () => {
+        this.dataChart.sort((a, b) => b.value - a.value);
+    }
 
     // ------------- Setters -------------
     setType = (type: TransactionType) => {
