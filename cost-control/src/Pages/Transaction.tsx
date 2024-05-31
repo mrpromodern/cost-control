@@ -1,34 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 import TransactionForm from "../components/Transactions/Form/Form";
 import { TransactionType } from "../type";
-import {
-    Box,
-    Button,
-    ToggleButton,
-    ToggleButtonGroup,
-    Typography,
-} from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import TransactionItems from "../components/Transactions/Items";
 import DialogForm from "../components/Form/Dialog";
 import ButtonAdd from "../components/ButtonAdd";
-import MenuAppBar from "../components/AppBar";
+import MenuAppBar from "../components/AppBar/Menu";
 import PanelGeneral from "../components/Transactions/General/Panel";
 import { observer } from "mobx-react-lite";
-import PeriodGeneral from "../components/Transactions/Period";
 import { tranStore } from "../store/transaction";
 import { groupBillStore } from "../store/groupBill";
+import PeriodAppBar from "../components/AppBar/Period";
 
 const TransactionPage = () => {
     const { fetchGroupBills } = groupBillStore;
 
-    const { transaction, setType, resetTransaction, updateGeneral } = tranStore;
+    const { transaction, setTransactionType: setType, resetTransaction, updateGeneral } = tranStore;
 
     const tranType: TransactionType = transaction.type;
 
-    const [startDate, setMinDate] = useState(dayjs().startOf("month"));
-    const [endDate, setMaxDate] = useState(dayjs().endOf("month"));
-    const [dateFormOpen, setDateFormOpen] = useState<boolean>(false);
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
     // ------------- General -------------
@@ -37,17 +27,6 @@ const TransactionPage = () => {
         updateGeneral();
         fetchGroupBills();
     }, [updateGeneral, fetchGroupBills]);
-
-    // ------------- Date -------------
-
-    const handleOpenDateForm = useCallback(() => {
-        setDateFormOpen((prevState: boolean) => !prevState);
-    }, []);
-
-    const handleChangePeriod = useCallback((minDate: Dayjs, maxDate: Dayjs) => {
-        setMinDate(minDate);
-        setMaxDate(maxDate);
-    }, []);
 
     // ------------- Transaction -------------
 
@@ -99,38 +78,17 @@ const TransactionPage = () => {
                     alignItems="center"
                 >
                     <ButtonAdd handleClick={handleOpenForm} />
-                    <Button color="info" onClick={handleOpenDateForm}>
-                        <Typography variant="h6">
-                            {startDate.format("DD.MM.YYYY")} -{" "}
-                            {endDate.format("DD.MM.YYYY")}
-                        </Typography>
-                    </Button>
+                    <PeriodAppBar />
                 </Box>
             </MenuAppBar>
             <PanelGeneral />
-            <TransactionItems
-                startDate={startDate}
-                endDate={endDate}
-                handleOpenForm={handleOpenForm}
-            />
+            <TransactionItems handleOpenForm={handleOpenForm} />
             <DialogForm
                 title={<DialogButtons />}
                 isFormOpen={isFormOpen}
                 handleOpenForm={handleOpenForm}
             >
                 <TransactionForm handleOpenForm={handleOpenForm} />
-            </DialogForm>
-            <DialogForm
-                title="Период"
-                isFormOpen={dateFormOpen}
-                handleOpenForm={handleOpenDateForm}
-            >
-                <PeriodGeneral
-                    minDate={startDate}
-                    maxDate={endDate}
-                    handleChangePeriod={handleChangePeriod}
-                    handleOpenDateForm={handleOpenDateForm}
-                />
             </DialogForm>
         </Box>
     );

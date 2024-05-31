@@ -11,8 +11,6 @@ import { tranStore } from "../../store/transaction";
 import { observer } from "mobx-react-lite";
 
 type TransactionItemsProps = {
-    startDate: Dayjs;
-    endDate: Dayjs;
     handleOpenForm: Function;
 };
 
@@ -30,7 +28,7 @@ const TransactionItems = (props: TransactionItemsProps) => {
 
     const { transactions, setTransaction, getTransactions, isLoading } =
         tranStore;
-    const { startDate, endDate, handleOpenForm } = props;
+    const { handleOpenForm } = props;
 
     const handleClickTransaction = useCallback(
         (transaction: ITransaction) => {
@@ -56,14 +54,6 @@ const TransactionItems = (props: TransactionItemsProps) => {
                 <div>Loading...</div>
             ) : (
                 transactions.map((transaction, index) => {
-                    let show = false;
-                    if (
-                        transaction.date.isAfter(startDate) &&
-                        transaction.date.isBefore(endDate)
-                    ) {
-                        show = true;
-                    }
-
                     const prevTransaction = transactions[index - 1];
                     let showDate = true;
 
@@ -75,31 +65,27 @@ const TransactionItems = (props: TransactionItemsProps) => {
                     }
 
                     return (
-                        show && (
-                            <Box
-                                sx={{ padding: "0px 8px 0px 8px" }}
-                                key={transaction.id}
-                            >
-                                {showDate && (
-                                    <>
-                                        <ListItemText
-                                            sx={{ padding: "16px 0px 8px 0px" }}
-                                            primary={`${transaction.date.format(
-                                                "dddd, D MMM YYYY"
-                                            )} г.`}
-                                        />
-                                        <Divider component="li" />
-                                    </>
-                                )}
-                                <TransactionItem
-                                    transaction={transaction}
-                                    handleClickTransaction={
-                                        handleClickTransaction
-                                    }
-                                />
-                                <Divider component="li" />
-                            </Box>
-                        )
+                        <Box
+                            sx={{ padding: "0px 8px 0px 8px" }}
+                            key={transaction.id}
+                        >
+                            {showDate && (
+                                <>
+                                    <ListItemText
+                                        sx={{ padding: "16px 0px 8px 0px" }}
+                                        primary={`${transaction.date.format(
+                                            "dddd, D MMM YYYY"
+                                        )} г.`}
+                                    />
+                                    <Divider component="li" />
+                                </>
+                            )}
+                            <TransactionItem
+                                transaction={transaction}
+                                handleClickTransaction={handleClickTransaction}
+                            />
+                            <Divider component="li" />
+                        </Box>
                     );
                 })
             )}

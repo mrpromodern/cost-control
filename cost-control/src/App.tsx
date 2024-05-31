@@ -10,6 +10,7 @@ import "dayjs/locale/ru";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "./Pages/Main";
 import Navbar from "./components/Navbar";
+import Report from "./Pages/Report";
 
 dayjs.locale("ru");
 
@@ -24,7 +25,14 @@ function App() {
         <ThemeProvider theme={theme}>
             <Navbar toggleTheme={toggleTheme}>
                 <Routes>
-                    <Route path="/cost-control-pages/transactions" element={<MainPage />} />
+                    <Route
+                        path="/cost-control-pages/transactions"
+                        element={<MainPage />}
+                    />
+                    <Route
+                        path="/cost-control-pages/reports"
+                        element={<Report />}
+                    />
                 </Routes>
             </Navbar>
         </ThemeProvider>

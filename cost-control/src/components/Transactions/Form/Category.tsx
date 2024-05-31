@@ -8,22 +8,7 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCallback, useState } from "react";
-
-export const categories = [
-    "Без категории",
-    "Продукты",
-    "Рестораны и кафе",
-    "Транспорт",
-    "Жилье",
-    "Коммунальные услуги",
-    "Одежда и аксессуары",
-    "Здоровье и красота",
-    "Развлечения",
-    "Путешествия",
-    "Образование",
-    "Подарки",
-];
-
+import { tranStore } from "../../../store/transaction";
 interface ICategoryFormProps {
     category: string;
     handleCategorySelect: (category: string) => void;
@@ -31,7 +16,7 @@ interface ICategoryFormProps {
 
 const CategoryForm = (props: ICategoryFormProps) => {
     const [open, setOpen] = useState<boolean>(false);
-
+    const { categories } = tranStore;
     const handleClose = useCallback(() => {
         setOpen(false);
     }, []);

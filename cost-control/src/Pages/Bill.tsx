@@ -8,7 +8,7 @@ import DialogForm from "../components/Form/Dialog";
 import GroupBillForm from "../components/Bills/GroupForm";
 import ButtonAdd from "../components/ButtonAdd";
 import BillForm from "../components/Bills/BillForm";
-import MenuAppBar from "../components/AppBar";
+import MenuAppBar from "../components/AppBar/Menu";
 import DensityIcon from "@mui/icons-material/DensityMediumRounded";
 import { billStore } from "../store/bill";
 import { groupBillStore } from "../store/groupBill";

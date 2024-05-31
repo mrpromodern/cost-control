@@ -21,7 +21,7 @@ const GroupBillItem = (props: IProps) => {
     const { groupBill } = props;
 
     const activeGroupBillId = groupBillStore.groupBill.id;
-    const { getTransactions, updateGeneral } = tranStore;
+    const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -30,7 +30,10 @@ const GroupBillItem = (props: IProps) => {
         billStore.resetBill();
         getTransactions();
         updateGeneral();
-    }, [getTransactions, groupBill, updateGeneral]);
+        getTransactions()
+            .then(() => updateGeneral())
+            .then(() => getCategoryChart());
+    }, [getCategoryChart, getTransactions, groupBill, updateGeneral]);
 
     const handleCollapse = useCallback(() => {
         setOpen((prevState) => !prevState);

@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { categories } from "../components/Transactions/Form/Category";
 import dayjs, { Dayjs } from "dayjs";
 import {
     createTransaction,
@@ -20,19 +19,38 @@ import { ITransaction, TransactionType } from "../type";
 import { billStore } from "./bill";
 import { groupBillStore } from "./groupBill";
 
-const emptyTransaction: ITransaction = {
-    id: "",
-    category: categories[0],
-    amount: 0,
-    date: dayjs(),
-    comment: "",
-    type: TransactionType.Expense,
-    billId: "",
-};
-
 class Transaction {
-    transaction = emptyTransaction;
+    // ------------- Categories -------------
+    categories = [
+        "Без категории",
+        "Продукты",
+        "Рестораны и кафе",
+        "Транспорт",
+        "Жилье",
+        "Коммунальные услуги",
+        "Одежда и аксессуары",
+        "Здоровье и красота",
+        "Развлечения",
+        "Путешествия",
+        "Образование",
+        "Подарки",
+    ];
+
+    // ------------- State -------------
+    transaction: ITransaction = {
+        id: "",
+        category: this.categories[0],
+        amount: 0,
+        date: dayjs(),
+        comment: "",
+        type: TransactionType.Expense,
+        billId: "",
+    };
+
     transactions: ITransaction[] = [];
+    type: TransactionType = TransactionType.Expense;
+
+    dataChart: { label: string; value: number; }[] = [];
 
     income: number = 0;
     expense: number = 0;
@@ -46,14 +64,38 @@ class Transaction {
 
     constructor() {
         makeAutoObservable(this);
+        this.resetDataChart();
     }
+
+    // ------------- Chart Methods -------------
+    getCategoryChart = () => {
+        this.resetDataChart();
+        this.transactions.forEach(transaction => {
+            if (transaction.type === this.type) {
+                const categoryIndex = this.categories.indexOf(transaction.category);
+                if (categoryIndex !== -1) {
+                    this.dataChart[categoryIndex].value += transaction.amount;
+                }
+            }
+        });
+    };
+
+    resetDataChart = () => {
+        this.dataChart = this.categories.map(category => ({ label: category, value: 0 }));
+    };
+
+    // ------------- Setters -------------
+    setType = (type: TransactionType) => {
+        this.type = type;
+        this.getCategoryChart();
+    };
 
     setTransaction = (transaction: ITransaction) => {
         this.transaction = transaction;
-    }
+    };
 
     resetTransaction = () => {
-        const newTran = {
+        this.transaction = {
             id: "",
             category: this.transaction.category,
             amount: 0,
@@ -61,114 +103,142 @@ class Transaction {
             comment: "",
             type: this.transaction.type,
             billId: "",
-        }
+        };
+    };
 
-        this.transaction = newTran;
-    }
-
-    setType = (type: TransactionType) => {
+    setTransactionType = (type: TransactionType) => {
         this.transaction.type = type;
-    }
+    };
 
     setTransactions = (data: any) => {
         if (data) {
             this.transactions = data.map((data: ITransaction) => ({
                 ...data,
-                date: dayjs(data.date),
+                date: dayjs(data.date).startOf('day'),
             }));
         }
-    }
+    };
 
+    setIsLoading = (isLoading: boolean) => {
+        this.isLoading = isLoading;
+    };
+
+    setIncome = (income: number) => {
+        this.income = income;
+    };
+
+    setExpense = (expense: number) => {
+        this.expense = expense;
+    };
+
+    setBalance = (balance: number) => {
+        this.balance = balance;
+    };
+
+    setCurrent = (current: number) => {
+        this.current = current;
+    };
+
+    setDate = (startDate: Dayjs, endDate: Dayjs) => {
+        this.startDate = startDate.startOf('day');
+        this.endDate = endDate.endOf('day');
+        this.getTransactions().then(() => this.updateGeneral()).then(() => this.getCategoryChart());
+    };
+
+    // ------------- Transaction Methods -------------
     getTransactions = async () => {
         const billId = billStore.bill.id;
         const groupBillId = groupBillStore.groupBill.id;
 
         this.setIsLoading(true);
-        if (billId) {
-            const response = await getTxByBillId(billId);
-            this.setTransactions(response.data);
-        } else if (groupBillId) {
-            const response = await getTxByGroupBillId(groupBillId);
-            this.setTransactions(response.data);
-        }
-        this.setIsLoading(false);
-    }
+        try {
+            let response;
 
-    setIsLoading = (isLoading: boolean) => {
-        this.isLoading = isLoading;
-    }
+            if (billId) {
+                response = await getTxByBillId(billId);
+            } else if (groupBillId) {
+                response = await getTxByGroupBillId(groupBillId);
+            }
+
+            if (response) {
+                const transactions = response.data.filter((transaction: ITransaction) => {
+                    const transactionDate = dayjs(transaction.date).startOf("day");
+                    return transactionDate.isAfter(this.startDate) && transactionDate.isBefore(this.endDate);
+                });
+                this.setTransactions(transactions);
+            }
+        } catch (error) {
+            console.error("Failed to fetch transactions", error);
+        } finally {
+            this.setIsLoading(false);
+        }
+    };
 
     addTransaction = async (transaction: ITransaction) => {
-        const fetchGroupBills = groupBillStore.fetchGroupBills;
-        await createTransaction(transaction).then(() => this.getTransactions()).then(() => this.updateGeneral()).then(() => fetchGroupBills());
-        this.resetTransaction();
-    }
+        try {
+            await createTransaction(transaction);
+            await this.getTransactions();
+            await this.updateGeneral();
+            await groupBillStore.fetchGroupBills();
+            this.resetTransaction();
+        } catch (error) {
+            console.error("Failed to add transaction", error);
+        }
+    };
 
     updateTransaction = async (transactionId: string, transaction: ITransaction) => {
-        const fetchGroupBills = groupBillStore.fetchGroupBills;
-        await updateTransaction(transactionId, transaction).then(() => this.getTransactions()).then(() => this.updateGeneral()).then(() => fetchGroupBills());
-        this.resetTransaction();
-    }
+        try {
+            await updateTransaction(transactionId, transaction);
+            await this.getTransactions();
+            await this.updateGeneral();
+            await groupBillStore.fetchGroupBills();
+            this.resetTransaction();
+        } catch (error) {
+            console.error("Failed to update transaction", error);
+        }
+    };
 
     deleteTransaction = async (transactionId: string) => {
-        const fetchGroupBills = groupBillStore.fetchGroupBills;
-        await deleteTransaction(transactionId).then(() => this.getTransactions()).then(() => this.updateGeneral()).then(() => fetchGroupBills());
-        this.resetTransaction();
-    }
+        try {
+            await deleteTransaction(transactionId);
+            await this.getTransactions();
+            await this.updateGeneral();
+            await groupBillStore.fetchGroupBills();
+            this.resetTransaction();
+        } catch (error) {
+            console.error("Failed to delete transaction", error);
+        }
+    };
 
+    // ------------- Data Fetching -------------
+    fetchData = async (billId: string, groupBillId: string, fetchByBillId: Function, fetchByGroupBillId: Function) => {
+        try {
+            const responseByBill = await fetchByBillId(billId, this.startDate.toString(), this.endDate.toString());
+            const responseByGroupBill = await fetchByGroupBillId(groupBillId, this.startDate.toString(), this.endDate.toString());
+            return responseByBill.data + responseByGroupBill.data;
+        } catch (error) {
+            console.error("Failed to fetch data", error);
+            return 0;
+        }
+    };
+
+    // ------------- General Update -------------
     updateGeneral = async () => {
-        const billId = billStore.bill.id;
-        const groupBillId = groupBillStore.groupBill.id;
+        try {
+            const billId = billStore.bill.id;
+            const groupBillId = groupBillStore.groupBill.id;
 
-        const startDate = this.startDate.toString();
-        const endDate = this.endDate.toString();
+            this.setIncome(await this.fetchData(billId, groupBillId, getIncomeByBillId, getIncomeByGroupBillId));
+            this.setExpense(await this.fetchData(billId, groupBillId, getExpensesByBillId, getExpensesByGroupBillId));
+            this.setBalance(await this.fetchData(billId, groupBillId, getBalanceByBillId, getBalanceByGroupBillId));
 
-        const incomeByBillResponse = await getIncomeByBillId(billId, startDate, endDate);
-        const incomeByGroupBillResponse = await getIncomeByGroupBillId(groupBillId, startDate, endDate);
-        const incomeByBill = incomeByBillResponse.data;
-        const incomeByGroupBill = incomeByGroupBillResponse.data;
-        this.setIncome(incomeByBill + incomeByGroupBill);
-
-        const expenseByBillResponse = await getExpensesByBillId(billId, startDate, endDate);
-        const expenseByGroupBillResponse = await getExpensesByGroupBillId(groupBillId, startDate, endDate);
-        const expenseByBill = expenseByBillResponse.data;
-        const expenseByGroupBill = expenseByGroupBillResponse.data;
-        this.setExpense(expenseByBill + expenseByGroupBill);
-
-        const balanceByBillResponse = await getBalanceByBillId(billId, startDate, endDate);
-        const balanceByGroupBillResponse = await getBalanceByGroupBillId(groupBillId, startDate, endDate);
-        const balanceByBill = balanceByBillResponse.data;
-        const balanceByGroupBill = balanceByGroupBillResponse.data;
-        this.setBalance(balanceByBill + balanceByGroupBill);
-
-        const currentByBill = await getCurrentBalanceByBillId(billId);
-        const currentByGroupBill = await getCurrentBalanceByGroupBillId(groupBillId);
-        this.setCurrent(currentByBill.data + currentByGroupBill.data);
-    }
-
-    setStartDate = (date: Dayjs) => {
-        this.startDate = date;
-    }
-
-    setEndDate = (date: Dayjs) => {
-        this.endDate = date;
-    }
-
-    setIncome = (income: number) => {
-        this.income = income;
-    }
-
-    setExpense = (expense: number) => {
-        this.expense = expense;
-    }
-
-    setBalance = (balance: number) => {
-        this.balance = balance;
-    }
-
-    setCurrent = (current: number) => {
-        this.current = current;
-    }
+            const currentByBill = await getCurrentBalanceByBillId(billId);
+            const currentByGroupBill = await getCurrentBalanceByGroupBillId(groupBillId);
+            this.setCurrent(currentByBill.data + currentByGroupBill.data);
+        } catch (error) {
+            console.error("Failed to update general data", error);
+        }
+    };
 }
 
 export const tranStore: Transaction = new Transaction();

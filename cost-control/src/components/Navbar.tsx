@@ -7,7 +7,7 @@ import {
     ListItemText,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import MenuAppBar from "./AppBar";
+import MenuAppBar from "./AppBar/Menu";
 import React, { useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { exportData, importData } from "../API/Manager";
@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
 import SendIcon from '@mui/icons-material/SendToMobileRounded';
 import InstallIcon from '@mui/icons-material/InstallMobileRounded';
+import PieChartIcon from '@mui/icons-material/PieChartRounded';
 
 interface IProps {
     toggleTheme: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -78,6 +79,15 @@ const Navbar = (props: IProps) => {
                         >
                             <ListIcon/> 
                             <ListItemText primary="&nbsp;Операции" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component={NavLink}
+                            to="/cost-control-pages/reports"
+                        >
+                            <PieChartIcon/> 
+                            <ListItemText primary="&nbsp;Отчёт" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem />

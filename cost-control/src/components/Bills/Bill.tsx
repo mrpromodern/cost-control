@@ -13,14 +13,15 @@ interface IProps {
 
 const Bill = (props: IProps) => {
     const { bill } = props;
-    const { getTransactions, updateGeneral } = tranStore;
+    const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
     const handleClick = useCallback(() => {
         billStore.setBill(bill);
         groupBillStore.resetGroupBill();
-        getTransactions();
-        updateGeneral();
-    }, [bill, getTransactions, updateGeneral]);
+        getTransactions()
+            .then(() => updateGeneral())
+            .then(() => getCategoryChart());
+    }, [bill, getCategoryChart, getTransactions, updateGeneral]);
 
     return (
         <ListItemButton

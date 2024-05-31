@@ -23,7 +23,7 @@ export let transactions = [
     },
     {
         id: "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p",
-        category: "Покупки",
+        category: "Продукты",
         amount: 120,
         date: "2020-06-10T17:45:00+01:00",
         comment: "Продукты в супермаркете",
@@ -32,7 +32,7 @@ export let transactions = [
     },
     {
         id: "f2a35c7d-b3f6-4d6f-b2d9-c7d3a6e0a8f1",
-        category: "Обед",
+        category: "Рестораны и кафе",
         amount: 450,
         date: "2020-06-10T13:30:00+01:00",
         comment: "Обед в ресторане",
@@ -50,7 +50,7 @@ export let transactions = [
     },
     {
         id: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m2n4o5",
-        category: "Развлечения",
+        category: "Без категории",
         amount: 100,
         date: "2022-01-01T00:00:00+01:00",
         comment: "New Transaction",
