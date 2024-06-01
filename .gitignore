@@ -1,0 +1,20 @@
+# Виртуальная среда
+venv/
+env/
+
+# Кэш файлы Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Конфигурационные файлы IDE
+.idea/
+
+# Файлы конфигурации
+.env
+
+# Alembic миграции
+app/migrations/versions/
+
+# SQLite database (если используется)
+*.sqlite3
