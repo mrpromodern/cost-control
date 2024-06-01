@@ -52,7 +52,7 @@ export let transactions = [
         id: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m2n4o5",
         category: "Без категории",
         amount: 100,
-        date: "2022-01-01T00:00:00+01:00",
+        date: "2024-06-02T00:00:00+01:00",
         comment: "New Transaction",
         type: "Expense",
         billId: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5"

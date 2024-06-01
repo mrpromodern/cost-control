@@ -91,7 +91,7 @@ const BillPage = () => {
     }, [fetchGroupBills]);
 
     return (
-        <Box sx={{ width: "33%", height: "100%" }}>
+        <Box width={"33%"} sx={{ backgroundColor: "#eaeaec" }}>
             <MenuAppBar>
                 <Box
                     display="flex"

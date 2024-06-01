@@ -15,7 +15,12 @@ import PeriodAppBar from "../components/AppBar/Period";
 const TransactionPage = () => {
     const { fetchGroupBills } = groupBillStore;
 
-    const { transaction, setTransactionType: setType, resetTransaction, updateGeneral } = tranStore;
+    const {
+        transaction,
+        setTransactionType: setType,
+        resetTransaction,
+        updateGeneral,
+    } = tranStore;
 
     const tranType: TransactionType = transaction.type;
 
@@ -70,7 +75,7 @@ const TransactionPage = () => {
     };
 
     return (
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box width={"100%"} sx={{ backgroundColor: "#f0f0f0" }}>
             <MenuAppBar>
                 <Box
                     display="flex"

@@ -47,7 +47,7 @@ const PeriodAppBar = () => {
 
     return (
         <Box>
-            <Button color="info" onClick={handleOpenDateForm}>
+            <Button color="primary" onClick={handleOpenDateForm}>
                 <Typography variant="h6">
                     {startDate.format("DD.MM.YYYY")} -{" "}
                     {endDate.format("DD.MM.YYYY")}

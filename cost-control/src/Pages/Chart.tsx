@@ -49,15 +49,15 @@ const Chart = observer(() => {
     }, []);
 
     return (
-        <Box>
+        <Box width={"100%"}>
             <MenuAppBar>
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <Select value={type} onChange={handleChangeType}>
+                    <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
+                        <Select variant="standard" value={type} onChange={handleChangeType}>
                             <MenuItem value={TransactionType.Expense}>
                                 Расходы
                             </MenuItem>
@@ -82,7 +82,7 @@ const Chart = observer(() => {
                             paddingAngle: 3,
                             innerRadius: "50%",
                             outerRadius: "100%",
-                            data: dataChart,
+                            data: dataChart.filter((data) => data.value === 0 ? null : data),
                         },
                     ]}
                     margin={{ right: 5 }}
@@ -93,7 +93,6 @@ const Chart = observer(() => {
             </Box>
             <List
                 sx={{
-                    backgroundColor: theme.palette.background.default,
                     color: theme.palette.text.primary,
                     borderRadius: theme.shape.borderRadius,
                 }}

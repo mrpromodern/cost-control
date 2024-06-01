@@ -1,4 +1,4 @@
-import { Collapse, Divider } from "@mui/material";
+import { Box, Collapse } from "@mui/material";
 import BillPage from "./Bill";
 import TransactionPage from "./Transaction";
 import { billStore } from "../store/bill";
@@ -12,13 +12,14 @@ const MainPage = () => {
             : true;
 
     return (
-        <>
+        <Box display={"flex"} width={"100%"} height={"100vh"}>
             <BillPage />
-            <Divider orientation="vertical" sx={{ height: "100vh" }} />
-            <Collapse sx={{ width: "100%" }} in={open}>
-                <TransactionPage />
-            </Collapse>
-        </>
+            <Box sx={{ backgroundColor: "#f0f0f0", width: "100%" }}>
+                <Collapse in={open}>
+                    <TransactionPage />
+                </Collapse>
+            </Box>
+        </Box>
     );
 };
 

@@ -13,7 +13,7 @@ const ItemGeneral = (props: IProps) => {
 
     return (
         <Grid sx={{ textAlign: "right" }} item xs={6}>
-            <Paper variant="outlined" sx={{ p: 2 }}>
+            <Paper variant="outlined" sx={{ p: 2, backgroundColor: "#f0f0f0" }}>
                 <Typography
                     fontWeight="fontWeightMedium"
                     variant="subtitle1"
@@ -22,9 +22,7 @@ const ItemGeneral = (props: IProps) => {
                     {title}
                 </Typography>
                 <Typography variant="h5" color={colorData}>
-                    {colorData === "error.main" ? "-" : "+"}
-                    {" "}
-                    {data}
+                    {colorData === "error.main" ? "-" : "+"} {data}
                 </Typography>
             </Paper>
         </Grid>

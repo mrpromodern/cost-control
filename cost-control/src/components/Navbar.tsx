@@ -1,5 +1,4 @@
 import {
-    Button,
     Drawer,
     List,
     ListItem,
@@ -13,18 +12,17 @@ import { NavLink } from "react-router-dom";
 import { exportData, importData } from "../API/Manager";
 import { groupBillStore } from "../store/groupBill";
 import { observer } from "mobx-react-lite";
-import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
-import SendIcon from '@mui/icons-material/SendToMobileRounded';
-import InstallIcon from '@mui/icons-material/InstallMobileRounded';
-import PieChartIcon from '@mui/icons-material/PieChartRounded';
+import ListIcon from "@mui/icons-material/FormatListBulletedRounded";
+import SendIcon from "@mui/icons-material/SendToMobileRounded";
+import InstallIcon from "@mui/icons-material/InstallMobileRounded";
+import PieChartIcon from "@mui/icons-material/PieChartRounded";
 
 interface IProps {
-    toggleTheme: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const Navbar = (props: IProps) => {
-    const { toggleTheme, children } = props;
+    const { children } = props;
 
     const drawerWidth = "15%";
 
@@ -65,19 +63,21 @@ const Navbar = (props: IProps) => {
                 }}
                 anchor="left"
                 variant="permanent"
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "#dcdcdc",
+                        borderRight: "0px",
+                    },
+                }}
             >
-                <MenuAppBar>
-                    <Button variant="text" onClick={toggleTheme}>
-                        Тема
-                    </Button>
-                </MenuAppBar>
+                <MenuAppBar />
                 <List>
                     <ListItem disablePadding>
                         <ListItemButton
                             component={NavLink}
                             to="/cost-control-pages/transactions"
                         >
-                            <ListIcon/> 
+                            <ListIcon />
                             <ListItemText primary="&nbsp;Операции" />
                         </ListItemButton>
                     </ListItem>
@@ -86,20 +86,20 @@ const Navbar = (props: IProps) => {
                             component={NavLink}
                             to="/cost-control-pages/reports"
                         >
-                            <PieChartIcon/> 
+                            <PieChartIcon />
                             <ListItemText primary="&nbsp;Отчёт" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem />
                     <ListItem disablePadding>
                         <ListItemButton onClick={handleImport}>
-                            <InstallIcon/>
+                            <InstallIcon />
                             <ListItemText primary="&nbsp;Импорт" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton onClick={exportData}>
-                            <SendIcon/>
+                            <SendIcon />
                             <ListItemText primary="&nbsp;Экспорт" />
                         </ListItemButton>
                     </ListItem>
