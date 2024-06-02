@@ -5,7 +5,7 @@ import { groupBillStore } from "../store/groupBill";
 import { observer } from "mobx-react-lite";
 import Chart from "./Chart";
 
-const MainPage = () => {
+const ReportPage = () => {
     const open =
         billStore.bill.id === "" && groupBillStore.groupBill.id === ""
             ? false
@@ -20,7 +20,8 @@ const MainPage = () => {
                 </Collapse>
             </Box>
         </Box>
+        
     );
 };
 
-export default observer(MainPage);
+export default observer(ReportPage);

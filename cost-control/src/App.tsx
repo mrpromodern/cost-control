@@ -9,7 +9,8 @@ import "dayjs/locale/ru";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "./Pages/Main";
 import Navbar from "./components/Navbar";
-import Report from "./Pages/Report";
+import ReportPage from "./Pages/Report";
+import PlanPage from "./Pages/Plan";
 import { CssBaseline } from "@mui/material";
 
 dayjs.locale("ru");
@@ -26,7 +27,11 @@ function App() {
                     />
                     <Route
                         path="/cost-control-pages/reports"
-                        element={<Report />}
+                        element={<ReportPage />}
+                    />
+                    <Route
+                        path="/cost-control-pages/plans"
+                        element={<PlanPage />}
                     />
                 </Routes>
             </Navbar>

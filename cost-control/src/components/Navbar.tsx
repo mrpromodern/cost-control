@@ -16,6 +16,7 @@ import ListIcon from "@mui/icons-material/FormatListBulletedRounded";
 import SendIcon from "@mui/icons-material/SendToMobileRounded";
 import InstallIcon from "@mui/icons-material/InstallMobileRounded";
 import PieChartIcon from "@mui/icons-material/PieChartRounded";
+import ArticleIcon from '@mui/icons-material/ArticleRounded';
 
 interface IProps {
     children?: React.ReactNode;
@@ -76,6 +77,11 @@ const Navbar = (props: IProps) => {
                         <ListItemButton
                             component={NavLink}
                             to="/cost-control-pages/transactions"
+                            sx={{
+                                "&.active": {
+                                    backgroundColor: "#bfbfbf",
+                                },
+                            }}
                         >
                             <ListIcon />
                             <ListItemText primary="&nbsp;Операции" />
@@ -85,9 +91,28 @@ const Navbar = (props: IProps) => {
                         <ListItemButton
                             component={NavLink}
                             to="/cost-control-pages/reports"
+                            sx={{
+                                "&.active": {
+                                    backgroundColor: "#bfbfbf",
+                                },
+                            }}
                         >
                             <PieChartIcon />
                             <ListItemText primary="&nbsp;Отчёт" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component={NavLink}
+                            to="/cost-control-pages/plans"
+                            sx={{
+                                "&.active": {
+                                    backgroundColor: "#bfbfbf",
+                                },
+                            }}
+                        >
+                            <ArticleIcon />
+                            <ListItemText primary="&nbsp;План" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem />

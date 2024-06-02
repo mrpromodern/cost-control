@@ -1,33 +1,30 @@
-import { useCallback, useState } from "react";
+import { Divider } from "@mui/material";
 import CommentForm from "../Form/Comment";
+import { useCallback, useEffect, useState } from "react";
 import SumForm from "../Form/Sum";
-import Divider from "@mui/material/Divider";
-import ButtonForm from "../Form/Button";
-import { IBill, IGroupBill } from "../../type";
+import { groupBillStore } from "../../store/groupBill";
 import GroupBillSelector from "../Form/GroupBillSelector";
+import DateForm from "../Transactions/Form/Date";
+import dayjs, { Dayjs } from "dayjs";
+import ButtonForm from "../Form/Button";
+import { ITarget } from "../../type";
+import { targetStore } from "../../store/target";
+import { observer } from "mobx-react-lite";
+import { updateTarget } from "../../API/Manager";
 
 interface IProps {
-    bill: IBill;
-    groupBills: IGroupBill[];
-    handleAddBill: Function;
-    handleUpdateBill: Function;
     handleOpenForm: Function;
 }
 
-const BillForm = (props: IProps) => {
-    const {
-        bill,
-        groupBills,
-        handleAddBill,
-        handleUpdateBill,
-        handleOpenForm,
-    } = props;
+const TargetForm = (props: IProps) => {
+    const { handleOpenForm } = props;
+    const { groupBills, fetchGroupBills } = groupBillStore;
+    const { addTarget, target } = targetStore;
 
-    const id = bill.id;
-
-    const [groupBillId, setGroupBillId] = useState<string>(bill.groupBillId);
-    const [name, setName] = useState<string>(bill.name);
-    const [balance, setBalance] = useState<number>(bill.balance);
+    const [date, setDate] = useState<Dayjs>(dayjs(target.date));
+    const [groupBillId, setGroupBillId] = useState<string>(target.groupBillId);
+    const [name, setName] = useState<string>(target.name);
+    const [balance, setBalance] = useState<number>(target.target);
 
     const handleNameChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,31 +52,31 @@ const BillForm = (props: IProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
-            const newBill: IBill = {
+            const id = target.id;
+
+            const newTarget: ITarget = {
                 id: id,
                 groupBillId: groupBillId,
                 name: name,
-                balance: balance,
+                balance: 0,
+                target: balance,
+                date: date,
             };
 
             if (id === "") {
-                handleAddBill(newBill);
+                addTarget(newTarget);
             } else {
-                handleUpdateBill(id, newBill);
+                updateTarget(id, newTarget);
             }
 
             handleOpenForm();
         },
-        [
-            id,
-            balance,
-            handleAddBill,
-            handleUpdateBill,
-            handleOpenForm,
-            name,
-            groupBillId,
-        ]
+        [target.id, groupBillId, name, balance, date, handleOpenForm, addTarget]
     );
+
+    useEffect(() => {
+        fetchGroupBills();
+    }, [fetchGroupBills]);
 
     return (
         <>
@@ -94,7 +91,7 @@ const BillForm = (props: IProps) => {
             <Divider component="li" />
 
             <SumForm
-                title="Начальный баланс"
+                title="Сумма"
                 amount={balance}
                 handleChange={handleBalanceChange}
             />
@@ -109,6 +106,10 @@ const BillForm = (props: IProps) => {
 
             <Divider component="li" />
 
+            <DateForm date={date} setDate={setDate} />
+
+            <Divider component="li" />
+
             <ButtonForm color="primary" onClick={handleSubmit}>
                 Сохранить счет
             </ButtonForm>
@@ -116,4 +117,4 @@ const BillForm = (props: IProps) => {
     );
 };
 
-export default BillForm;
+export default observer(TargetForm);

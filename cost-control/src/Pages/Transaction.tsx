@@ -38,9 +38,8 @@ const TransactionPage = () => {
     const handleClickTranType = useCallback(
         (event: React.MouseEvent<HTMLElement>, tranType: TransactionType) => {
             setType(tranType);
-            console.log(transaction);
         },
-        [setType, transaction]
+        [setType]
     );
 
     const handleOpenForm = useCallback(() => {

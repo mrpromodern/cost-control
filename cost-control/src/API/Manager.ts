@@ -1,4 +1,4 @@
-import { IBill, IGroupBill, ITransaction } from "../type";
+import { IBill, IGroupBill, ITarget, ITransaction } from "../type";
 import { deleteJson, getJson, postJson, putJson } from "./helper";
 
 export const OUR_API_ADDRESS = `${process.env.PUBLIC_URL}/api/v1`;
@@ -16,6 +16,8 @@ export enum OUR_API_ENDPOINTS {
     BALANCE = 'balance',
     CURRENT = 'current',
     DATA = 'data',
+    TARGETS = 'targets',
+    TARGETID = 'targetId',
 }
 
 const buildUrl = (endpoint: string, id?: string) => {
@@ -30,6 +32,24 @@ export function exportData() {
 
 export function importData(data: any) {
     return postJson(buildUrl(OUR_API_ENDPOINTS.DATA), data);
+}
+
+// ------------- Plan -------------
+
+export function getTargets() {
+    return getJson(buildUrl(OUR_API_ENDPOINTS.TARGETS));
+}
+
+export function addTarget(target: ITarget) {
+    return postJson(buildUrl(OUR_API_ENDPOINTS.TARGETS), target);
+}
+
+export function updateTarget(targetId: string, target: ITarget) {
+    return putJson(buildUrl(OUR_API_ENDPOINTS.TARGETS, targetId), target);
+}
+
+export function deleteTarget(targetId: string) {
+    return deleteJson(buildUrl(OUR_API_ENDPOINTS.TARGETS, targetId));
 }
 
 // ------------- Transactions -------------

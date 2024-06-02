@@ -136,6 +136,7 @@ export function addTransactions(newTrans: ITransaction[]) {
 
 export function updateTransaction(transactionId: string, transaction: ITransaction) {
     const indexOldTran = transactions.findIndex((transaction) => transaction.id === transactionId);
+    const oldTransaction = transactions[indexOldTran];
     const bill = getBill(transaction.billId);
     const type = transaction.type;
 
@@ -152,13 +153,19 @@ export function updateTransaction(transactionId: string, transaction: ITransacti
     transactions[indexOldTran] = newTransaction;
 
     if (bill) {
+        if (oldTransaction.type === "Income") {
+            bill.balance -= oldTransaction.amount;
+        } else {
+            bill.balance += oldTransaction.amount;
+        }
+
         if (type === "Income") {
             bill.balance += transaction.amount;
-            updateBill(bill.id, bill);
         } else {
             bill.balance -= transaction.amount;
-            updateBill(bill.id, bill);
         }
+
+        updateBill(bill.id, bill);
     }
 }
 

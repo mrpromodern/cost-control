@@ -23,7 +23,12 @@ const GroupBillItem = (props: IProps) => {
     const activeGroupBillId = groupBillStore.groupBill.id;
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
-    const [open, setOpen] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(() => {
+        const savedState = localStorage.getItem(
+            `groupBill-${groupBill.id}-open`
+        );
+        return savedState ? JSON.parse(savedState) : false;
+    });
 
     const handleClick = useCallback(() => {
         groupBillStore.setGroupBill(groupBill);
@@ -36,8 +41,15 @@ const GroupBillItem = (props: IProps) => {
     }, [getCategoryChart, getTransactions, groupBill, updateGeneral]);
 
     const handleCollapse = useCallback(() => {
-        setOpen((prevState) => !prevState);
-    }, []);
+        setOpen((prevState) => {
+            const newState = !prevState;
+            localStorage.setItem(
+                `groupBill-${groupBill.id}-open`,
+                JSON.stringify(newState)
+            );
+            return newState;
+        });
+    }, [groupBill.id]);
 
     return (
         <>

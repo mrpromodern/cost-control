@@ -13,6 +13,7 @@ import {
     ListItemButton,
     ListItemText,
     Divider,
+    Typography,
 } from "@mui/material";
 import { TransactionType } from "../type";
 import MenuAppBar from "../components/AppBar/Menu";
@@ -20,15 +21,16 @@ import PeriodAppBar from "../components/AppBar/Period";
 
 const Chart = observer(() => {
     const theme = useTheme();
-    const { type, setType, dataChart } = tranStore;
+    const { type, setType, dataChart, isLoading } = tranStore;
     const chartContainerRef = useRef<HTMLDivElement | null>(null);
     const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
 
     const handleChangeType = useCallback(
         (event: SelectChangeEvent) => {
             setType(event.target.value as TransactionType);
+            console.log(isLoading);
         },
-        [setType]
+        [isLoading, setType]
     );
 
     useEffect(() => {
@@ -57,7 +59,11 @@ const Chart = observer(() => {
                     alignItems="center"
                 >
                     <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
-                        <Select variant="standard" value={type} onChange={handleChangeType}>
+                        <Select
+                            variant="standard"
+                            value={type}
+                            onChange={handleChangeType}
+                        >
                             <MenuItem value={TransactionType.Expense}>
                                 Расходы
                             </MenuItem>
@@ -69,69 +75,84 @@ const Chart = observer(() => {
                     <PeriodAppBar />
                 </Box>
             </MenuAppBar>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                flexGrow={1}
-                sx={{ width: "100%", maxWidth: "100%", height: "40vh" }}
-            >
-                <PieChart
-                    series={[
-                        {
-                            paddingAngle: 3,
-                            innerRadius: "50%",
-                            outerRadius: "100%",
-                            data: dataChart.filter((data) => data.value === 0 ? null : data),
-                        },
-                    ]}
-                    margin={{ right: 5 }}
-                    width={dimensions.width}
-                    height={dimensions.height}
-                    legend={{ hidden: true }}
-                />
-            </Box>
-            <List
-                sx={{
-                    color: theme.palette.text.primary,
-                    borderRadius: theme.shape.borderRadius,
-                }}
-            >
-                {dataChart.map((data) => {
-                    if (data.value === 0) {
-                        return null;
-                    }
+            {dataChart.length === 0 ? (
+                <Typography
+                    variant="h6"
+                    sx={{ textAlign: "center", marginTop: 10 }}
+                >
+                    Нет данных
+                </Typography>
+            ) : (
+                <Box>
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        flexGrow={1}
+                        sx={{ width: "100%", maxWidth: "100%", height: "40vh" }}
+                    >
+                        <PieChart
+                            series={[
+                                {
+                                    paddingAngle: 3,
+                                    innerRadius: "50%",
+                                    outerRadius: "100%",
+                                    data: dataChart,
+                                    arcLabel: (d) => `${d.value} ₽`,
+                                },
+                            ]}
+                            margin={{ right: 5 }}
+                            width={dimensions.width}
+                            height={dimensions.height}
+                            legend={{ hidden: true }}
+                        />
+                    </Box>
+                    <List
+                        sx={{
+                            color: theme.palette.text.primary,
+                            borderRadius: theme.shape.borderRadius,
+                        }}
+                    >
+                        {dataChart.map((data) => {
+                            if (data.value === 0) {
+                                return null;
+                            }
 
-                    return (
-                        <Box
-                            sx={{ padding: "0px 8px 0px 8px" }}
-                            key={data.label}
-                        >
-                            <ListItemButton sx={{ padding: 0, minHeight: 50 }}>
-                                <ListItemText primary={data.label} />
-                                <ListItemText
-                                    sx={{ textAlign: "right" }}
-                                    primary={
-                                        type === TransactionType.Expense ? (
-                                            <Box fontWeight="fontWeightMedium">
-                                                - {data.value} ₽
-                                            </Box>
-                                        ) : (
-                                            <Box
-                                                color="green"
-                                                fontWeight="fontWeightMedium"
-                                            >
-                                                + {data.value} ₽
-                                            </Box>
-                                        )
-                                    }
-                                />
-                            </ListItemButton>
-                            <Divider component="li" />
-                        </Box>
-                    );
-                })}
-            </List>
+                            return (
+                                <Box
+                                    sx={{ padding: "0px 8px 0px 8px" }}
+                                    key={data.label}
+                                >
+                                    <ListItemButton
+                                        sx={{ padding: 0, minHeight: 50 }}
+                                    >
+                                        <ListItemText primary={data.label} />
+                                        <ListItemText
+                                            sx={{ textAlign: "right" }}
+                                            primary={
+                                                type ===
+                                                TransactionType.Expense ? (
+                                                    <Box fontWeight="fontWeightMedium">
+                                                        - {data.value} ₽
+                                                    </Box>
+                                                ) : (
+                                                    <Box
+                                                        color="green"
+                                                        fontWeight="fontWeightMedium"
+                                                    >
+                                                        + {data.value} ₽
+                                                    </Box>
+                                                )
+                                            }
+                                        />
+                                    </ListItemButton>
+                                    <Divider component="li" />
+                                </Box>
+                            );
+                        })}
+                    </List>
+                </Box>
+            )}
         </Box>
     );
 });

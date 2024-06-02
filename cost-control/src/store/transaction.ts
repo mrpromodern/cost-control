@@ -78,6 +78,7 @@ class Transaction {
                 }
             }
         });
+        this.dataChart = this.dataChart.filter(data => data.value !== 0);
         this.sortDataChart();
     };
 
@@ -155,7 +156,6 @@ class Transaction {
         const billId = billStore.bill.id;
         const groupBillId = groupBillStore.groupBill.id;
 
-        this.setIsLoading(true);
         try {
             let response;
 
@@ -172,6 +172,8 @@ class Transaction {
                 });
                 this.setTransactions(transactions);
             }
+            this.setIsLoading(true);
+
         } catch (error) {
             console.error("Failed to fetch transactions", error);
         } finally {

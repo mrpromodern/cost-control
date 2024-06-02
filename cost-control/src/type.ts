@@ -28,3 +28,12 @@ export interface IBill {
     name: string;
     balance: number;
 }
+
+export interface ITarget {
+    id: string;
+    groupBillId: string;
+    name: string;
+    target: number;
+    balance: number;
+    date: Dayjs;
+}
