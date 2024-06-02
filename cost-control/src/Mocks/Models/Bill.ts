@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import { IBill } from "../../type";
-import { generateUUID } from "../helper";
 import { getGroupBill } from "./GroupBill";
 import { getTxByBillId } from "./Transaction";
+import { v4 as uuidv4 } from 'uuid';
 
 export let bills = [
     {
@@ -52,7 +52,7 @@ export function getBillsForExport() {
 export function createBill(bill: IBill) {
     const groupBill = getGroupBill(bill.groupBillId);
     const newBill = {
-        id: generateUUID(),
+        id: uuidv4(),
         groupBillId: bill.groupBillId,
         name: bill.name,
         balance: bill.balance

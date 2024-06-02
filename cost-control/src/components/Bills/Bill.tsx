@@ -7,12 +7,12 @@ import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
 import { observer } from "mobx-react-lite";
 import { tranStore } from "../../store/transaction";
+
 interface IProps {
     bill: IBill;
 }
 
-const Bill = (props: IProps) => {
-    const { bill } = props;
+const Bill: React.FC<IProps> = ({ bill }) => {
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
     const handleClick = useCallback(() => {

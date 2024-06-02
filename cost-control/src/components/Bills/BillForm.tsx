@@ -9,22 +9,18 @@ import GroupBillSelector from "../Form/GroupBillSelector";
 interface IProps {
     bill: IBill;
     groupBills: IGroupBill[];
-    handleAddBill: Function;
-    handleUpdateBill: Function;
-    handleOpenForm: Function;
+    handleAddBill: (bill: IBill) => void;
+    handleUpdateBill: (id: string, bill: IBill) => void;
+    handleOpenForm: () => void;
 }
 
-const BillForm = (props: IProps) => {
-    const {
-        bill,
-        groupBills,
-        handleAddBill,
-        handleUpdateBill,
-        handleOpenForm,
-    } = props;
-
-    const id = bill.id;
-
+const BillForm: React.FC<IProps> = ({
+    bill,
+    groupBills,
+    handleAddBill,
+    handleUpdateBill,
+    handleOpenForm,
+}) => {
     const [groupBillId, setGroupBillId] = useState<string>(bill.groupBillId);
     const [name, setName] = useState<string>(bill.name);
     const [balance, setBalance] = useState<number>(bill.balance);
@@ -38,8 +34,7 @@ const BillForm = (props: IProps) => {
 
     const handleBalanceChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            const value = parseFloat(event.target.value);
-            setBalance(value);
+            setBalance(parseFloat(event.target.value));
         },
         []
     );
@@ -55,11 +50,13 @@ const BillForm = (props: IProps) => {
     const handleSubmit = useCallback(
         (event: React.MouseEvent) => {
             event.preventDefault();
+            const id = bill.id;
+
             const newBill: IBill = {
-                id: id,
-                groupBillId: groupBillId,
-                name: name,
-                balance: balance,
+                id,
+                groupBillId,
+                name,
+                balance,
             };
 
             if (id === "") {
@@ -71,13 +68,13 @@ const BillForm = (props: IProps) => {
             handleOpenForm();
         },
         [
-            id,
+            bill.id,
+            groupBillId,
+            name,
             balance,
+            handleOpenForm,
             handleAddBill,
             handleUpdateBill,
-            handleOpenForm,
-            name,
-            groupBillId,
         ]
     );
 

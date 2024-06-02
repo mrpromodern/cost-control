@@ -11,7 +11,7 @@ const emptyGroupBill: IGroupBill = {
 };
 
 class GroupBill {
-    groupBill = emptyGroupBill;
+    groupBill = { ...emptyGroupBill };
     groupBills: IGroupBill[] = [];
 
     constructor() {
@@ -19,15 +19,15 @@ class GroupBill {
     }
 
     setGroupBill(groupBill: IGroupBill) {
-        this.groupBill = groupBill;
+        this.groupBill = { ...groupBill };
     }
 
     setGroupBills(groupBills: IGroupBill[]) {
-        this.groupBills = groupBills;
+        this.groupBills = [...groupBills];
     }
 
     resetGroupBill() {
-        this.groupBill = emptyGroupBill;
+        this.groupBill = { ...emptyGroupBill };
     }
 
     fetchGroupBills = async () => {
@@ -39,4 +39,4 @@ class GroupBill {
     }
 }
 
-export const groupBillStore: GroupBill = new GroupBill();
+export const groupBillStore = new GroupBill();

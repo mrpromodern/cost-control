@@ -1,25 +1,37 @@
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import CloseIcon from "@mui/icons-material/Close";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+} from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { useCallback, useState } from "react";
 import { tranStore } from "../../../store/transaction";
-interface ICategoryFormProps {
+
+interface IProps {
     category: string;
     handleCategorySelect: (category: string) => void;
 }
 
-const CategoryForm = (props: ICategoryFormProps) => {
+const CategoryForm: React.FC<IProps> = ({ category, handleCategorySelect }) => {
     const [open, setOpen] = useState<boolean>(false);
     const { categories } = tranStore;
+
     const handleClose = useCallback(() => {
         setOpen(false);
     }, []);
+
+    const handleCategoryClick = useCallback(
+        (category: string) => {
+            handleClose();
+            handleCategorySelect(category);
+        },
+        [handleClose, handleCategorySelect]
+    );
 
     return (
         <>
@@ -27,8 +39,8 @@ const CategoryForm = (props: ICategoryFormProps) => {
                 <ListItemButton onClick={() => setOpen(true)}>
                     <ListItemText primary="Категория" />
                     <ListItemText
-                        sx={{ textAlign: "right" }}
-                        primary={props.category}
+                        sx={{ textAlign: "end" }}
+                        primary={category}
                     />
                 </ListItemButton>
             </ListItem>
@@ -48,8 +60,7 @@ const CategoryForm = (props: ICategoryFormProps) => {
                             <ListItemButton
                                 key={category}
                                 onClick={() => {
-                                    handleClose();
-                                    props.handleCategorySelect(category);
+                                    handleCategoryClick(category);
                                 }}
                             >
                                 <ListItemText primary={category} />

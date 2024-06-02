@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { evaluate } from "mathjs";
+import { useCallback } from "react";
 
 const buttons = [
     "7",
@@ -24,26 +25,27 @@ const buttons = [
 
 interface IProps {
     amount: string;
-    setAmount: Function;
+    setAmount: (amount: string) => void;
 }
 
-const KeypadForm = (props: IProps) => {
-    const { amount, setAmount } = props;
-
+const KeypadForm: React.FC<IProps> = ({ amount, setAmount }) => {
     const [lastEvaluatedValue, setLastEvaluatedValue] = useState<string>("");
 
-    const handleKeypadClick = (value: string) => {
-        if (value === "×") value = "*";
-        if (value === "÷") value = "/";
-        setAmount(amount + value);
-    };
+    const handleKeypadClick = useCallback(
+        (value: string) => {
+            if (value === "×") value = "*";
+            if (value === "÷") value = "/";
+            setAmount(amount + value);
+        },
+        [amount, setAmount]
+    );
 
-    const handleBackspace = () => {
+    const handleBackspace = useCallback(() => {
         const newAmount = amount.slice(0, -1);
         setAmount(newAmount);
-    };
+    }, [amount, setAmount]);
 
-    const handleEvaluate = () => {
+    const handleEvaluate = useCallback(() => {
         if (amount === lastEvaluatedValue) {
             return;
         }
@@ -56,7 +58,7 @@ const KeypadForm = (props: IProps) => {
         } catch (error) {
             setAmount("Error");
         }
-    };
+    }, [amount, lastEvaluatedValue, setAmount]);
 
     return (
         <Box sx={{ textAlign: "center", paddingBottom: 1 }}>

@@ -3,22 +3,20 @@ import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import { InputAdornment } from "@mui/material";
 
-interface FormSumProps {
+interface IProps {
     title: string;
     amount: number | string;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SumForm = (props: FormSumProps) => {
-    const { title, amount, handleChange } = props;
-
+const SumForm: React.FC<IProps> = ({ title, amount, handleChange }) => {
     return (
         <ListItem>
-            <ListItemText>{title}</ListItemText>
+            <ListItemText primary={title}/>
             <TextField
                 sx={{
                     input: {
-                        textAlign: "right",
+                        textAlign: "end",
                     },
                 }}
                 variant="standard"
@@ -27,7 +25,7 @@ const SumForm = (props: FormSumProps) => {
                     endAdornment: (
                         <InputAdornment
                             sx={{ paddingLeft: 1 }}
-                            position="start"
+                            position="end"
                         >
                             ₽
                         </InputAdornment>

@@ -13,11 +13,10 @@ import { observer } from "mobx-react-lite";
 import { updateTarget } from "../../API/Manager";
 
 interface IProps {
-    handleOpenForm: Function;
+    handleOpenForm: () => void;
 }
 
-const TargetForm = (props: IProps) => {
-    const { handleOpenForm } = props;
+const TargetForm: React.FC<IProps> = observer(({ handleOpenForm }) => {
     const { groupBills, fetchGroupBills } = groupBillStore;
     const { addTarget, target } = targetStore;
 
@@ -115,6 +114,6 @@ const TargetForm = (props: IProps) => {
             </ButtonForm>
         </>
     );
-};
+});
 
-export default observer(TargetForm);
+export default TargetForm;

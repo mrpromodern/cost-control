@@ -6,9 +6,7 @@ interface IProps {
     handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const ButtonAdd = (props: IProps) => {
-    const { handleClick } = props;
-
+const ButtonAdd: React.FC<IProps> = ({ handleClick }) => {
     return (
         <IconButton onClick={handleClick}>
             <AddIcon />

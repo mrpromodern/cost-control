@@ -12,7 +12,7 @@ import { tranStore } from "../store/transaction";
 import { groupBillStore } from "../store/groupBill";
 import PeriodAppBar from "../components/AppBar/Period";
 
-const TransactionPage = () => {
+const TransactionPage = observer(() => {
     const { fetchGroupBills } = groupBillStore;
 
     const {
@@ -43,7 +43,7 @@ const TransactionPage = () => {
     );
 
     const handleOpenForm = useCallback(() => {
-        setIsFormOpen((prevState: boolean) => {
+        setIsFormOpen((prevState) => {
             if (prevState) {
                 resetTransaction();
             }
@@ -96,6 +96,6 @@ const TransactionPage = () => {
             </DialogForm>
         </Box>
     );
-};
+});
 
-export default observer(TransactionPage);
+export default TransactionPage;

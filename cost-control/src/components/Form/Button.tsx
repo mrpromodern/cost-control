@@ -1,14 +1,12 @@
-import Button from "@mui/material/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 import ListItem from "@mui/material/ListItem";
 
-type FormButtonProps = {
+type IProps = {
     onClick: (event: React.MouseEvent) => void;
     children: React.ReactNode;
-    color?: "primary" | "error";
-};
+} & Pick<ButtonProps, "color">;
 
-const ButtonForm = (props: FormButtonProps) => {
-    const { onClick, children, color } = props;
+const ButtonForm: React.FC<IProps> = ({ onClick, children, color }) => {
     return (
         <ListItem>
             <Button

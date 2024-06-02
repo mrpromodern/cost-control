@@ -13,32 +13,30 @@ interface GroupBill {
     name: string;
 }
 
-interface Props {
+interface IProps {
     groupBills: GroupBill[];
     groupBillId: string;
     handleSelectGroup: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const GroupBillSelector: React.FC<Props> = ({
-    groupBills,
-    groupBillId,
-    handleSelectGroup,
-}) => {
-    return (
-        <FormControl sx={{ paddingTop: 2 }}>
-            <FormLabel>Группы счетов</FormLabel>
-            <RadioGroup value={groupBillId} onChange={handleSelectGroup}>
-                {groupBills.map((groupBill) => (
-                    <FormControlLabel
-                        key={groupBill.id}
-                        label={groupBill.name}
-                        value={groupBill.id}
-                        control={<Radio />}
-                    />
-                ))}
-            </RadioGroup>
-        </FormControl>
-    );
-};
+const GroupBillSelector: React.FC<IProps> = observer(
+    ({ groupBills, groupBillId, handleSelectGroup }) => {
+        return (
+            <FormControl sx={{ paddingTop: 2 }}>
+                <FormLabel>Группы счетов</FormLabel>
+                <RadioGroup value={groupBillId} onChange={handleSelectGroup}>
+                    {groupBills.map((groupBill) => (
+                        <FormControlLabel
+                            key={groupBill.id}
+                            label={groupBill.name}
+                            value={groupBill.id}
+                            control={<Radio />}
+                        />
+                    ))}
+                </RadioGroup>
+            </FormControl>
+        );
+    }
+);
 
-export default observer(GroupBillSelector);
+export default GroupBillSelector;

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import TargetPage from "./Target";
 
-const PlanPage = () => {
+const PlanPage = observer(() => {
     return (
         <Box
             sx={{ backgroundColor: "#f0f0f0" }}
@@ -10,11 +10,9 @@ const PlanPage = () => {
             width={"100%"}
             height={"100vh"}
         >
-            <Box sx={{ backgroundColor: "#f0f0f0", width: "100%" }}>
-                <TargetPage />
-            </Box>
+            <TargetPage />
         </Box>
     );
-};
+});
 
-export default observer(PlanPage);
+export default PlanPage;

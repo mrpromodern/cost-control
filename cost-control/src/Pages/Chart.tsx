@@ -21,16 +21,15 @@ import PeriodAppBar from "../components/AppBar/Period";
 
 const Chart = observer(() => {
     const theme = useTheme();
-    const { type, setType, dataChart, isLoading } = tranStore;
+    const { type, setType, dataChart } = tranStore;
     const chartContainerRef = useRef<HTMLDivElement | null>(null);
     const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
 
     const handleChangeType = useCallback(
         (event: SelectChangeEvent) => {
             setType(event.target.value as TransactionType);
-            console.log(isLoading);
         },
-        [isLoading, setType]
+        [setType]
     );
 
     useEffect(() => {

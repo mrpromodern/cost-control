@@ -4,14 +4,8 @@ interface IProps {
     children?: React.ReactNode;
 }
 
-const MenuAppBar = (props: IProps) => {
-    const { children } = props;
-
-    return (
-        <Box sx={{ height: "50px" }} >
-            {children}
-        </Box>
-    );
+const MenuAppBar: React.FC<IProps> = ({ children }) => {
+    return <Box sx={{ height: "50px" }}>{children}</Box>;
 };
 
 export default MenuAppBar;

@@ -16,15 +16,27 @@ import ListIcon from "@mui/icons-material/FormatListBulletedRounded";
 import SendIcon from "@mui/icons-material/SendToMobileRounded";
 import InstallIcon from "@mui/icons-material/InstallMobileRounded";
 import PieChartIcon from "@mui/icons-material/PieChartRounded";
-import ArticleIcon from '@mui/icons-material/ArticleRounded';
+import ArticleIcon from "@mui/icons-material/ArticleRounded";
 
 interface IProps {
     children?: React.ReactNode;
 }
 
-const Navbar = (props: IProps) => {
-    const { children } = props;
+const navItems = [
+    {
+        path: "/cost-control-pages/transactions",
+        icon: <ListIcon />,
+        text: "Операции",
+    },
+    {
+        path: "/cost-control-pages/reports",
+        icon: <PieChartIcon />,
+        text: "Отчёт",
+    },
+    { path: "/cost-control-pages/plans", icon: <ArticleIcon />, text: "План" },
+];
 
+const Navbar: React.FC<IProps> = observer(({ children }) => {
     const drawerWidth = "15%";
 
     const handleImport = useCallback(async () => {
@@ -73,48 +85,23 @@ const Navbar = (props: IProps) => {
             >
                 <MenuAppBar />
                 <List>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component={NavLink}
-                            to="/cost-control-pages/transactions"
-                            sx={{
-                                "&.active": {
-                                    backgroundColor: "#bfbfbf",
-                                },
-                            }}
-                        >
-                            <ListIcon />
-                            <ListItemText primary="&nbsp;Операции" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component={NavLink}
-                            to="/cost-control-pages/reports"
-                            sx={{
-                                "&.active": {
-                                    backgroundColor: "#bfbfbf",
-                                },
-                            }}
-                        >
-                            <PieChartIcon />
-                            <ListItemText primary="&nbsp;Отчёт" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component={NavLink}
-                            to="/cost-control-pages/plans"
-                            sx={{
-                                "&.active": {
-                                    backgroundColor: "#bfbfbf",
-                                },
-                            }}
-                        >
-                            <ArticleIcon />
-                            <ListItemText primary="&nbsp;План" />
-                        </ListItemButton>
-                    </ListItem>
+                    {navItems.map((item) => (
+                        <ListItem disablePadding key={item.path}>
+                            <ListItemButton
+                                component={NavLink}
+                                to={item.path}
+                                sx={{
+                                    "&.active": {
+                                        backgroundColor: "#bfbfbf",
+                                    },
+                                }}
+                            >
+                                {item.icon}
+                                &nbsp;
+                                <ListItemText primary={`${item.text}`} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
                     <ListItem />
                     <ListItem disablePadding>
                         <ListItemButton onClick={handleImport}>
@@ -133,6 +120,6 @@ const Navbar = (props: IProps) => {
             {children}
         </Box>
     );
-};
+});
 
-export default observer(Navbar);
+export default Navbar;

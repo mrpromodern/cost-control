@@ -97,7 +97,7 @@ class Transaction {
     };
 
     setTransaction = (transaction: ITransaction) => {
-        this.transaction = transaction;
+        this.transaction = { ...transaction };
     };
 
     resetTransaction = () => {

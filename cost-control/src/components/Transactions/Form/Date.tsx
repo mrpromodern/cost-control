@@ -8,18 +8,17 @@ import {
     StaticDateTimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-type IDateFormProps = {
+type IProps = {
     date: Dayjs;
-    setDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs>>;
+    setDate: (date: Dayjs) => void;
 };
 
-const DateForm = (props: IDateFormProps) => {
-    const { date, setDate } = props;
+const DateForm: React.FC<IProps> = ({ date, setDate }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-    const handleClickDate = useCallback(() => {
+    const handleToggleCalendar = useCallback(() => {
         setIsCalendarOpen((prevState) => !prevState);
     }, []);
 
@@ -27,11 +26,20 @@ const DateForm = (props: IDateFormProps) => {
         setIsCalendarOpen(false);
     }, []);
 
+    const handleDateChange = useCallback(
+        (value: Dayjs | null) => {
+            if (value) {
+                setDate(value);
+            }
+        },
+        [setDate]
+    );
+
     return (
         <>
-            <ListItemButton onClick={handleClickDate}>
+            <ListItemButton onClick={handleToggleCalendar}>
                 <ListItemText>Дата</ListItemText>
-                <ListItemText sx={{ textAlign: "right" }}>
+                <ListItemText sx={{ textAlign: "end" }}>
                     {date?.format("DD MMM YYYY HH:mm")}
                 </ListItemText>
             </ListItemButton>
@@ -43,9 +51,7 @@ const DateForm = (props: IDateFormProps) => {
                     >
                         <StaticDateTimePicker
                             value={date}
-                            onChange={(value) => {
-                                value && setDate(value);
-                            }}
+                            onChange={handleDateChange}
                             onAccept={handleCloseCalendar}
                             onClose={handleCloseCalendar}
                         />

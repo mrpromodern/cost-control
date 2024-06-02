@@ -8,11 +8,12 @@ interface IProps {
     colorData: string;
 }
 
-const ItemGeneral = (props: IProps) => {
-    const { title, data, colorData } = props;
+const ItemGeneral: React.FC<IProps> = ({ title, data, colorData }) => {
+    const isNegative = colorData === "error.main";
+    const displayData = `${isNegative ? "-" : "+"} ${data}`;
 
     return (
-        <Grid sx={{ textAlign: "right" }} item xs={6}>
+        <Grid sx={{ textAlign: "end" }} item xs={6}>
             <Paper variant="outlined" sx={{ p: 2, backgroundColor: "#f0f0f0" }}>
                 <Typography
                     fontWeight="fontWeightMedium"
@@ -22,7 +23,7 @@ const ItemGeneral = (props: IProps) => {
                     {title}
                 </Typography>
                 <Typography variant="h5" color={colorData}>
-                    {colorData === "error.main" ? "-" : "+"} {data}
+                    {displayData}
                 </Typography>
             </Paper>
         </Grid>

@@ -10,25 +10,22 @@ import { Dayjs } from "dayjs";
 import { tranStore } from "../../store/transaction";
 import { observer } from "mobx-react-lite";
 
-type TransactionItemsProps = {
-    handleOpenForm: Function;
+type IProps = {
+    handleOpenForm: () => void;
 };
 
 const isSameDay = (date1: Dayjs, date2: Dayjs) => {
-    if (date1.format("D") === date2.format("D")) {
-        if (date1.format("M") !== date2.format("M")) {
-            return false;
-        }
-        return true;
-    }
+    return (
+        date1.format("D") === date2.format("D") &&
+        date1.format("M") === date2.format("M")
+    );
 };
 
-const TransactionItems = (props: TransactionItemsProps) => {
+const TransactionItems: React.FC<IProps> = ({ handleOpenForm }) => {
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState("");
     const { transactions, setTransaction, getTransactions, isLoading } =
         tranStore;
-    const { handleOpenForm } = props;
 
     const handleClickTransaction = useCallback(
         (transaction: ITransaction) => {
@@ -91,14 +88,12 @@ const TransactionItems = (props: TransactionItemsProps) => {
                     : filteredTransactions.map((transaction, index) => {
                           const prevTransaction =
                               filteredTransactions[index - 1];
-                          let showDate = true;
-
-                          if (
-                              prevTransaction &&
-                              isSameDay(prevTransaction.date, transaction.date)
-                          ) {
-                              showDate = false;
-                          }
+                          const showDate =
+                              !prevTransaction ||
+                              !isSameDay(
+                                  prevTransaction.date,
+                                  transaction.date
+                              );
 
                           return (
                               <Grow in={true} key={transaction.id}>

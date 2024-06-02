@@ -13,7 +13,7 @@ const emptyTarget: ITarget = {
 };
 
 class Target {
-    target: ITarget = emptyTarget;
+    target: ITarget = { ...emptyTarget };
     targets: ITarget[] = [];
 
     constructor() {
@@ -21,11 +21,11 @@ class Target {
     }
 
     setTarget = (target: ITarget) => {
-        this.target = target;
+        this.target = { ...target };
     }
 
     resetTarget = () => {
-        this.target = emptyTarget;
+        this.target = { ...emptyTarget };
     }
 
     setBalance = (balance: number) => {
@@ -60,4 +60,4 @@ class Target {
     }
 }
 
-export const targetStore: Target = new Target();
+export const targetStore = new Target();

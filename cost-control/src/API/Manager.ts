@@ -34,7 +34,7 @@ export function importData(data: any) {
     return postJson(buildUrl(OUR_API_ENDPOINTS.DATA), data);
 }
 
-// ------------- Plan -------------
+// ------------- Target -------------
 
 export function getTargets() {
     return getJson(buildUrl(OUR_API_ENDPOINTS.TARGETS));

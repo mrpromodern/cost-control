@@ -9,18 +9,18 @@ const emptyBill: IBill = {
 };
 
 class Bill {
-    bill: IBill = emptyBill;
+    bill: IBill = { ...emptyBill };
 
     constructor() {
         makeAutoObservable(this)
     }
 
     setBill(bill: IBill) {
-        this.bill = bill;
+        this.bill = { ...bill };
     }
 
     resetBill() {
-        this.bill = emptyBill;
+        this.bill = { ...emptyBill };
     }
 
     setBalance = (balance: number) => {
@@ -28,4 +28,4 @@ class Bill {
     }
 }
 
-export const billStore: Bill = new Bill();
+export const billStore = new Bill();

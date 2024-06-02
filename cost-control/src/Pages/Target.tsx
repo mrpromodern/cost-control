@@ -20,9 +20,7 @@ const TargetPage = () => {
     const { targets, getTargets, setTarget } = targetStore;
 
     const handleOpenForm = useCallback(() => {
-        setIsFormOpen((prevState: boolean) => {
-            return !prevState;
-        });
+        setIsFormOpen((prevState) => !prevState);
     }, []);
 
     const handleClickTransaction = useCallback(
@@ -52,10 +50,10 @@ const TargetPage = () => {
                 </Box>
             </MenuAppBar>
             {targets.map((target) => {
-                let progress = (target.balance / target.target) * 100;
-                if (progress > 100) {
-                    progress = 100;
-                }
+                const progress = Math.min(
+                    (target.balance / target.target) * 100,
+                    100
+                );
 
                 return (
                     <ListItemButton

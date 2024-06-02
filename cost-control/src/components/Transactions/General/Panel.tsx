@@ -4,35 +4,38 @@ import ItemGeneral from "./Item";
 import { tranStore } from "../../../store/transaction";
 import { observer } from "mobx-react-lite";
 
-const PanelGeneral = () => {
+const PanelGeneral = observer(() => {
     const { income, expense, balance, current } = tranStore;
+
+    const items = [
+        { title: "Доходы", data: income, colorData: "success.main" },
+        { title: "Расходы", data: expense, colorData: "error.main" },
+        {
+            title: "Баланс за период",
+            data: balance,
+            colorData: balance < 0 ? "error.main" : "success.main",
+        },
+        {
+            title: "Текущий остаток",
+            data: current,
+            colorData: current < 0 ? "error.main" : "success.main",
+        },
+    ];
 
     return (
         <Box p={1}>
             <Grid container spacing={1}>
-                <ItemGeneral
-                    title="Доходы"
-                    data={Math.abs(income)}
-                    colorData="success.main"
-                />
-                <ItemGeneral
-                    title="Расходы"
-                    data={Math.abs(expense)}
-                    colorData="error.main"
-                />
-                <ItemGeneral
-                    title="Баланс за период"
-                    data={Math.abs(balance)}
-                    colorData={balance < 0 ? "error.main" : "success.main"}
-                />
-                <ItemGeneral
-                    title="Текущий остаток"
-                    data={Math.abs(current)}
-                    colorData={current < 0 ? "error.main" : "success.main"}
-                />
+                {items.map((item, index) => (
+                    <ItemGeneral
+                        key={index}
+                        title={item.title}
+                        data={Math.abs(item.data)}
+                        colorData={item.colorData}
+                    />
+                ))}
             </Grid>
         </Box>
     );
-};
+});
 
-export default observer(PanelGeneral);
+export default PanelGeneral;

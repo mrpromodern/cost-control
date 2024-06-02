@@ -6,38 +6,37 @@ import {
     ListItemButton,
     ListItemText,
 } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IGroupBill } from "../../type";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import Bill from "./Bill";
 import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
 import { tranStore } from "../../store/transaction";
+
 interface IProps {
     groupBill: IGroupBill;
 }
 
-const GroupBillItem = (props: IProps) => {
-    const { groupBill } = props;
-
+const GroupBillItem: React.FC<IProps> = ({ groupBill }) => {
     const activeGroupBillId = groupBillStore.groupBill.id;
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
-    const [open, setOpen] = useState<boolean>(() => {
+    const [open, setOpen] = useState<boolean>(false);
+
+    useEffect(() => {
         const savedState = localStorage.getItem(
             `groupBill-${groupBill.id}-open`
         );
-        return savedState ? JSON.parse(savedState) : false;
-    });
+        setOpen(savedState ? JSON.parse(savedState) : false);
+    }, [groupBill.id]);
 
-    const handleClick = useCallback(() => {
+    const handleClick = useCallback(async () => {
         groupBillStore.setGroupBill(groupBill);
         billStore.resetBill();
-        getTransactions();
+        await getTransactions();
         updateGeneral();
-        getTransactions()
-            .then(() => updateGeneral())
-            .then(() => getCategoryChart());
+        await getCategoryChart();
     }, [getCategoryChart, getTransactions, groupBill, updateGeneral]);
 
     const handleCollapse = useCallback(() => {

@@ -1,6 +1,6 @@
 import { IGroupBill } from "../../type";
-import { generateUUID } from "../helper";
 import { getBills, getExpensesByBillId, getIncomeByBillId } from "./Bill";
+import { v4 as uuidv4 } from 'uuid';
 
 export let groupBills: IGroupBill[] = [
     {
@@ -43,7 +43,7 @@ export function getGroupBillsForExport() {
 
 export function createGroupBill(groupBill: IGroupBill) {
     const newGroupBill = {
-        id: generateUUID(),
+        id: uuidv4(),
         userId: groupBill.userId,
         name: groupBill.name,
         bills: groupBill.bills

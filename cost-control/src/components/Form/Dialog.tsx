@@ -10,16 +10,18 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 interface IProps {
     title: string | React.ReactNode;
     isFormOpen: boolean;
-    handleOpenForm: (event: React.MouseEvent) => void;
+    handleOpenForm: () => void;
     children: React.ReactNode;
 }
 
-const DialogForm = (props: IProps) => {
+const DialogForm: React.FC<IProps> = ({
+    title,
+    isFormOpen,
+    handleOpenForm,
+    children,
+}) => {
     const theme = useTheme();
-    const { title, isFormOpen, handleOpenForm, children } = props;
-
-    // Проверка разрешения экрана
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Проверка разрешения экрана
 
     return (
         <Dialog open={isFormOpen} onClose={handleOpenForm}>

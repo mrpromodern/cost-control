@@ -3,13 +3,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { ITransaction, TransactionType } from "../../type";
 
-type TransactionItemProps = {
+type IProps = {
     transaction: ITransaction;
-    handleClickTransaction: Function;
+    handleClickTransaction: (transaction: ITransaction) => void;
 };
 
-const TransactionItem = (props: TransactionItemProps) => {
-    const { transaction, handleClickTransaction } = props;
+const TransactionItem: React.FC<IProps> = ({
+    transaction,
+    handleClickTransaction,
+}) => {
+    const isExpense = transaction.type === TransactionType.Expense;
+    const displayAmount = `${isExpense ? "-" : "+"} ${transaction.amount} ₽`;
 
     return (
         <ListItemButton
@@ -20,16 +24,12 @@ const TransactionItem = (props: TransactionItemProps) => {
             <ListItemText
                 sx={{ textAlign: "right" }}
                 primary={
-                    // проверка типа, отрицательное значение или нет
-                    transaction.type === TransactionType.Expense ? (
-                        <Box fontWeight="fontWeightMedium">
-                            - {transaction.amount} ₽
-                        </Box>
-                    ) : (
-                        <Box color="green" fontWeight="fontWeightMedium">
-                            + {transaction.amount} ₽
-                        </Box>
-                    )
+                    <Box
+                        color={isExpense ? "text.primary" : "success.main"}
+                        fontWeight="fontWeightMedium"
+                    >
+                        {displayAmount}
+                    </Box>
                 }
             />
         </ListItemButton>

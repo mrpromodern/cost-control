@@ -11,19 +11,17 @@ import { billStore } from "../../../store/bill";
 import { tranStore } from "../../../store/transaction";
 import CustomKeypad from "./Keypad";
 
-interface ITransactionFormProps {
-    handleOpenForm: Function;
+interface IProps {
+    handleOpenForm: () => void;
 }
 
-const TransactionForm = (props: ITransactionFormProps) => {
+const TransactionForm: React.FC<IProps> = ({ handleOpenForm }) => {
     const {
         transaction,
         addTransaction,
         updateTransaction,
         deleteTransaction,
     } = tranStore;
-
-    const { handleOpenForm } = props;
 
     const id = transaction.id;
     const validCharacters = /^[0-9+\-*/,.]*$/;

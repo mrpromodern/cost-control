@@ -6,12 +6,14 @@ import { IGroupBill } from "../../type";
 import { user } from "../../store/user";
 
 interface IProps {
-    handleAddGroup: Function;
-    handleOpenForm: Function;
+    handleAddGroup: (groupBill: IGroupBill) => void;
+    handleOpenForm: () => void;
 }
 
-const GroupBillForm = (props: IProps) => {
-    const { handleAddGroup, handleOpenForm } = props;
+const GroupBillForm: React.FC<IProps> = ({
+    handleAddGroup,
+    handleOpenForm,
+}) => {
     const [name, setName] = useState<string>("");
 
     const handleNameChange = useCallback(
@@ -33,7 +35,6 @@ const GroupBillForm = (props: IProps) => {
             };
 
             handleAddGroup(newGroupBill);
-
             handleOpenForm();
         },
         [handleAddGroup, handleOpenForm, name]

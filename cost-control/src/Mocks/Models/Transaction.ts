@@ -1,6 +1,6 @@
 import { ITransaction } from "../../type";
-import { generateUUID } from "../helper";
 import { getBill, getBills, updateBill } from "./Bill";
+import { v4 as uuidv4 } from 'uuid';
 
 export let transactions = [
     {
@@ -91,7 +91,7 @@ export function createTransaction(transaction: ITransaction) {
     const bill = getBill(transaction.billId);
 
     const newTransaction = {
-        id: generateUUID(),
+        id: uuidv4(),
         category: transaction.category,
         amount: transaction.amount,
         date: transaction.date.toString(),
