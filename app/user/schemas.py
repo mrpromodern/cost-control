@@ -8,3 +8,6 @@ class SUserRegister(BaseModel):
 class SToken(BaseModel):
     access_token: str
     refresh_token: str
+
+class UpdateUserName(BaseModel):
+    username:str

@@ -7,9 +7,15 @@ from sqlalchemy import pool
 from app.database import Base
 
 from app.config import settings
+
+from app.transactions.models import Transactions
+from app.bills.models import Bill
+from app.groupbills.models import GroupBill
 from app.user.models import User
 
+
 from alembic import context
+
 
 sys.path.insert(0,dirname(dirname(dirname(abspath(__file__)))))
 

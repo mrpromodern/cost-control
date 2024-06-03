@@ -12,4 +12,7 @@ async_session_maker = sessionmaker(engine,class_=AsyncSession,expire_on_commit=F
 class Base(DeclarativeBase):
     pass
 
-
+from app.user.models import User
+from app.groupbills.models import GroupBill
+from app.bills.models import Bill
+from app.transactions.models import Transactions

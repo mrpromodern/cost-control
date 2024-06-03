@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta, timezone
 from typing import Union
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException, Request,status
 from passlib.context import CryptContext
 from pydantic import EmailStr
-import jwt
+from app.config import settings
+from jose import jwt,JWTError
+from app.exceptions import IncorrectFormatTokenException, TokenAbsentException, TokenExpiredException, UserIsNotPresentException
+from app.user.service import AuthUser
 from app.config import settings
 
-from app.user.service import AuthUser
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -56,3 +58,31 @@ def decode_token(token: str, secret_key: str):
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+def get_token(request:Request):
+    token  = request.cookies.get("access_token")
+    if not token:
+        raise TokenAbsentException
+    return token
+
+async def get_current_user(token:str = Depends(get_token)):
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY,settings.ALGORITHM
+        )
+    except JWTError:
+        raise IncorrectFormatTokenException
+    
+    expire:str = payload.get("exp")
+    if not expire or (int(expire) < datetime.utcnow().timestamp()):
+        raise TokenExpiredException
+    
+    user_id:str = payload.get("sub")
+    if not user_id:
+        raise UserIsNotPresentException
+    
+    user = await AuthUser.find_by_id(int(user_id))
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    
+    return user
