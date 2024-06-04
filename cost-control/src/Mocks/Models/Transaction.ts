@@ -1,6 +1,8 @@
-import { ITransaction } from "../../type";
+import { ITransaction, TransactionType } from "../../type";
 import { getBill, getBills, updateBill } from "./Bill";
 import { v4 as uuidv4 } from 'uuid';
+import { getGroupBills } from "./GroupBill";
+import dayjs from "dayjs";
 
 export let transactions = [
     {
@@ -58,6 +60,57 @@ export let transactions = [
         billId: "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5"
     }
 ]
+
+const categories = [
+    "Без категории",
+    "Продукты",
+    "Рестораны и кафе",
+    "Транспорт",
+    "Жилье",
+    "Коммунальные услуги",
+    "Одежда и аксессуары",
+    "Здоровье и красота",
+    "Развлечения",
+    "Путешествия",
+    "Образование",
+    "Подарки",
+];
+
+export function generateTransactions() {
+    const groupBills = getGroupBills();
+    const bills = groupBills.flatMap((groupBill) => groupBill.bills);
+    const transactionTypes = Object.values(TransactionType);
+    const billIds = bills.map((bill) => bill.id);
+    const generateTransactions: { id: string; category: string; amount: number; date: string; comment: string; type: string; billId: string; }[] = [];
+
+    billIds.forEach((billId) => {
+        const randomLength = Math.floor(Math.random() * (30)) + 5;
+        const start = dayjs('2024-06-02');
+        const end = dayjs('2024-07-30');
+
+        const transaction: { id: string; category: string; amount: number; date: string; comment: string; type: string; billId: string; }[] = Array.from(new Array(randomLength)).map((_, index) => {
+            const randomTimestamp = start.unix() + Math.floor(Math.random() * (end.unix() - start.unix()));
+            const randomDate = dayjs.unix(randomTimestamp);
+
+            const dateString = randomDate.format('YYYY-MM-DDTHH:mm:ss');
+
+            return (
+                {
+                    id: uuidv4(),
+                    category: categories[Math.floor(Math.random() * categories.length)],
+                    amount: Math.floor(Math.random() * (5000 - 100 + 1)) + 100,
+                    date: dateString,
+                    comment: "",
+                    type: transactionTypes[Math.floor(Math.random() * transactionTypes.length)],
+                    billId: billId
+                });
+        });
+
+        generateTransactions.push(...transaction);
+    });
+
+    transactions = generateTransactions;
+}
 
 export function sortTransactions() {
     return transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

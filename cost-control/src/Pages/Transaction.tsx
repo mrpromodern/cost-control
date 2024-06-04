@@ -81,7 +81,9 @@ const TransactionPage = observer(() => {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <ButtonAdd handleClick={handleOpenForm} />
+                    <Box>
+                        <ButtonAdd handleClick={handleOpenForm} />
+                    </Box>
                     <PeriodAppBar />
                 </Box>
             </MenuAppBar>

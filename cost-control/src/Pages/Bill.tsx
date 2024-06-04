@@ -22,8 +22,7 @@ const emptyBill: IBill = {
 };
 
 const BillPage = () => {
-    const { groupBills, fetchGroupBills } = groupBillStore;
-
+    const { groupBills, fetchGroupBills, resetGroupBill } = groupBillStore;
     const [bill, setBill] = useState<IBill>(emptyBill);
     const [openBillForm, setOpenBillForm] = useState<boolean>(false);
     const [openGroupForm, setOpenGroupForm] = useState<boolean>(false);
@@ -34,8 +33,14 @@ const BillPage = () => {
 
     const handleOpenGroupForm = useCallback(() => {
         setAnchorE1(null);
-        setOpenGroupForm((prevState: boolean) => !prevState);
-    }, []);
+        setOpenGroupForm((prevState: boolean) => {
+            if (prevState) {
+                resetGroupBill();
+            }
+
+            return !prevState;
+        });
+    }, [resetGroupBill]);
 
     const handleAddGroup = useCallback(
         async (groupBill: IGroupBill) => {
@@ -49,7 +54,13 @@ const BillPage = () => {
 
     const handleOpenBillForm = useCallback(() => {
         setAnchorE1(null);
-        setOpenBillForm((prevState: boolean) => !prevState);
+        setOpenBillForm((prevState: boolean) => {
+            if (prevState) {
+                setBill(emptyBill);
+            }
+
+            return !prevState;
+        });
     }, []);
 
     const handleAddBill = useCallback(

@@ -15,11 +15,11 @@ class Bill {
         makeAutoObservable(this)
     }
 
-    setBill(bill: IBill) {
+    setBill = (bill: IBill) => {
         this.bill = { ...bill };
     }
 
-    resetBill() {
+    resetBill = () => {
         this.bill = { ...emptyBill };
     }
 

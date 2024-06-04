@@ -17,6 +17,8 @@ import SendIcon from "@mui/icons-material/SendToMobileRounded";
 import InstallIcon from "@mui/icons-material/InstallMobileRounded";
 import PieChartIcon from "@mui/icons-material/PieChartRounded";
 import ArticleIcon from "@mui/icons-material/ArticleRounded";
+import { generateTransactions } from "../Mocks/Models/Transaction";
+import CreateIcon from '@mui/icons-material/CreateNewFolderRounded';
 
 interface IProps {
     children?: React.ReactNode;
@@ -61,6 +63,10 @@ const Navbar: React.FC<IProps> = observer(({ children }) => {
             }
         };
         input.click();
+    }, []);
+
+    const handleGenerate = useCallback(() => {
+        generateTransactions();
     }, []);
 
     return (
@@ -113,6 +119,13 @@ const Navbar: React.FC<IProps> = observer(({ children }) => {
                         <ListItemButton onClick={exportData}>
                             <SendIcon />
                             <ListItemText primary="&nbsp;Экспорт" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem />
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={handleGenerate}>
+                            <CreateIcon />
+                            <ListItemText primary="&nbsp;Генерация" />
                         </ListItemButton>
                     </ListItem>
                 </List>

@@ -17,11 +17,17 @@ import { ITarget } from "../type";
 
 const TargetPage = () => {
     const [isFormOpen, setIsFormOpen] = React.useState<boolean>(false);
-    const { targets, getTargets, setTarget } = targetStore;
+    const { targets, getTargets, setTarget, resetTarget } = targetStore;
 
     const handleOpenForm = useCallback(() => {
-        setIsFormOpen((prevState) => !prevState);
-    }, []);
+        setIsFormOpen((prevState) => {
+            if (prevState) {
+                resetTarget();
+            }
+
+            return !prevState;
+        });
+    }, [resetTarget]);
 
     const handleClickTransaction = useCallback(
         (target: ITarget) => {

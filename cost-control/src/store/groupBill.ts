@@ -18,15 +18,15 @@ class GroupBill {
         makeAutoObservable(this)
     }
 
-    setGroupBill(groupBill: IGroupBill) {
+    setGroupBill = (groupBill: IGroupBill) => {
         this.groupBill = { ...groupBill };
     }
 
-    setGroupBills(groupBills: IGroupBill[]) {
+    setGroupBills = (groupBills: IGroupBill[]) => {
         this.groupBills = [...groupBills];
     }
 
-    resetGroupBill() {
+    resetGroupBill = () => {
         this.groupBill = { ...emptyGroupBill };
     }
 
