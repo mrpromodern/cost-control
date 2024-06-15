@@ -4,16 +4,15 @@ import Divider from "@mui/material/Divider";
 import ButtonForm from "../Form/Button";
 import { IGroupBill } from "../../type";
 import { user } from "../../store/user";
+import { groupBillStore } from "../../store/groupBill";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
-    handleAddGroup: (groupBill: IGroupBill) => void;
     handleOpenForm: () => void;
 }
 
-const GroupBillForm: React.FC<IProps> = ({
-    handleAddGroup,
-    handleOpenForm,
-}) => {
+const GroupBillForm: React.FC<IProps> = observer(({ handleOpenForm }) => {
+    const { createGroupBill } = groupBillStore;
     const [name, setName] = useState<string>("");
 
     const handleNameChange = useCallback(
@@ -34,10 +33,10 @@ const GroupBillForm: React.FC<IProps> = ({
                 bills: [],
             };
 
-            handleAddGroup(newGroupBill);
+            createGroupBill(newGroupBill);
             handleOpenForm();
         },
-        [handleAddGroup, handleOpenForm, name]
+        [createGroupBill, handleOpenForm, name]
     );
 
     return (
@@ -57,6 +56,6 @@ const GroupBillForm: React.FC<IProps> = ({
             </ButtonForm>
         </>
     );
-};
+});
 
 export default GroupBillForm;

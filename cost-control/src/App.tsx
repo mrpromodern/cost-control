@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "./Pages/Main";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Main";
 import ReportPage from "./Pages/Report";
 import PlanPage from "./Pages/Plan";
 import { CssBaseline } from "@mui/material";

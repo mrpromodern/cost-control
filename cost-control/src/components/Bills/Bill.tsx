@@ -1,5 +1,4 @@
 import ListItemButton from "@mui/material/ListItemButton";
-import RemoveIcon from "@mui/icons-material/Remove";
 import ListItemText from "@mui/material/ListItemText";
 import { IBill } from "../../type";
 import { useCallback } from "react";
@@ -7,12 +6,13 @@ import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
 import { observer } from "mobx-react-lite";
 import { tranStore } from "../../store/transaction";
+import { ListItem } from "@mui/material";
 
 interface IProps {
     bill: IBill;
 }
 
-const Bill: React.FC<IProps> = ({ bill }) => {
+const Bill: React.FC<IProps> = observer(({ bill }) => {
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
     const handleClick = useCallback(() => {
@@ -24,19 +24,24 @@ const Bill: React.FC<IProps> = ({ bill }) => {
     }, [bill, getCategoryChart, getTransactions, updateGeneral]);
 
     return (
-        <ListItemButton
-            selected={billStore.bill.id === bill.id}
-            sx={{ pl: 4 }}
-            onClick={handleClick}
+        <ListItem
+            sx={{
+                p: 0,
+            }}
         >
-            <RemoveIcon fontSize="small" />
-            <ListItemText primary={bill.name} />
-            <ListItemText
-                sx={{ textAlign: "right" }}
-                primary={`${bill.balance} ₽`}
-            />
-        </ListItemButton>
+            <ListItemButton
+                sx={{ borderRadius: 2 }}
+                selected={billStore.bill.id === bill.id}
+                onClick={handleClick}
+            >
+                <ListItemText primary={bill.name} />
+                <ListItemText
+                    sx={{ textAlign: "right" }}
+                    primary={`${bill.balance} ₽`}
+                />
+            </ListItemButton>
+        </ListItem>
     );
-};
+});
 
-export default observer(Bill);
+export default Bill;

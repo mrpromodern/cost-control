@@ -1,5 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { IBill } from "../type";
+import { createBill, deleteBill, updateBill } from "../API/Manager";
+import { groupBillStore } from "./groupBill";
 
 const emptyBill: IBill = {
     id: "",
@@ -25,6 +27,24 @@ class Bill {
 
     setBalance = (balance: number) => {
         this.bill.balance = balance;
+    }
+
+    createBill = async (bill: IBill) => {
+        await createBill(bill);
+        await groupBillStore.fetchGroupBills();
+        this.resetBill();
+    }
+
+    updateBill = async (bill: IBill) => {
+        await updateBill(bill.id, bill);
+        await groupBillStore.fetchGroupBills();
+        this.resetBill();
+    }
+
+    deleteBill = async (id: string) => {
+        await deleteBill(id);
+        await groupBillStore.fetchGroupBills();
+        this.resetBill();
     }
 }
 

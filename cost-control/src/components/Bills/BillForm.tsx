@@ -5,22 +5,15 @@ import Divider from "@mui/material/Divider";
 import ButtonForm from "../Form/Button";
 import { IBill, IGroupBill } from "../../type";
 import GroupBillSelector from "../Form/GroupBillSelector";
+import { billStore } from "../../store/bill";
 
 interface IProps {
-    bill: IBill;
     groupBills: IGroupBill[];
-    handleAddBill: (bill: IBill) => void;
-    handleUpdateBill: (id: string, bill: IBill) => void;
     handleOpenForm: () => void;
 }
 
-const BillForm: React.FC<IProps> = ({
-    bill,
-    groupBills,
-    handleAddBill,
-    handleUpdateBill,
-    handleOpenForm,
-}) => {
+const BillForm: React.FC<IProps> = ({ groupBills, handleOpenForm }) => {
+    const { bill, createBill, updateBill } = billStore;
     const [groupBillId, setGroupBillId] = useState<string>(bill.groupBillId);
     const [name, setName] = useState<string>(bill.name);
     const [balance, setBalance] = useState<number>(bill.balance);
@@ -60,9 +53,9 @@ const BillForm: React.FC<IProps> = ({
             };
 
             if (id === "") {
-                handleAddBill(newBill);
+                createBill(newBill);
             } else {
-                handleUpdateBill(id, newBill);
+                updateBill(newBill);
             }
 
             handleOpenForm();
@@ -73,8 +66,8 @@ const BillForm: React.FC<IProps> = ({
             name,
             balance,
             handleOpenForm,
-            handleAddBill,
-            handleUpdateBill,
+            createBill,
+            updateBill,
         ]
     );
 

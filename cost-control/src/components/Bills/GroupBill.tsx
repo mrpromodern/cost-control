@@ -1,7 +1,7 @@
 import {
+    Box,
     Collapse,
     IconButton,
-    List,
     ListItem,
     ListItemButton,
     ListItemText,
@@ -13,12 +13,13 @@ import Bill from "./Bill";
 import { billStore } from "../../store/bill";
 import { groupBillStore } from "../../store/groupBill";
 import { tranStore } from "../../store/transaction";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
     groupBill: IGroupBill;
 }
 
-const GroupBillItem: React.FC<IProps> = ({ groupBill }) => {
+const GroupBillItem: React.FC<IProps> = observer(({ groupBill }) => {
     const activeGroupBillId = groupBillStore.groupBill.id;
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
 
@@ -51,28 +52,36 @@ const GroupBillItem: React.FC<IProps> = ({ groupBill }) => {
     }, [groupBill.id]);
 
     return (
-        <>
-            <ListItem sx={{ p: 0, display: "flex", alignItems: "center" }}>
-                <IconButton onClick={handleCollapse}>
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </IconButton>
+        <Box m={1}>
+            <ListItem
+                sx={{
+                    p: 0,
+                }}
+                secondaryAction={
+                    <IconButton onClick={handleCollapse}>
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                }
+            >
                 <ListItemButton
-                    sx={{ flexGrow: 1 }}
+                    sx={{ borderRadius: 2 }}
                     onClick={handleClick}
+                    disableTouchRipple
                     selected={activeGroupBillId === groupBill.id}
                 >
-                    <ListItemText primary={groupBill.name} />
+                    <ListItemText
+                        primary={groupBill.name}
+                        primaryTypographyProps={{ fontWeight: "bold" }}
+                    />
                 </ListItemButton>
             </ListItem>
             <Collapse in={open}>
-                <List component="div" disablePadding>
-                    {groupBill.bills.map((bill) => (
-                        <Bill key={bill.id} bill={bill} />
-                    ))}
-                </List>
+                {groupBill.bills.map((bill) => (
+                    <Bill key={bill.id} bill={bill} />
+                ))}
             </Collapse>
-        </>
+        </Box>
     );
-};
+});
 
 export default GroupBillItem;

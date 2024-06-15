@@ -1,7 +1,7 @@
 import { IBill, IGroupBill, ITarget, ITransaction } from "../type";
 import { deleteJson, getJson, postJson, putJson } from "./helper";
 
-export const OUR_API_ADDRESS = `${process.env.PUBLIC_URL}/api/v1`;
+export const OUR_API_ADDRESS = `${process.env.REACT_APP_PUBLIC_URL}/api/v1`;
 
 export enum OUR_API_ENDPOINTS {
     TRANSACTIONS = 'transactions',

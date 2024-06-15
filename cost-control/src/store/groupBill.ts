@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IGroupBill } from "../type";
-import { getGroupBills } from "../API/Manager";
+import { createGroupBill, deleteGroupBill, getGroupBills, updateGroupBill } from "../API/Manager";
 
 
 const emptyGroupBill: IGroupBill = {
@@ -29,6 +29,28 @@ class GroupBill {
     resetGroupBill = () => {
         this.groupBill = { ...emptyGroupBill };
     }
+
+    // ------------- Group Bill -------------
+
+    createGroupBill = async (groupBill: IGroupBill) => {
+        await createGroupBill(groupBill);
+        await this.fetchGroupBills();
+        this.resetGroupBill();
+    }
+
+    updateGroupBill = async (groupBill: IGroupBill) => {
+        await updateGroupBill(groupBill.id, groupBill);
+        await this.fetchGroupBills();
+        this.resetGroupBill();
+    }
+
+    deleteGroupBill = async (id: string) => {
+        await deleteGroupBill(id);
+        await this.fetchGroupBills();
+        this.resetGroupBill();
+    }
+
+    // ------------- Group Bills -------------
 
     fetchGroupBills = async () => {
         try {

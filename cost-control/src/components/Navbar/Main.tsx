@@ -6,19 +6,20 @@ import {
     ListItemText,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import MenuAppBar from "./AppBar/Menu";
+import MenuAppBar from "../AppBar/Menu";
 import React, { useCallback } from "react";
 import { NavLink } from "react-router-dom";
-import { exportData, importData } from "../API/Manager";
-import { groupBillStore } from "../store/groupBill";
+import { exportData, importData } from "../../API/Manager";
+import { groupBillStore } from "../../store/groupBill";
 import { observer } from "mobx-react-lite";
 import ListIcon from "@mui/icons-material/FormatListBulletedRounded";
 import SendIcon from "@mui/icons-material/SendToMobileRounded";
 import InstallIcon from "@mui/icons-material/InstallMobileRounded";
 import PieChartIcon from "@mui/icons-material/PieChartRounded";
 import ArticleIcon from "@mui/icons-material/ArticleRounded";
-import { generateTransactions } from "../Mocks/Models/Transaction";
-import CreateIcon from '@mui/icons-material/CreateNewFolderRounded';
+import { generateTransactions } from "../../Mocks/Models/Transaction";
+import CreateIcon from "@mui/icons-material/CreateNewFolderRounded";
+import ButtonNavbar from "./Button";
 
 interface IProps {
     children?: React.ReactNode;
@@ -109,25 +110,16 @@ const Navbar: React.FC<IProps> = observer(({ children }) => {
                         </ListItem>
                     ))}
                     <ListItem />
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={handleImport}>
-                            <InstallIcon />
-                            <ListItemText primary="&nbsp;Импорт" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={exportData}>
-                            <SendIcon />
-                            <ListItemText primary="&nbsp;Экспорт" />
-                        </ListItemButton>
-                    </ListItem>
+                    <ButtonNavbar text="Импорт" handleClick={handleImport}>
+                        <InstallIcon />
+                    </ButtonNavbar>
+                    <ButtonNavbar text="Экспорт" handleClick={exportData}>
+                        <SendIcon />
+                    </ButtonNavbar>
                     <ListItem />
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={handleGenerate}>
-                            <CreateIcon />
-                            <ListItemText primary="&nbsp;Генерация" />
-                        </ListItemButton>
-                    </ListItem>
+                    <ButtonNavbar text="Генерация" handleClick={handleGenerate}>
+                        <CreateIcon />
+                    </ButtonNavbar>
                 </List>
             </Drawer>
             {children}
