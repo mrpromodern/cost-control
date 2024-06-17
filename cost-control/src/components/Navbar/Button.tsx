@@ -9,7 +9,7 @@ interface IProps {
 const ButtonNavbar: React.FC<IProps> = ({ children, text, handleClick }) => {
     return (
         <ListItem disablePadding>
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton sx={{ borderRadius: 2 }} onClick={handleClick}>
                 {children}
                 &nbsp;
                 <ListItemText primary={text} />

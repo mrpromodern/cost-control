@@ -20,7 +20,7 @@ import ArticleIcon from "@mui/icons-material/ArticleRounded";
 import { generateTransactions } from "../../Mocks/Models/Transaction";
 import CreateIcon from "@mui/icons-material/CreateNewFolderRounded";
 import ButtonNavbar from "./Button";
-
+ 
 interface IProps {
     children?: React.ReactNode;
 }
@@ -28,15 +28,19 @@ interface IProps {
 const navItems = [
     {
         path: "/cost-control-pages/transactions",
-        icon: <ListIcon />,
+        icon: <ListIcon color="secondary" />,
         text: "Операции",
     },
     {
         path: "/cost-control-pages/reports",
-        icon: <PieChartIcon />,
+        icon: <PieChartIcon color="secondary" />,
         text: "Отчёт",
     },
-    { path: "/cost-control-pages/plans", icon: <ArticleIcon />, text: "План" },
+    {
+        path: "/cost-control-pages/plans",
+        icon: <ArticleIcon color="secondary" />,
+        text: "План",
+    },
 ];
 
 const Navbar: React.FC<IProps> = observer(({ children }) => {
@@ -91,36 +95,42 @@ const Navbar: React.FC<IProps> = observer(({ children }) => {
                 }}
             >
                 <MenuAppBar />
-                <List>
-                    {navItems.map((item) => (
-                        <ListItem disablePadding key={item.path}>
-                            <ListItemButton
-                                component={NavLink}
-                                to={item.path}
-                                sx={{
-                                    "&.active": {
-                                        backgroundColor: "#bfbfbf",
-                                    },
-                                }}
-                            >
-                                {item.icon}
-                                &nbsp;
-                                <ListItemText primary={`${item.text}`} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                    <ListItem />
-                    <ButtonNavbar text="Импорт" handleClick={handleImport}>
-                        <InstallIcon />
-                    </ButtonNavbar>
-                    <ButtonNavbar text="Экспорт" handleClick={exportData}>
-                        <SendIcon />
-                    </ButtonNavbar>
-                    <ListItem />
-                    <ButtonNavbar text="Генерация" handleClick={handleGenerate}>
-                        <CreateIcon />
-                    </ButtonNavbar>
-                </List>
+                <Box m={1}>
+                    <List>
+                        {navItems.map((item) => (
+                            <ListItem disablePadding key={item.path}>
+                                <ListItemButton
+                                    component={NavLink}
+                                    to={item.path}
+                                    sx={{
+                                        borderRadius: 2,
+                                        "&.active": {
+                                            backgroundColor: "#bfbfbf",
+                                        },
+                                    }}
+                                >
+                                    {item.icon}
+                                    &nbsp;
+                                    <ListItemText primary={`${item.text}`} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                        <ListItem />
+                        <ButtonNavbar text="Импорт" handleClick={handleImport}>
+                            <InstallIcon color="secondary" />
+                        </ButtonNavbar>
+                        <ButtonNavbar text="Экспорт" handleClick={exportData}>
+                            <SendIcon color="secondary" />
+                        </ButtonNavbar>
+                        <ListItem />
+                        <ButtonNavbar
+                            text="Генерация"
+                            handleClick={handleGenerate}
+                        >
+                            <CreateIcon color="secondary" />
+                        </ButtonNavbar>
+                    </List>
+                </Box>
             </Drawer>
             {children}
         </Box>

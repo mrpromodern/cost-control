@@ -8,22 +8,22 @@ const PanelGeneral = observer(() => {
     const { income, expense, balance, current } = tranStore;
 
     const items = [
-        { title: "Доходы", data: income, colorData: "success.main" },
+        { title: "Доходы", data: income, colorData: "secondary.main" },
         { title: "Расходы", data: expense, colorData: "error.main" },
         {
             title: "Баланс за период",
             data: balance,
-            colorData: balance < 0 ? "error.main" : "success.main",
+            colorData: balance < 0 ? "error.main" : "secondary.main",
         },
         {
             title: "Текущий остаток",
             data: current,
-            colorData: current < 0 ? "error.main" : "success.main",
+            colorData: current < 0 ? "error.main" : "secondary.main",
         },
     ];
 
     return (
-        <Box p={1}>
+        <Box m={1}>
             <Grid container spacing={1}>
                 {items.map((item, index) => (
                     <ItemGeneral

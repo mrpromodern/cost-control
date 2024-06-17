@@ -3,7 +3,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { lightTheme } from "./styles/Theme";
+import { purpleTheme } from "./styles/Theme";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { Route, Routes } from "react-router-dom";
@@ -17,7 +17,7 @@ dayjs.locale("ru");
 
 function App() {
     return (
-        <ThemeProvider theme={lightTheme}>
+        <ThemeProvider theme={purpleTheme}>
             <CssBaseline />
             <Navbar>
                 <Routes>

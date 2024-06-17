@@ -109,7 +109,7 @@ const TargetForm: React.FC<IProps> = observer(({ handleOpenForm }) => {
 
             <Divider component="li" />
 
-            <ButtonForm color="primary" onClick={handleSubmit}>
+            <ButtonForm color="secondary" onClick={handleSubmit}>
                 Сохранить счет
             </ButtonForm>
         </>

@@ -128,7 +128,7 @@ const TransactionForm: React.FC<IProps> = ({ handleOpenForm }) => {
 
             <Divider component="li" />
 
-            <ButtonForm onClick={handleSubmit} color="primary">
+            <ButtonForm onClick={handleSubmit} color="secondary">
                 Сохранить операцию
             </ButtonForm>
 

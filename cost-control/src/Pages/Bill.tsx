@@ -62,7 +62,7 @@ const BillPage = () => {
     }, [fetchGroupBills]);
 
     return (
-        <Box width={"33%"} sx={{ backgroundColor: "#eaeaec" }}>
+        <Box width={"40%"} sx={{ backgroundColor: "#eaeaec" }}>
             <MenuAppBar>
                 <Box
                     display="flex"
@@ -70,10 +70,8 @@ const BillPage = () => {
                     alignItems="center"
                 >
                     <ButtonAdd handleClick={handleClickAdd} />
-                    <Typography>Счет</Typography>
-                    <IconButton
-                        onClick={handleClickEdit}
-                    >
+                    <Typography fontWeight="bold">Счета</Typography>
+                    <IconButton onClick={handleClickEdit}>
                         <CreateIcon />
                     </IconButton>
                 </Box>

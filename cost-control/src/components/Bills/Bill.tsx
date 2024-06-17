@@ -14,6 +14,8 @@ interface IProps {
 
 const Bill: React.FC<IProps> = observer(({ bill }) => {
     const { getTransactions, updateGeneral, getCategoryChart } = tranStore;
+    const isPlusNumber = bill.balance === 0 ? false : bill.balance > 0;
+    const color = isPlusNumber ? "secondary" : "";
 
     const handleClick = useCallback(() => {
         billStore.setBill(bill);
@@ -37,7 +39,13 @@ const Bill: React.FC<IProps> = observer(({ bill }) => {
                 <ListItemText primary={bill.name} />
                 <ListItemText
                     sx={{ textAlign: "right" }}
-                    primary={`${bill.balance} ₽`}
+                    primary={`${isPlusNumber ? "+" : "-"} ${Math.abs(
+                        bill.balance
+                    )} ₽`}
+                    primaryTypographyProps={{
+                        color: color,
+                        fontWeight: "fontWeightMedium",
+                    }}
                 />
             </ListItemButton>
         </ListItem>

@@ -25,7 +25,7 @@ const TransactionItem: React.FC<IProps> = ({
                 sx={{ textAlign: "right" }}
                 primary={
                     <Box
-                        color={isExpense ? "text.primary" : "success.main"}
+                        color={isExpense ? "" : "secondary.main"}
                         fontWeight="fontWeightMedium"
                     >
                         {displayAmount}
