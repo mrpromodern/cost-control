@@ -20,7 +20,7 @@ import ArticleIcon from "@mui/icons-material/ArticleRounded";
 import { generateTransactions } from "../../Mocks/Models/Transaction";
 import CreateIcon from "@mui/icons-material/CreateNewFolderRounded";
 import ButtonNavbar from "./Button";
- 
+
 interface IProps {
     children?: React.ReactNode;
 }
@@ -95,7 +95,7 @@ const Navbar: React.FC<IProps> = observer(({ children }) => {
                 }}
             >
                 <MenuAppBar />
-                <Box m={1}>
+                <Box ml={1} mr={1}>
                     <List>
                         {navItems.map((item) => (
                             <ListItem disablePadding key={item.path}>

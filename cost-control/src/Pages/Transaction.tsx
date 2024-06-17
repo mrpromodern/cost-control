@@ -10,7 +10,7 @@ import PanelGeneral from "../components/Transactions/General/Panel";
 import { observer } from "mobx-react-lite";
 import { tranStore } from "../store/transaction";
 import { groupBillStore } from "../store/groupBill";
-import PeriodAppBar from "../components/AppBar/Period";
+import PeriodTransaction from "../components/Transactions/Period";
 
 const TransactionPage = observer(() => {
     const { fetchGroupBills } = groupBillStore;
@@ -76,26 +76,21 @@ const TransactionPage = observer(() => {
     return (
         <Box width={"100%"} sx={{ backgroundColor: "#f0f0f0" }}>
             <MenuAppBar>
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <Box>
-                        <ButtonAdd handleClick={handleOpenForm} />
-                    </Box>
-                    <PeriodAppBar />
-                </Box>
+                <Box />
+                <ButtonAdd handleClick={handleOpenForm} />
             </MenuAppBar>
-            <PanelGeneral />
-            <TransactionItems handleOpenForm={handleOpenForm} />
-            <DialogForm
-                title={<DialogButtons />}
-                isFormOpen={isFormOpen}
-                handleOpenForm={handleOpenForm}
-            >
-                <TransactionForm handleOpenForm={handleOpenForm} />
-            </DialogForm>
+            <Box ml={1} mr={1}>
+                <PeriodTransaction />
+                <PanelGeneral />
+                <TransactionItems handleOpenForm={handleOpenForm} />
+                <DialogForm
+                    title={<DialogButtons />}
+                    isFormOpen={isFormOpen}
+                    handleOpenForm={handleOpenForm}
+                >
+                    <TransactionForm handleOpenForm={handleOpenForm} />
+                </DialogForm>
+            </Box>
         </Box>
     );
 });

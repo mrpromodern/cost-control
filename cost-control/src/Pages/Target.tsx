@@ -44,16 +44,10 @@ const TargetPage = () => {
     return (
         <Box width={"100%"} sx={{ backgroundColor: "#f0f0f0" }}>
             <MenuAppBar>
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <Typography p={1} variant="h6">
-                        Цели
-                    </Typography>
-                    <ButtonAdd handleClick={handleOpenForm} />
-                </Box>
+                <Typography p={1} variant="h6">
+                    Цели
+                </Typography>
+                <ButtonAdd handleClick={handleOpenForm} />
             </MenuAppBar>
             {targets.map((target) => {
                 const progress = Math.min(

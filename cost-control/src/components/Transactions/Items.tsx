@@ -21,7 +21,7 @@ const isSameDay = (date1: Dayjs, date2: Dayjs) => {
     );
 };
 
-const TransactionItems: React.FC<IProps> = ({ handleOpenForm }) => {
+const TransactionItems: React.FC<IProps> = observer(({ handleOpenForm }) => {
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState("");
     const { transactions, setTransaction, getTransactions, isLoading } =
@@ -60,7 +60,6 @@ const TransactionItems: React.FC<IProps> = ({ handleOpenForm }) => {
                 fullWidth
                 value={searchQuery}
                 onChange={handleSearchChange}
-                sx={{ paddingLeft: 1, paddingRight: 1 }}
             />
             <List
                 sx={{
@@ -97,7 +96,7 @@ const TransactionItems: React.FC<IProps> = ({ handleOpenForm }) => {
 
                           return (
                               <Grow in={true} key={transaction.id}>
-                                  <Box sx={{ padding: "0px 8px 0px 8px" }}>
+                                  <Box>
                                       {showDate && (
                                           <>
                                               <ListItemText
@@ -126,6 +125,6 @@ const TransactionItems: React.FC<IProps> = ({ handleOpenForm }) => {
             </List>
         </Box>
     );
-};
+});
 
-export default observer(TransactionItems);
+export default TransactionItems;

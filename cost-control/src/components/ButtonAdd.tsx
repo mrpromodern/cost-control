@@ -1,5 +1,5 @@
 import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/AddCircleOutline";
+import AddIcon from "@mui/icons-material/AddCircle";
 import React from "react";
 
 interface IProps {

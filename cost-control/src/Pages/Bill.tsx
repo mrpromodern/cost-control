@@ -64,19 +64,13 @@ const BillPage = () => {
     return (
         <Box width={"40%"} sx={{ backgroundColor: "#eaeaec" }}>
             <MenuAppBar>
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <ButtonAdd handleClick={handleClickAdd} />
-                    <Typography fontWeight="bold">Счета</Typography>
-                    <IconButton onClick={handleClickEdit}>
-                        <CreateIcon />
-                    </IconButton>
-                </Box>
+                <ButtonAdd handleClick={handleClickAdd} />
+                <Typography fontWeight="bold">Счета</Typography>
+                <IconButton onClick={handleClickEdit}>
+                    <CreateIcon />
+                </IconButton>
             </MenuAppBar>
-            <Box>
+            <Box ml={1} mr={1}>
                 <List>
                     {groupBills.map((groupBill) => {
                         return (

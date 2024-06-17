@@ -23,7 +23,7 @@ const PanelGeneral = observer(() => {
     ];
 
     return (
-        <Box m={1}>
+        <Box mt={1} mb={1}>
             <Grid container spacing={1}>
                 {items.map((item, index) => (
                     <ItemGeneral

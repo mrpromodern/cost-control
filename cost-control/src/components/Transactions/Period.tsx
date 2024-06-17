@@ -1,6 +1,12 @@
 import { useCallback, useState } from "react";
 import { tranStore } from "../../store/transaction";
-import { Box, Button, Typography } from "@mui/material";
+import {
+    Box,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+} from "@mui/material";
 import DialogForm from "../Form/Dialog";
 import dayjs from "dayjs";
 import "react-date-range/dist/theme/default.css";
@@ -16,7 +22,7 @@ interface IDateRange {
     key?: string;
 }
 
-const PeriodAppBar = () => {
+const PeriodTransaction = () => {
     const [dateFormOpen, setDateFormOpen] = useState<boolean>(false);
 
     const { startDate, endDate, setDate } = tranStore;
@@ -47,12 +53,21 @@ const PeriodAppBar = () => {
 
     return (
         <Box>
-            <Button color="primary" onClick={handleOpenDateForm}>
-                <Typography variant="h6">
-                    {startDate.format("DD.MM.YYYY")} -{" "}
-                    {endDate.format("DD.MM.YYYY")}
-                </Typography>
-            </Button>
+            <ListItem disablePadding>
+                <ListItemButton
+                    onClick={handleOpenDateForm}
+                    sx={{ borderRadius: 2 }}
+                >
+                    <ListItemText
+                        primary={"Период"}
+                        primaryTypographyProps={{ fontWeight: "bold" }}
+                    />
+                    <Typography variant="h6">
+                        {startDate.format("DD.MM.YYYY")} -{" "}
+                        {endDate.format("DD.MM.YYYY")}
+                    </Typography>
+                </ListItemButton>
+            </ListItem>
             <DialogForm
                 title="Период"
                 isFormOpen={dateFormOpen}
@@ -75,4 +90,4 @@ const PeriodAppBar = () => {
     );
 };
 
-export default PeriodAppBar;
+export default PeriodTransaction;

@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { TransactionType } from "../type";
 import MenuAppBar from "../components/AppBar/Menu";
-import PeriodAppBar from "../components/AppBar/Period";
+import PeriodTransaction from "../components/Transactions/Period";
 
 const Chart = observer(() => {
     const theme = useTheme();
@@ -52,28 +52,22 @@ const Chart = observer(() => {
     return (
         <Box width={"100%"}>
             <MenuAppBar>
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
-                        <Select
-                            variant="standard"
-                            value={type}
-                            onChange={handleChangeType}
-                        >
-                            <MenuItem value={TransactionType.Expense}>
-                                Расходы
-                            </MenuItem>
-                            <MenuItem value={TransactionType.Income}>
-                                Доходы
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
-                    <PeriodAppBar />
-                </Box>
+                <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
+                    <Select
+                        variant="standard"
+                        value={type}
+                        onChange={handleChangeType}
+                    >
+                        <MenuItem value={TransactionType.Expense}>
+                            Расходы
+                        </MenuItem>
+                        <MenuItem value={TransactionType.Income}>
+                            Доходы
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             </MenuAppBar>
+            <PeriodTransaction />
             {dataChart.length === 0 ? (
                 <Typography
                     variant="h6"

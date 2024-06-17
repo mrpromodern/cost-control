@@ -5,7 +5,18 @@ interface IProps {
 }
 
 const MenuAppBar: React.FC<IProps> = ({ children }) => {
-    return <Box sx={{ height: "50px" }}>{children}</Box>;
+    return (
+        <Box
+            ml={1}
+            mr={1}
+            sx={{ height: "50px" }}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent="space-between"
+        >
+            {children}
+        </Box>
+    );
 };
 
 export default MenuAppBar;

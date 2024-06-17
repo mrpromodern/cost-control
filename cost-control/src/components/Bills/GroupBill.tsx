@@ -52,7 +52,7 @@ const GroupBillItem: React.FC<IProps> = observer(({ groupBill }) => {
     }, [groupBill.id]);
 
     return (
-        <Box m={1}>
+        <Box mb={1}>
             <ListItem
                 sx={{
                     p: 0,
@@ -66,7 +66,6 @@ const GroupBillItem: React.FC<IProps> = observer(({ groupBill }) => {
                 <ListItemButton
                     sx={{ borderRadius: 2 }}
                     onClick={handleClick}
-                    disableTouchRipple
                     selected={activeGroupBillId === groupBill.id}
                 >
                     <ListItemText
