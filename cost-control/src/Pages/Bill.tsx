@@ -1,6 +1,16 @@
 import List from "@mui/material/List";
 import { useCallback, useEffect, useState } from "react";
-import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import {
+    Box,
+    Divider,
+    Grow,
+    IconButton,
+    Menu,
+    MenuItem,
+    Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/AddCircle";
+import AddClickIcon from "@mui/icons-material/AddCircleTwoTone";
 import GroupBillItem from "../components/Bills/GroupBill";
 import DialogForm from "../components/Form/Dialog";
 import GroupBillForm from "../components/Bills/GroupForm";
@@ -64,7 +74,9 @@ const BillPage = () => {
     return (
         <Box width={"40%"} sx={{ backgroundColor: "#eaeaec" }}>
             <MenuAppBar>
-                <ButtonAdd handleClick={handleClickAdd} />
+                <IconButton onClick={handleClickAdd}>
+                    {anchorE1 === null ? <AddIcon /> : <AddClickIcon />}
+                </IconButton>
                 <Typography fontWeight="bold">Счета</Typography>
                 <IconButton onClick={handleClickEdit}>
                     <CreateIcon />
@@ -81,10 +93,23 @@ const BillPage = () => {
                         );
                     })}
                 </List>
-                <Menu anchorEl={anchorE1} open={open} onClose={handleCloseMenu}>
+
+                <Menu
+                    sx={{
+                        "& .MuiMenu-paper": {
+                            borderRadius: 2,
+                        },
+                    }}
+                    anchorEl={anchorE1}
+                    open={open}
+                    onClose={handleCloseMenu}
+                >
                     <MenuItem onClick={handleOpenGroupForm}>
                         Создать группу счетов
                     </MenuItem>
+                    <Box>
+                        <Divider />
+                    </Box>
                     <MenuItem onClick={handleOpenBillForm}>
                         Создать счет
                     </MenuItem>

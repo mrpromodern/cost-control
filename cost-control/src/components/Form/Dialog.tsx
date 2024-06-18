@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import List from "@mui/material/List";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import DoneIcon from "@mui/icons-material/Done";
 
 interface IProps {
     title: string | React.ReactNode;
@@ -27,19 +28,21 @@ const DialogForm: React.FC<IProps> = ({
         <Dialog open={isFormOpen} onClose={handleOpenForm}>
             <DialogTitle
                 sx={{
-                    backgroundColor: "#dedede",
-                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "#f7f7f7",
                     p: 1,
                 }}
             >
+                <IconButton onClick={handleOpenForm}>
+                    <CloseIcon />
+                </IconButton>
                 {title}
+                <IconButton onClick={handleOpenForm}>
+                    <DoneIcon />
+                </IconButton>
             </DialogTitle>
-            <IconButton
-                onClick={handleOpenForm}
-                sx={{ position: "absolute", top: 8, right: 8 }}
-            >
-                <CloseIcon />
-            </IconButton>
             <DialogContent sx={{ p: 2 }}>
                 <List
                     sx={{

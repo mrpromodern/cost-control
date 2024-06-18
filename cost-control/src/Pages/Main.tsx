@@ -9,7 +9,12 @@ const MainPage = observer(() => {
     const isOpen = Boolean(billStore.bill.id || groupBillStore.groupBill.id);
 
     return (
-        <Box display={"flex"} width={"100%"} height={"100vh"}>
+        <Box
+            display={"flex"}
+            minHeight={"100vh"}
+            height={"100%"}
+            width={"100%"}
+        >
             <BillPage />
             <Box sx={{ backgroundColor: "#f0f0f0", width: "100%" }}>
                 <Collapse in={isOpen}>

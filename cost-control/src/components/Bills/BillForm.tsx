@@ -73,8 +73,6 @@ const BillForm: React.FC<IProps> = ({ groupBills, handleOpenForm }) => {
 
     return (
         <>
-            <Divider component="li" />
-
             <CommentForm
                 title="Название"
                 value={name}
